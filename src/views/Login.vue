@@ -1,15 +1,33 @@
 <template>
   <div class="login">
     <h1>ログイン</h1>
-    <p id="requireMessage" v-show="this.$route.query.message">{{ this.$store.state.message.requireLogin }}</p>
+
+    <p class="message" id="requireMessage" v-if="this.$route.query.message">
+      {{ this.$store.state.message.requireLogin }}
+    </p>
+
     <form class="login" @submit.prevent="login">
       <label>ユーザーID: </label>
-      <input required v-model="userId" type="text" placeholder="ユーザーIDを入力してください"/>
+      <input
+        required
+        v-model="userId"
+        type="text"
+        placeholder="ユーザーIDを入力してください"
+      />
       <label>パスワード: </label>
-      <input required v-model="password" type="password" placeholder="パスワードを入力してください"/>
-      <hr/>
+      <input
+        required
+        v-model="password"
+        type="password"
+        placeholder="パスワードを入力してください"
+      />
+
+      <hr />
       <button type="submit" :disabled="!userId || !password">ログイン</button>
-      <p class="errorMessage" v-show="loginUserError">{{ this.$store.state.message.loginError }}</p>
+
+      <p class="errorMessage" v-if="loginUserError">
+        {{ this.$store.state.message.loginError }}
+      </p>
     </form>
   </div>
 </template>

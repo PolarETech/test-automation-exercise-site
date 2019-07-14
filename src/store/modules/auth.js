@@ -18,14 +18,14 @@ export default {
     }
   },
   getters: {
-    isLogin: state => !!state.token,
-    isLoginUserError: state => state.userError
+    isLogin: (state) => !!state.token,
+    isLoginUserError: (state) => state.userError
   },
   actions: {
     [LOGIN]: ({ commit }, data) => {
       // dummy authentication
       const validation = !!(data.userId === 'testID' && data.password === 'testPASS')
-      const token = !(validation) ? '' : 'dummy-token'
+      const token = !validation ? '' : 'dummy-token'
 
       commit(LOGIN_USER_ERROR, !validation)
       commit(LOGIN, token)

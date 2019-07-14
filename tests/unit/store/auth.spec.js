@@ -3,11 +3,9 @@ import Vuex from 'vuex'
 import { cloneDeep } from 'lodash'
 import auth from '@/store/modules/auth'
 
-const initStore = () => {
-  return {
-    modules: cloneDeep({ auth })
-  }
-}
+const initStore = () => ({
+  modules: cloneDeep({ auth })
+})
 
 describe('auth', () => {
   let localVue
@@ -112,13 +110,19 @@ describe('auth', () => {
   test('dispatch LOGIN with correct ID/Pass', async () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeFalsy()
-    await store.dispatch('auth/LOGIN', { userId: 'testID', password: 'testPASS' })
+    await store.dispatch('auth/LOGIN', {
+      userId: 'testID',
+      password: 'testPASS'
+    })
     expect(store.state.auth.token).toBeTruthy()
     expect(store.state.auth.userError).toBeFalsy()
   })
 
   test('dispatch LOGOUT', async () => {
-    await store.dispatch('auth/LOGIN', { userId: 'testID', password: 'testPASS' })
+    await store.dispatch('auth/LOGIN', {
+      userId: 'testID',
+      password: 'testPASS'
+    })
     expect(store.state.auth.token).toBeTruthy()
     await store.dispatch('auth/LOGOUT')
     expect(store.state.auth.token).toBeFalsy()

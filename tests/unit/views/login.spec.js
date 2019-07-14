@@ -57,6 +57,10 @@ describe('Login.vue', () => {
   let store
   let wrapper
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('directly access login page', () => {
     beforeEach(() => {
       store = new Vuex.Store({
@@ -82,13 +86,13 @@ describe('Login.vue', () => {
 
       test('hide "require log-in" message', () => {
         const el = wrapper.find('#requireMessage')
-        expect(el.isVisible()).toBe(false)
+        expect(el.exists()).toBeFalsy()
       })
 
       test('hide "log-in user error" message', () => {
         expect(getters.isLoginUserError).toBeCalled()
         const el = wrapper.find('.errorMessage')
-        expect(el.isVisible()).toBe(false)
+        expect(el.exists()).toBeFalsy()
       })
 
       test('disable "login" button before input ID and Password', () => {
@@ -201,7 +205,7 @@ describe('Login.vue', () => {
 
     test('show "log-in user error" message', () => {
       const el = wrapper.find('.errorMessage')
-      expect(el.isVisible()).toBe(true)
+      expect(el.exists()).toBeTruthy()
       expect(el.text()).toBe(dummyUserErrorMessage)
     })
   })
@@ -233,7 +237,7 @@ describe('Login.vue', () => {
 
     test('show "require log-in" message', () => {
       const el = wrapper.find('#requireMessage')
-      expect(el.isVisible()).toBe(true)
+      expect(el.exists()).toBeTruthy()
       expect(el.text()).toBe(dummyRequireMessage)
     })
 
