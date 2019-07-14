@@ -12,7 +12,7 @@ export default {
   state: {
     items: [
       // sample
-      // { id: 0, is_done: false, timestamp: '2012/03/04 05:06:07', subject: 'dummyItem' }
+      // { id: 0, isDone: false, timestamp: '2012/03/04 05:06:07', subject: 'dummyItem' }
     ]
   },
   mutations: {
@@ -20,7 +20,7 @@ export default {
       state.items.push(payload.item)
     },
     [DONE_TODO_ITEM]: (state, payload) => {
-      payload.item.is_done = !payload.item.is_done
+      payload.item.isDone = !payload.item.isDone
       payload.item.timestamp = dayjs(new Date()).format('YYYY/MM/DD HH:mm:ss')
     },
     [UPDATE_TODO_ITEM]: (state, payload) => {
@@ -42,7 +42,7 @@ export default {
       const date = new Date()
       const item = {
         id: date.getTime(),
-        is_done: false,
+        isDone: false,
         subject,
         timestamp: dayjs(date).format('YYYY/MM/DD HH:mm:ss')
       }

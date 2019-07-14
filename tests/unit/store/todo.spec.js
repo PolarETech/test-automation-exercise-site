@@ -5,16 +5,14 @@ import todo from '@/store/modules/todo'
 
 const testItem = {
   id: 88888888,
-  is_done: false,
+  isDone: false,
   subject: 'TestToDoItem',
   timestamp: '1234/05/06 07:08:09'
 }
 
-const initStore = () => {
-  return {
-    modules: cloneDeep({ todo })
-  }
-}
+const initStore = () => ({
+  modules: cloneDeep({ todo })
+})
 
 describe('todo', () => {
   let localVue
@@ -42,18 +40,18 @@ describe('todo', () => {
 
     test('DONE_TODO_ITEM', () => {
       const timestamp = testItem.timestamp
-      expect(item.is_done).toBeFalsy()
+      expect(item.isDone).toBeFalsy()
       expect(item.timestamp).toBe(timestamp)
 
-      // TEST: change item.is_done false -> true and update item.timestamp
+      // TEST: change item.isDone false -> true and update item.timestamp
       store.commit('todo/DONE_TODO_ITEM', { item })
-      expect(item.is_done).toBeTruthy()
+      expect(item.isDone).toBeTruthy()
       expect(item.timestamp).not.toBe(timestamp)
 
-      // TEST: change item.is_done true -> false
+      // TEST: change item.isDone true -> false
       // timestamp test is omitted to reduce the test execution time.
       store.commit('todo/DONE_TODO_ITEM', { item })
-      expect(item.is_done).toBeFalsy()
+      expect(item.isDone).toBeFalsy()
     })
 
     test('UPDATE_TODO_ITEM', () => {
@@ -94,14 +92,14 @@ describe('todo', () => {
 
     test('ADD_TODO_ITEM', async () => {
       expect(item.id).toBeTruthy()
-      expect(item.is_done).toBeFalsy()
+      expect(item.isDone).toBeFalsy()
       expect(item.timestamp).toBeTruthy()
       expect(item.subject).toBe(subject)
     })
 
     test('DONE_TODO_ITEM', async () => {
       const timestamp = item.timestamp
-      expect(item.is_done).toBeFalsy()
+      expect(item.isDone).toBeFalsy()
       // wait 1sec for advance the timestamp of todo item
       await new Promise(resolve => {
         setTimeout(() => {
@@ -109,15 +107,15 @@ describe('todo', () => {
         }, 1000)
       })
 
-      // TEST: change item.is_done false -> true and update item.timestamp
+      // TEST: change item.isDone false -> true and update item.timestamp
       await store.dispatch('todo/DONE_TODO_ITEM', item)
-      expect(item.is_done).toBeTruthy()
+      expect(item.isDone).toBeTruthy()
       expect(item.timestamp).not.toBe(timestamp)
 
-      // TEST: change item.is_done true -> false
+      // TEST: change item.isDone true -> false
       // timestamp test is omitted to reduce the test execution time.
       await store.dispatch('todo/DONE_TODO_ITEM', item)
-      expect(item.is_done).toBeFalsy()
+      expect(item.isDone).toBeFalsy()
     })
 
     test('UPDATE_TODO_ITEM', async () => {

@@ -19,6 +19,8 @@ const store = new Vuex.Store({
   strict: process.env.VUE_APP_DEV,
   plugins: [
     createPersistedState({
+      key: 'PtExampleToken',
+      paths: ['auth.token'],
       storage: {
         getItem: key => Cookies.get(key),
         setItem: (key, value) => Cookies.set(key, value, {
@@ -27,6 +29,10 @@ const store = new Vuex.Store({
         }),
         removeItem: key => Cookies.remove(key)
       }
+    }),
+    createPersistedState({
+      key: 'PtExampleTodos',
+      paths: ['todo.items']
     })
   ]
 })

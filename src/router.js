@@ -30,7 +30,7 @@ const router = new Router({
     {
       path: '/todo',
       name: 'todo',
-      component: () => import('./views/Todo.vue'),
+      component: () => import('./views/TodoList.vue'),
       meta: { requiresAuth: true }
     }
   ]
