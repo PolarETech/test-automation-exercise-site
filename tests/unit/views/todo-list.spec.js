@@ -25,10 +25,6 @@ const todoGetters = {
   })
 }
 
-const authActions = {
-  LOGOUT: jest.fn()
-}
-
 const getModules = {
   todo: {
     namespaced: true,
@@ -44,23 +40,8 @@ const getModules = {
       emptyItem: dummyEmptyMessage,
       requireImputTodo: dummyRequireMessage
     }
-  },
-  auth: {
-    namespaced: true,
-    state: {},
-    actions: authActions
   }
 }
-
-const getMocks = () => ({
-  $route: {
-    path: '/todo',
-    name: 'todo'
-  },
-  $router: {
-    push: jest.fn()
-  }
-})
 
 describe('Todo.vue', () => {
   let store
@@ -88,7 +69,6 @@ describe('Todo.vue', () => {
       test('show "TodoList" vue', () => {
         expect(wrapper.isVueInstance()).toBeTruthy()
         expect(wrapper.vm.addTodoItem).toBeTruthy()
-        expect(wrapper.vm.logout).toBeTruthy()
       })
 
       test('hide "empty item" message', () => {
@@ -113,11 +93,6 @@ describe('Todo.vue', () => {
         const el = wrapper.find('#item_count')
         expect(el.exists()).toBeTruthy()
         expect(el.text()).toBe('登録件数：1 / 5 件')
-      })
-
-      test('show "logout" button', () => {
-        const el = wrapper.find('.logout')
-        expect(el.exists()).toBeTruthy()
       })
 
       test('disable "register" button before input new subject', () => {
@@ -200,31 +175,6 @@ describe('Todo.vue', () => {
       expect(localTodoGetters.GET_TODO_ITEMS).toBeCalled()
       const el = wrapper.find('.todo_list')
       expect(el.exists()).toBeFalsy()
-    })
-  })
-
-  describe('logout control', () => {
-    beforeEach(() => {
-      store = new Vuex.Store({
-        modules: {
-          ...getModules
-        }
-      })
-
-      wrapper = shallowMount(TodoList, {
-        mocks: {
-          ...getMocks()
-        },
-        store,
-        localVue
-      })
-    })
-
-    test('click "logout" button', async () => {
-      wrapper.find('.logout').trigger('click')
-      await flushPromises()
-      expect(authActions.LOGOUT).toBeCalled()
-      expect(wrapper.vm.$router.push).toBeCalledWith('/')
     })
   })
 })

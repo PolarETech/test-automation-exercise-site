@@ -33,9 +33,6 @@
     </form>
 
     <p class="message" id="item_count">登録件数：{{ items.length }} / 5 件</p>
-
-    <hr />
-    <button class="logout" @click="logout">ログアウト</button>
   </div>
 </template>
 
@@ -59,10 +56,6 @@ export default {
       addTodoItem (dispatch) {
         dispatch('todo/ADD_TODO_ITEM', this.subject)
         this.subject = ''
-      },
-      async logout (dispatch) {
-        dispatch('auth/LOGOUT')
-        this.$router.push('/')
       }
     })
   },
