@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <header>
+      <navbar/>
+    </header>
+
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
@@ -9,6 +13,21 @@
     <router-view/>
   </div>
 </template>
+
+<script>
+import NavBar from '@/components/NavBar.vue'
+
+export default {
+  components: {
+    navbar: NavBar
+  },
+  data () {
+    return {
+      isNavMenuOpen: false
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
