@@ -30,6 +30,12 @@ const getAuthModules = {
   getters: getLogoutStatus
 }
 
+const getMocks = () => ({
+  $toast: {
+    open: jest.fn()
+  }
+})
+
 describe('NavBar.vue', () => {
   let store
   let wrapper
@@ -118,6 +124,9 @@ describe('NavBar.vue', () => {
       })
 
       wrapper = shallowMount(NavBar, {
+        mocks: {
+          ...getMocks()
+        },
         router,
         store,
         localVue
@@ -150,6 +159,7 @@ describe('NavBar.vue', () => {
         await flushPromises()
         expect(actions.LOGOUT).toBeCalled()
         expect(router.push).toBeCalledWith('/')
+        expect(wrapper.vm.$toast.open).toBeCalled()
       })
     })
   })

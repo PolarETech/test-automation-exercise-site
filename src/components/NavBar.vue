@@ -61,6 +61,11 @@ export default {
     async logout (dispatch) {
       this.$store.dispatch('auth/LOGOUT')
       this.$router.push('/')
+      this.$toast.open({
+        message: 'ログアウトしました',
+        position: 'is-top',
+        type: 'is-dark'
+      })
     }
   },
   computed: {
