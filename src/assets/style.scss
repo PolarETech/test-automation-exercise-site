@@ -1,4 +1,12 @@
 @import "~bulma/sass/utilities/_all";
 
+$navbar-background-color: $black-ter;
+$navbar-item-hover-background-color: transparent;
+$navbar-breakpoint: 769px;
+
+.svg-data {
+  display: none;
+}
+
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
