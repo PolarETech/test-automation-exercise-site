@@ -11,6 +11,12 @@
       <router-link to="/todo">Todo</router-link>
     </div>
     <router-view/>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>© 2019 Polar Tech</p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -46,5 +52,13 @@ export default {
       color: #42b983;
     }
   }
+}
+footer {
+  margin: calc(-2rem - 1px) auto 0;
+  border-top: 1px solid #060606;
+  color: palegoldenrod;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  opacity: 0.9;
 }
 </style>
