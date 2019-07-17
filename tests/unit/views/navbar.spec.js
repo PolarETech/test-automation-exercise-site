@@ -90,22 +90,22 @@ describe('NavBar.vue', () => {
     })
 
     describe('router control', () => {
-      test('call "$router.push" with "/" path when select Home menu', async () => {
+      test('Home menu has to="/todo" props', () => {
         const el = wrapper.find('#home')
         expect(el.props().to).toBe('/')
       })
 
-      test('call "$router.push" with "/about" path when select About menu', async () => {
+      test('About menu has to="/about" props', () => {
         const el = wrapper.find('#about')
         expect(el.props().to).toBe('/about')
       })
 
-      test('call "$router.push" with "/todo" path when select TodoList menu', async () => {
+      test('TodoList menu has to="/todo" props', () => {
         const el = wrapper.find('#todo')
         expect(el.props().to).toBe('/todo')
       })
 
-      test('call "$router.push" with "/login" path when select Login menu', async () => {
+      test('Login menu has to="/todo" props', () => {
         const el = wrapper.find('#login')
         expect(el.props().to).toBe('/login')
       })
