@@ -1,4 +1,4 @@
-# test-automation-code-examples
+# test-automation-exercise-site
 
 ## Project setup
 ```
