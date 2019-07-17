@@ -7,6 +7,10 @@ $navbar-breakpoint: 769px;
 $footer-background-color: $black;
 $footer-padding: 0.5rem;
 
+button, a {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 .svg-data {
   display: none;
 }

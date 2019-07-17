@@ -4,12 +4,6 @@
       <navbar/>
     </header>
 
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/todo">Todo</router-link>
-    </div>
     <router-view/>
 
     <footer class="footer">
@@ -37,21 +31,12 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+header + div {
+  margin-top: -3.25rem;
+  padding-top: 4rem;
+  padding-bottom: 3rem;
 }
 footer {
   margin: calc(-2rem - 1px) auto 0;
