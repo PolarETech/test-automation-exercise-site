@@ -78,7 +78,7 @@
           border-top-left-radius: 290486px;
           border-bottom-right-radius: 0;
           border-bottom-left-radius: 290486px;
-          background-color: #01653d;
+          background-color: rgba(#01653d, 0.8);
           box-shadow: -1px 2px 8px 2px rgba(0, 0, 0, 0.3);
           color: #fbf6a3;
           font-weight: 600;
@@ -92,8 +92,8 @@
           }
           @keyframes emphasis {
             0% { opacity: 0.7; transform: scale(1.0); }
-            80% { opacity: 0.9; transform: scale(1.066); }
-            100% { opacity: 0.9; transform: scale(1.060); }
+            80% { opacity: 0.8; transform: scale(1.066); }
+            100% { opacity: 0.8; transform: scale(1.060); }
           }
         }
       }
