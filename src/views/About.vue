@@ -10,7 +10,7 @@
             <p>
               本サイトの "TodoList" およびTodoListにアクセスするための "Login" は、自動テストのスクリプト作成練習用のコンテンツです。<br>
               テストスクリプト作成の練習を目的とする場合に限り、商用・非商用にかかわらず自由にお使いいただけます。<br>
-              個人の勉強、会社の研修、テスト自動化に関する情報共有記事の作成などにご活用ください。
+              個人の勉強、企業の研修、テスト自動化に関する情報共有記事の作成などにご活用ください。
             </p>
 
             <h2 class="subtitle is-5">利用上の注意</h2>
@@ -79,13 +79,14 @@
 <style lang="scss" scoped>
 .about {
   min-height: 100vh;
-  padding-left: 1rem;
   padding-right: 1rem;
-  background-color: whitesmoke;
+  padding-left: 1rem;
   overflow: hidden;
+  background-color: #f4efef;
 }
 section {
-  background-color: #fffefe;
+  border-radius: 6px;
+  background-color: #f8f4f4;
 }
 h1, h2, p, li {
   color: #080d07;
