@@ -1,7 +1,10 @@
 <template>
   <div class="login">
     <section>
-      <h1 class="title is-4"><b-icon icon="account-circle"></b-icon>ログイン</h1>
+      <h1 class="title is-4">
+        <b-icon icon="account-circle"></b-icon>
+        ログイン
+      </h1>
 
       <p id="requireMessage" v-if="this.$route.query.message">
         {{ this.$store.state.message.requireLogin }}
@@ -74,12 +77,18 @@ export default {
 </script>
 
 <style lang="scss">
-.input, .button {
-  &:active, &:focus {
+.input {
+  &:active,
+  &:focus {
     border-color: #01653d;
   }
 }
-.mdi-eye, .mdi-eye-off {
+.mdi-eye,
+.mdi-eye-off {
+  color: #dbdbdb;
+}
+.input:focus + .icon > .mdi-eye,
+.input:focus + .icon > .mdi-eye-off {
   color: cadetblue;
 }
 </style>
@@ -87,23 +96,26 @@ export default {
 <style lang="scss" scoped>
 .login {
   min-height: 100vh;
-  padding-left: 1rem;
   padding-right: 1rem;
-  background-color: whitesmoke;
+  padding-left: 1rem;
   overflow: hidden;
+  background-color: #f4efef;
 }
 section {
+  width: 80vw;
+  margin: 0 auto;
   text-align: center;
-}
-h1, label {
-  color: #080d07;
 }
 h1.title.is-4 {
   margin: 0;
   padding: 0.8rem 0;
+  color: #01653d;
+  .icon {
+    margin-right: 0.3rem;
+  }
 }
 form {
-  width: 25rem;
+  width: 20rem;
   max-width: 80vw;
   margin: 1rem auto;
   .field {
@@ -111,6 +123,13 @@ form {
   }
   .button {
     margin-top: 1rem;
+    border-color: #01653d;
+    color: #01653d;
+    transition: 0.2s ease-in-out;
+    &:disabled {
+      border-color: #dbdbdb;
+      color: #363636;
+    }
   }
 }
 .errorMessage {
