@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import Buefy from 'buefy'
 import Login from '@/views/Login.vue'
 import flushPromises from 'flush-promises'
 
@@ -12,6 +13,7 @@ const dummyUserErrorMessage = 'dummy-user-error'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(Buefy)
 
 const actions = {
   LOGIN: jest.fn((commit, data) => {
@@ -96,58 +98,68 @@ describe('Login.vue', () => {
       })
 
       test('disable "login" button before input ID and Password', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        expect(submit.attributes().disabled).toBe('disabled')
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        expect(submit.attributes().disabled).toBeTruthy()
       })
 
       test('disable "login" button when input only ID', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        wrapper.find('input[type="text"]').setValue(wrongID)
-        expect(submit.attributes().disabled).toBe('disabled')
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        wrapper.setData({ userId: wrongID })
+        expect(submit.attributes().disabled).toBeTruthy()
       })
 
       test('disable "login" button when input only Password', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        wrapper.find('input[type="password"]').setValue(wrongPass)
-        expect(submit.attributes().disabled).toBe('disabled')
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        wrapper.setData({ password: wrongPass })
+        expect(submit.attributes().disabled).toBeTruthy()
       })
 
       test('enable "login" button when input ID and Password', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        wrapper.find('input[type="text"]').setValue(wrongID)
-        wrapper.find('input[type="password"]').setValue(wrongPass)
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        wrapper.setData({ userId: wrongID, password: wrongPass })
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "login" button when clear/input ID', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        wrapper.find('input[type="text"]').setValue(wrongID)
-        wrapper.find('input[type="password"]').setValue(wrongPass)
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        wrapper.setData({ userId: wrongID, password: wrongPass })
         expect(submit.attributes().disabled).toBeUndefined()
 
-        wrapper.find('input[type="text"]').setValue('')
-        expect(submit.attributes().disabled).toBe('disabled')
-        wrapper.find('input[type="text"]').setValue(wrongID)
+        wrapper.setData({ userId: '' })
+        expect(submit.attributes().disabled).toBeTruthy()
+        wrapper.setData({ userId: wrongID })
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "login" button when clear/input Password', () => {
-        const submit = wrapper.find('button[type="submit"]')
-        wrapper.find('input[type="text"]').setValue(wrongID)
-        wrapper.find('input[type="password"]').setValue(wrongPass)
+        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
+        wrapper.setData({ userId: wrongID, password: wrongPass })
         expect(submit.attributes().disabled).toBeUndefined()
 
-        wrapper.find('input[type="password"]').setValue('')
-        expect(submit.attributes().disabled).toBe('disabled')
-        wrapper.find('input[type="password"]').setValue(wrongPass)
+        wrapper.setData({ password: '' })
+        expect(submit.attributes().disabled).toBeTruthy()
+        wrapper.setData({ password: wrongPass })
         expect(submit.attributes().disabled).toBeUndefined()
+      })
+    })
+
+    describe('binding control', () => {
+      test('text input bind "userId" props', () => {
+        const id = wrapper.find('b-input-stub[type="text"]')
+        wrapper.setData({ userId: wrongID })
+        expect(id.attributes().value).toBe(wrongID)
+      })
+
+      test('password input bind "password" props', () => {
+        const pass = wrapper.find('b-input-stub[type="password"]')
+        wrapper.setData({ password: wrongPass })
+        expect(pass.attributes().value).toBe(wrongPass)
       })
     })
 
     describe('login control', () => {
       test('call store action "auth/LOGIN" with correct args when submit', async () => {
-        wrapper.find('input[type="text"]').setValue(correctID)
-        wrapper.find('input[type="password"]').setValue(correctPass)
+        wrapper.setData({ userId: correctID, password: correctPass })
         wrapper.find('form').trigger('submit.prevent')
         await flushPromises()
         expect(actions.LOGIN).toBeCalledWith(
