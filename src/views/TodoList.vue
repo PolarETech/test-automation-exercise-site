@@ -122,6 +122,7 @@ form {
     border-right: none;
     border-bottom: 1px solid darkgray;
     border-left: none;
+    border-radius: 0;
     background-color: inherit;
     font-size: 0.8rem;
     vertical-align: middle;

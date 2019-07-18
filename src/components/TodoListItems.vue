@@ -129,6 +129,7 @@ li {
     border-right: none;
     border-bottom: 1px solid darkgray;
     border-left: none;
+    border-radius: 0;
     background-color: inherit;
     font-size: 1rem;
     line-height: 1.3rem;
