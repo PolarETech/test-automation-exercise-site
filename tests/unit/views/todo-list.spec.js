@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import Buefy from 'buefy'
 import TodoList from '@/views/TodoList.vue'
 import flushPromises from 'flush-promises'
 
@@ -14,6 +15,7 @@ const dummyRequireMessage = 'dummy-require'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(Buefy)
 
 const todoActions = {
   ADD_TODO_ITEM: jest.fn()
@@ -73,43 +75,43 @@ describe('Todo.vue', () => {
 
       test('hide "empty item" message', () => {
         expect(todoGetters.GET_TODO_ITEMS).toBeCalled()
-        const el = wrapper.find('#empty_message')
+        const el = wrapper.find('#empty-message')
         expect(el.exists()).toBeFalsy()
       })
 
-      test('show "todo_list"', () => {
+      test('show "todo-list"', () => {
         expect(todoGetters.GET_TODO_ITEMS).toBeCalled()
-        const el = wrapper.find('.todo_list')
+        const el = wrapper.find('.todo-list')
         expect(el.exists()).toBeTruthy()
       })
 
-      test('show "add_todo" elements', () => {
-        expect(wrapper.find('.add_todo').exists()).toBeTruthy()
-        expect(wrapper.find('.input_subject').exists()).toBeTruthy()
-        expect(wrapper.find('.register_subject').exists()).toBeTruthy()
+      test('show "add-todo" elements', () => {
+        expect(wrapper.find('.add-todo').exists()).toBeTruthy()
+        expect(wrapper.find('.input-subject').exists()).toBeTruthy()
+        expect(wrapper.find('.register-subject').exists()).toBeTruthy()
       })
 
-      test('show "item_count" message with correct number', () => {
-        const el = wrapper.find('#item_count')
+      test('show "item-count" message with correct number', () => {
+        const el = wrapper.find('#item-count')
         expect(el.exists()).toBeTruthy()
         expect(el.text()).toBe('登録件数：1 / 5 件')
       })
 
       test('disable "register" button before input new subject', () => {
-        const submit = wrapper.find('.register_subject')
+        const submit = wrapper.find('.register-subject')
         expect(submit.attributes().disabled).toBe('disabled')
       })
 
       test('enable "register" button when input new subject', () => {
-        const submit = wrapper.find('.register_subject')
+        const submit = wrapper.find('.register-subject')
         expect(submit.attributes().disabled).toBe('disabled')
-        wrapper.find('.input_subject').setValue('test')
+        wrapper.find('.input-subject').setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "register" button when clear/input new subject', () => {
-        const el = wrapper.find('.input_subject')
-        const submit = wrapper.find('.register_subject')
+        const el = wrapper.find('.input-subject')
+        const submit = wrapper.find('.register-subject')
         el.setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
 
@@ -121,11 +123,20 @@ describe('Todo.vue', () => {
     })
 
     describe('add todo control', () => {
+      test('should not call "todo/ADD_TODO_ITEM" when submit with empty subject', async () => {
+        const el = wrapper.find('.input-subject')
+        const newSubject = ''
+        el.setValue(newSubject)
+        wrapper.find('.add-todo').trigger('submit.prevent')
+        await flushPromises()
+        expect(todoActions.ADD_TODO_ITEM).not.toBeCalled()
+      })
+
       test('call store action "todo/ADD_TODO_ITEM" with correct args when submit', async () => {
-        const el = wrapper.find('.input_subject')
+        const el = wrapper.find('.input-subject')
         const newSubject = 'test'
         el.setValue(newSubject)
-        wrapper.find('.register_subject').trigger('submit.prevent')
+        wrapper.find('.add-todo').trigger('submit.prevent')
         await flushPromises()
         expect(todoActions.ADD_TODO_ITEM).toBeCalledWith(
           expect.anything(),
@@ -167,13 +178,13 @@ describe('Todo.vue', () => {
 
     test('show "empty item" message', () => {
       expect(localTodoGetters.GET_TODO_ITEMS).toBeCalled()
-      const el = wrapper.find('#empty_message')
+      const el = wrapper.find('#empty-message')
       expect(el.exists()).toBeTruthy()
     })
 
-    test('hide "todo_list"', () => {
+    test('hide "todo-list"', () => {
       expect(localTodoGetters.GET_TODO_ITEMS).toBeCalled()
-      const el = wrapper.find('.todo_list')
+      const el = wrapper.find('.todo-list')
       expect(el.exists()).toBeFalsy()
     })
   })

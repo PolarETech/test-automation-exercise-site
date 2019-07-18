@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import Vuex from 'vuex'
+import Buefy from 'buefy'
 import TodoListItems from '@/components/TodoListItems.vue'
 import flushPromises from 'flush-promises'
 
@@ -13,6 +14,7 @@ const dummyRequireMessage = 'dummy-require'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
+localVue.use(Buefy)
 
 const actions = {
   DONE_TODO_ITEM: jest.fn(),
@@ -70,16 +72,16 @@ describe('TodoItems.vue', () => {
       })
 
       test('show elements', () => {
-        expect(wrapper.find('.check_todo').exists()).toBeTruthy()
-        expect(wrapper.find('.subject_todo').exists()).toBeTruthy()
-        expect(wrapper.find('.remove_todo').exists()).toBeTruthy()
-        expect(wrapper.find('.timestamp_todo').exists()).toBeTruthy()
+        expect(wrapper.find('.check-todo').exists()).toBeTruthy()
+        expect(wrapper.find('.subject-todo').exists()).toBeTruthy()
+        expect(wrapper.find('.remove-todo').exists()).toBeTruthy()
+        expect(wrapper.find('.timestamp-todo').exists()).toBeTruthy()
       })
     })
 
     describe('item control', () => {
       test('click checkbox', async () => {
-        wrapper.find('.check_todo').trigger('click')
+        wrapper.find('.check-todo').trigger('click')
         await flushPromises()
         expect(actions.DONE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
@@ -90,7 +92,7 @@ describe('TodoItems.vue', () => {
 
       test('update subject with new string', async () => {
         const newSubject = 'UpdateToDoItem'
-        const el = wrapper.find('.subject_todo')
+        const el = wrapper.find('.subject-todo')
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
@@ -113,7 +115,7 @@ describe('TodoItems.vue', () => {
 
       test('update subject with empty string', async () => {
         const newSubject = ''
-        const el = wrapper.find('.subject_todo')
+        const el = wrapper.find('.subject-todo')
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
@@ -128,7 +130,7 @@ describe('TodoItems.vue', () => {
       })
 
       test('remove item', async () => {
-        wrapper.find('.remove_todo').trigger('click')
+        wrapper.find('.remove-todo').trigger('click')
         await flushPromises()
         expect(actions.REMOVE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
