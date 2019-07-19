@@ -14,11 +14,11 @@
             </div>
 
             <div class="column" id="link-buttons">
-              <router-link class="button" id="todo-button" tag="button" to="/todo" ontouchstart>
-                テストコンテンツ - TodoList
-              </router-link>
               <router-link class="button" id="about-button" tag="button" to="/about" ontouchstart>
                 このサイトについて - About
+              </router-link>
+              <router-link class="button" id="todo-button" tag="button" to="/todo" ontouchstart>
+                テストコンテンツ - TodoList
               </router-link>
             </div>
           </div>

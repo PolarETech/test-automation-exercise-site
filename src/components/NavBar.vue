@@ -31,8 +31,8 @@
     >
       <div class="navbar-end" @click="closeMenu()">
         <router-link class="navbar-item" id="home" to="/">Home</router-link>
-        <router-link class="navbar-item" id="todo" to="/todo">TodoList</router-link>
         <router-link class="navbar-item" id="about" to="/about">About</router-link>
+        <router-link class="navbar-item" id="todo" to="/todo">TodoList</router-link>
         <router-link class="navbar-item" id="login" v-if="!GET_LOGIN_STATUS" to="/login">Login</router-link>
         <a class="navbar-item" id="logout" v-if="GET_LOGIN_STATUS" @click="logout">Logout</a>
       </div>

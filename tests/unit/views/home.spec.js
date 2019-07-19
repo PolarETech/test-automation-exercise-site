@@ -22,20 +22,20 @@ describe('Home.vue', () => {
       })
 
       test('show elements', () => {
-        expect(wrapper.find('#todo-button').exists()).toBeTruthy()
         expect(wrapper.find('#about-button').exists()).toBeTruthy()
+        expect(wrapper.find('#todo-button').exists()).toBeTruthy()
       })
     })
 
     describe('router control', () => {
-      test('"#todo-button" has to="/todo" props', () => {
-        const el = wrapper.find('#todo-button')
-        expect(el.props().to).toBe('/todo')
-      })
-
       test('"#about-button" has to="/about" props', () => {
         const el = wrapper.find('#about-button')
         expect(el.props().to).toBe('/about')
+      })
+
+      test('"#todo-button" has to="/todo" props', () => {
+        const el = wrapper.find('#todo-button')
+        expect(el.props().to).toBe('/todo')
       })
     })
   })

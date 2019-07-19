@@ -75,8 +75,8 @@ describe('NavBar.vue', () => {
 
       test('show elements', () => {
         expect(wrapper.find('#home').exists()).toBeTruthy()
-        expect(wrapper.find('#todo').exists()).toBeTruthy()
         expect(wrapper.find('#about').exists()).toBeTruthy()
+        expect(wrapper.find('#todo').exists()).toBeTruthy()
       })
 
       test('show "Login" menu', () => {
