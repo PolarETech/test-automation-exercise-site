@@ -54,6 +54,11 @@ export default {
       loading: false
     }
   },
+  head: {
+    title: {
+      inner: 'Login'
+    }
+  },
   methods: {
     async login () {
       this.loading = true

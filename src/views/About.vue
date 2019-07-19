@@ -62,6 +62,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  head: {
+    title: {
+      inner: 'About'
+    }
+  }
+}
+</script>
+
 <style lang="scss">
 .tabs {
   a {

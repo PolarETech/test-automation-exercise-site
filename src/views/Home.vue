@@ -32,6 +32,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  head: {
+    title: {
+      inner: 'Home'
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .home {
   height: 100vh;

@@ -58,6 +58,11 @@ export default {
       subject: ''
     }
   },
+  head: {
+    title: {
+      inner: 'TodoList'
+    }
+  },
   methods: {
     ...mapActions({
       addTodoItem (dispatch) {
