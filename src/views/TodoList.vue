@@ -2,8 +2,8 @@
   <div class="todo">
     <section>
       <h1 class="title is-4">
-        <b-icon icon="check-circle"></b-icon>
-        ToDoリスト
+        <!-- should not add new line before title string -->
+        <b-icon icon="check-circle"></b-icon>ToDoリスト
       </h1>
 
       <p id="empty-message" v-if="items.length == 0">

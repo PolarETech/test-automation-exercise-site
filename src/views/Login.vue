@@ -2,8 +2,8 @@
   <div class="login">
     <section>
       <h1 class="title is-4">
-        <b-icon icon="account-circle"></b-icon>
-        ログイン
+        <!-- should not add new line before title string -->
+        <b-icon icon="account-circle"></b-icon>ログイン
       </h1>
 
       <p id="requireMessage" v-if="this.$route.query.message">
