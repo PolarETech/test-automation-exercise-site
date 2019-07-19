@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     loginUserError () {
-      return this.$store.getters['auth/isLoginUserError']
+      return this.$store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']
     }
   }
 }

@@ -39,48 +39,48 @@ describe('auth', () => {
     expect(store.state.auth.userError).toBeFalsy()
   })
 
-  test('getter isLogin before login', () => {
+  test('getter GET_LOGIN_STATUS before login', () => {
     expect(store.state.auth.token).toBeFalsy()
-    expect(store.getters['auth/isLogin']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_STATUS']).toBeFalsy()
   })
 
-  test('getter isLogin after login', () => {
+  test('getter GET_LOGIN_STATUS after login', () => {
     expect(store.state.auth.token).toBeFalsy()
-    expect(store.getters['auth/isLogin']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_STATUS']).toBeFalsy()
     store.commit('auth/LOGIN', 'dummy-token')
     expect(store.state.auth.token).toBeTruthy()
-    expect(store.getters['auth/isLogin']).toBeTruthy()
+    expect(store.getters['auth/GET_LOGIN_STATUS']).toBeTruthy()
   })
 
-  test('getter isLogin after logout', () => {
+  test('getter GET_LOGIN_STATUS after logout', () => {
     store.commit('auth/LOGIN', 'dummy-token')
     expect(store.state.auth.token).toBeTruthy()
-    expect(store.getters['auth/isLogin']).toBeTruthy()
+    expect(store.getters['auth/GET_LOGIN_STATUS']).toBeTruthy()
     store.commit('auth/LOGOUT')
     expect(store.state.auth.token).toBeFalsy()
-    expect(store.getters['auth/isLogin']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_STATUS']).toBeFalsy()
   })
 
-  test('getter isLoginUserError before login', () => {
+  test('getter GET_LOGIN_USER_ERROR_STATUS before login', () => {
     expect(store.state.auth.userError).toBeFalsy()
-    expect(store.getters['auth/isLoginUserError']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']).toBeFalsy()
   })
 
-  test('getter isLoginUserError after "userError" status is true', () => {
+  test('getter GET_LOGIN_USER_ERROR_STATUS after "userError" status is true', () => {
     expect(store.state.auth.userError).toBeFalsy()
-    expect(store.getters['auth/isLoginUserError']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']).toBeFalsy()
     store.commit('auth/LOGIN_USER_ERROR', true)
     expect(store.state.auth.userError).toBeTruthy()
-    expect(store.getters['auth/isLoginUserError']).toBeTruthy()
+    expect(store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']).toBeTruthy()
   })
 
-  test('getter isLoginUserError after "userError" status is false', () => {
+  test('getter GET_LOGIN_USER_ERROR_STATUS after "userError" status is false', () => {
     store.commit('auth/LOGIN_USER_ERROR', true)
     expect(store.state.auth.userError).toBeTruthy()
-    expect(store.getters['auth/isLoginUserError']).toBeTruthy()
+    expect(store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']).toBeTruthy()
     store.commit('auth/LOGIN_USER_ERROR', false)
     expect(store.state.auth.userError).toBeFalsy()
-    expect(store.getters['auth/isLoginUserError']).toBeFalsy()
+    expect(store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']).toBeFalsy()
   })
 
   test('dispatch LOGIN with wrong ID and correct Pass', async () => {

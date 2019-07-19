@@ -1,4 +1,10 @@
-import { LOGIN, LOGOUT, LOGIN_USER_ERROR } from '@/store/mutation-types'
+import {
+  LOGIN,
+  LOGOUT,
+  LOGIN_USER_ERROR,
+  GET_LOGIN_STATUS,
+  GET_LOGIN_USER_ERROR_STATUS
+} from '@/store/mutation-types'
 
 export default {
   namespaced: true,
@@ -18,8 +24,8 @@ export default {
     }
   },
   getters: {
-    isLogin: (state) => !!state.token,
-    isLoginUserError: (state) => state.userError
+    [GET_LOGIN_STATUS]: (state) => !!state.token,
+    [GET_LOGIN_USER_ERROR_STATUS]: (state) => state.userError
   },
   actions: {
     [LOGIN]: async ({ commit }, data) => {

@@ -22,7 +22,7 @@ const actions = {
 }
 
 const getters = {
-  isLoginUserError: jest.fn(() => false)
+  GET_LOGIN_USER_ERROR_STATUS: jest.fn(() => false)
 }
 
 const getModules = {
@@ -92,7 +92,7 @@ describe('Login.vue', () => {
       })
 
       test('hide "log-in user error" message', () => {
-        expect(getters.isLoginUserError).toBeCalled()
+        expect(getters.GET_LOGIN_USER_ERROR_STATUS).toBeCalled()
         const el = wrapper.find('.errorMessage')
         expect(el.exists()).toBeFalsy()
       })
@@ -200,7 +200,7 @@ describe('Login.vue', () => {
             namespaced: true,
             state: {},
             getters: {
-              isLoginUserError: () => true
+              GET_LOGIN_USER_ERROR_STATUS: () => true
             }
           }
         }

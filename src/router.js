@@ -38,7 +38,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.getters['auth/isLogin']) {
+    if (!store.getters['auth/GET_LOGIN_STATUS']) {
       next({
         path: '/login',
         query: {
@@ -49,7 +49,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-  } else if (to.path === '/login' && store.getters['auth/isLogin']) {
+  } else if (to.path === '/login' && store.getters['auth/GET_LOGIN_STATUS']) {
     next({ path: '/todo' })
   } else {
     next()

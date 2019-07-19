@@ -14,11 +14,11 @@ const spyRouter = new VueRouter()
 spyRouter.push = jest.fn()
 
 const getLoginStatus = {
-  isLogin: jest.fn(() => true)
+  GET_LOGIN_STATUS: jest.fn(() => true)
 }
 
 const getLogoutStatus = {
-  isLogin: jest.fn(() => false)
+  GET_LOGIN_STATUS: jest.fn(() => false)
 }
 
 const actions = {
@@ -80,13 +80,13 @@ describe('NavBar.vue', () => {
       })
 
       test('show "Login" menu', () => {
-        expect(getLogoutStatus.isLogin).toBeCalled()
+        expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#login')
         expect(el.exists()).toBeTruthy()
       })
 
       test('hide "Logout" menu', () => {
-        expect(getLogoutStatus.isLogin).toBeCalled()
+        expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#logout')
         expect(el.exists()).toBeFalsy()
       })
@@ -174,13 +174,13 @@ describe('NavBar.vue', () => {
       })
 
       test('hide "Login" menu', () => {
-        expect(getLoginStatus.isLogin).toBeCalled()
+        expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#login')
         expect(el.exists()).toBeFalsy()
       })
 
       test('show "Logout" menu', () => {
-        expect(getLoginStatus.isLogin).toBeCalled()
+        expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#logout')
         expect(el.exists()).toBeTruthy()
       })
