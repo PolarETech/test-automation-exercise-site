@@ -9,7 +9,9 @@ localVue.use(Vuex)
 localVue.use(VueRouter)
 
 const router = new VueRouter()
-router.push = jest.fn()
+
+const spyRouter = new VueRouter()
+spyRouter.push = jest.fn()
 
 const getLoginStatus = {
   isLogin: jest.fn(() => true)
@@ -58,6 +60,7 @@ describe('NavBar.vue', () => {
         stubs: {
           RouterLink: RouterLinkStub
         },
+        router,
         store,
         localVue
       })
@@ -86,6 +89,36 @@ describe('NavBar.vue', () => {
         expect(getLogoutStatus.isLogin).toBeCalled()
         const el = wrapper.find('#logout')
         expect(el.exists()).toBeFalsy()
+      })
+
+      test('toggle menu expand', () => {
+        const burger = wrapper.find('.navbar-burger')
+        const menuArea = wrapper.find('.navbar-menu')
+        const menuItem = wrapper.find('.navbar-end')
+        expect(menuArea.classes()).not.toContain('is-active')
+
+        burger.trigger('click')
+        expect(menuArea.classes()).toContain('is-active')
+        burger.trigger('click')
+        expect(menuArea.classes()).not.toContain('is-active')
+
+        burger.trigger('click')
+        expect(menuArea.classes()).toContain('is-active')
+        menuItem.trigger('click')
+        expect(menuArea.classes()).not.toContain('is-active')
+        menuItem.trigger('click')
+        expect(menuArea.classes()).not.toContain('is-active')
+      })
+
+      test('close expanded menu when route is changed', () => {
+        const burger = wrapper.find('.navbar-burger')
+        const menuArea = wrapper.find('.navbar-menu')
+        wrapper.vm.$router.push({ path: '/' })
+
+        burger.trigger('click')
+        expect(menuArea.classes()).toContain('is-active')
+        wrapper.vm.$router.push({ path: '/about' })
+        expect(menuArea.classes()).not.toContain('is-active')
       })
     })
 
@@ -127,7 +160,7 @@ describe('NavBar.vue', () => {
         mocks: {
           ...getMocks()
         },
-        router,
+        router: spyRouter,
         store,
         localVue
       })
@@ -158,7 +191,7 @@ describe('NavBar.vue', () => {
         wrapper.find('#logout').trigger('click')
         await flushPromises()
         expect(actions.LOGOUT).toBeCalled()
-        expect(router.push).toBeCalledWith('/')
+        expect(spyRouter.push).toBeCalledWith('/')
         expect(wrapper.vm.$toast.open).toBeCalled()
       })
     })

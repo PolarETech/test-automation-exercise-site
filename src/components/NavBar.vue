@@ -29,7 +29,7 @@
       class="navbar-menu"
       :class="{ 'is-active': isNavMenuOpen }"
     >
-      <div class="navbar-end" @click="toggleMenuExpand()">
+      <div class="navbar-end" @click="closeMenu()">
         <router-link class="navbar-item" id="home" to="/">Home</router-link>
         <router-link class="navbar-item" id="todo" to="/todo">TodoList</router-link>
         <router-link class="navbar-item" id="about" to="/about">About</router-link>
@@ -71,6 +71,11 @@ export default {
     toggleMenuExpand () {
       this.isNavMenuOpen = !this.isNavMenuOpen
     },
+    closeMenu () {
+      if (this.isNavMenuOpen) {
+        this.isNavMenuOpen = false
+      }
+    },
     async logout (dispatch) {
       this.$store.dispatch('auth/LOGOUT')
       this.$router.push('/')
@@ -79,6 +84,11 @@ export default {
         position: 'is-top',
         type: 'is-dark'
       })
+    }
+  },
+  watch: {
+    $route () {
+      this.closeMenu()
     }
   },
   computed: {
