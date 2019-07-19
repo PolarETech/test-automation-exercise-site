@@ -1,9 +1,7 @@
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 
 const localVue = createLocalVue()
-localVue.use(VueRouter)
 
 describe('Home.vue', () => {
   let wrapper
