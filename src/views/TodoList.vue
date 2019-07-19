@@ -10,7 +10,7 @@
         {{ this.$store.state.message.emptyItem }}
       </p>
 
-      <draggable class="todo-list" element="ul" :options="{ handle: '#drag-icon' }" v-else>
+      <draggable class="todo-list" tag="ul" handle="#drag-icon" v-else>
         <item v-for="item in items" :item="item" :key="item.id" />
       </draggable>
 
