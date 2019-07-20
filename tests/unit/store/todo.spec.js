@@ -10,6 +10,21 @@ const testItem = {
   timestamp: '1234/05/06 07:08:09'
 }
 
+const testItems = [
+  {
+    id: 88888888,
+    isDone: false,
+    timestamp: '1234/05/06 07:08:09',
+    subject: 'TestToDoItem1'
+  },
+  {
+    id: 99999999,
+    isDone: true,
+    timestamp: '2345/06/07 08:09:10',
+    subject: 'TestToDoItem2'
+  }
+]
+
 const initStore = () => ({
   modules: cloneDeep({ todo })
 })
@@ -66,6 +81,12 @@ describe('todo', () => {
       expect(item).toEqual(testItem)
       store.commit('todo/REMOVE_TODO_ITEM', { item })
       expect(store.state.todo.items[itemIndex]).toBeUndefined()
+    })
+
+    test('SET_TODO_ITEMS', () => {
+      const items = cloneDeep(testItems)
+      store.commit('todo/SET_TODO_ITEMS', { items })
+      expect(store.state.todo.items).toBe(items)
     })
   })
 
@@ -129,6 +150,12 @@ describe('todo', () => {
       expect(item.subject).toBe(subject)
       await store.dispatch('todo/REMOVE_TODO_ITEM', item)
       expect(store.state.todo.items[itemIndex]).toBeUndefined()
+    })
+
+    test('SET_TODO_ITEMS', async () => {
+      const items = cloneDeep(testItems)
+      await store.dispatch('todo/SET_TODO_ITEMS', items)
+      expect(store.state.todo.items).toBe(items)
     })
   })
 })

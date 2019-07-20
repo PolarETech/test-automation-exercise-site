@@ -10,6 +10,22 @@ const dummyItem = {
   timestamp: '2012/03/04 05:06:07',
   subject: 'dummyItem'
 }
+
+const dummyItems = [
+  {
+    id: 0,
+    isDone: false,
+    timestamp: '2012/03/04 05:06:07',
+    subject: 'dummyItem1'
+  },
+  {
+    id: 1,
+    isDone: true,
+    timestamp: '2013/04/05 06:07:08',
+    subject: 'dummyItem2'
+  }
+]
+
 const dummyEmptyMessage = 'dummy-empty'
 const dummyRequireMessage = 'dummy-require'
 
@@ -18,7 +34,8 @@ localVue.use(Vuex)
 localVue.use(Buefy)
 
 const todoActions = {
-  ADD_TODO_ITEM: jest.fn()
+  ADD_TODO_ITEM: jest.fn(),
+  SET_TODO_ITEMS: jest.fn()
 }
 
 const todoGetters = {
@@ -144,6 +161,18 @@ describe('Todo.vue', () => {
           undefined
         )
         expect(el.element.value).toBe('')
+      })
+    })
+
+    describe('set todo control', () => {
+      test('call store action "todo/SET_TODO_ITEMS" with correct args when change items', async () => {
+        wrapper.setData({ items: dummyItems })
+        await flushPromises()
+        expect(todoActions.SET_TODO_ITEMS).toBeCalledWith(
+          expect.anything(),
+          expect.objectContaining(dummyItems),
+          undefined
+        )
       })
     })
   })

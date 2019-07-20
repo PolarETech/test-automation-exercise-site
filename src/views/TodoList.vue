@@ -10,7 +10,7 @@
         {{ this.$store.state.message.emptyItem }}
       </p>
 
-      <draggable class="todo-list" tag="ul" handle=".drag-icon" v-else>
+      <draggable class="todo-list" tag="ul" v-model="items" handle=".drag-icon" v-else>
         <item v-for="item in items" :item="item" :key="item.id" />
       </draggable>
 
@@ -43,9 +43,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import draggable from 'vuedraggable'
-import { GET_TODO_ITEMS } from '@/store/mutation-types'
 import TodoListItems from '@/components/TodoListItems.vue'
 
 export default {
@@ -75,9 +74,14 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('todo', {
-      items: GET_TODO_ITEMS
-    })
+    items: {
+      get () {
+        return this.$store.getters['todo/GET_TODO_ITEMS']
+      },
+      set (items) {
+        this.$store.dispatch('todo/SET_TODO_ITEMS', items)
+      }
+    }
   }
 }
 </script>

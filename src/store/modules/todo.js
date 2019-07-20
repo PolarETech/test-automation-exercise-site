@@ -4,6 +4,7 @@ import {
   DONE_TODO_ITEM,
   UPDATE_TODO_ITEM,
   REMOVE_TODO_ITEM,
+  SET_TODO_ITEMS,
   GET_TODO_ITEMS
 } from '@/store/mutation-types'
 
@@ -30,6 +31,9 @@ export default {
       state.items = state.items.filter((item) =>
         item !== payload.item
       )
+    },
+    [SET_TODO_ITEMS]: (state, payload) => {
+      state.items = payload.items
     }
   },
   getters: {
@@ -64,6 +68,11 @@ export default {
     [REMOVE_TODO_ITEM]: ({ commit }, item) => {
       commit(REMOVE_TODO_ITEM, {
         item
+      })
+    },
+    [SET_TODO_ITEMS]: ({ commit }, items) => {
+      commit(SET_TODO_ITEMS, {
+        items
       })
     }
   }
