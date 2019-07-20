@@ -30,11 +30,11 @@
       :class="{ 'is-active': isNavMenuOpen }"
     >
       <div class="navbar-end" @click="closeMenu()">
-        <router-link class="navbar-item" id="home" to="/">Home</router-link>
-        <router-link class="navbar-item" id="about" to="/about">About</router-link>
-        <router-link class="navbar-item" id="todo" to="/todo">TodoList</router-link>
-        <router-link class="navbar-item" id="login" v-if="!GET_LOGIN_STATUS" to="/login">Login</router-link>
-        <a class="navbar-item" id="logout" v-if="GET_LOGIN_STATUS" @click="logout">Logout</a>
+        <router-link class="navbar-item" id="nav-home-link" to="/">Home</router-link>
+        <router-link class="navbar-item" id="nav-about-link" to="/about">About</router-link>
+        <router-link class="navbar-item" id="nav-todo-link" to="/todo">TodoList</router-link>
+        <router-link class="navbar-item" id="nav-login-link" v-if="!GET_LOGIN_STATUS" to="/login">Login</router-link>
+        <a class="navbar-item" id="nav-logout-link" v-if="GET_LOGIN_STATUS" @click="logout">Logout</a>
       </div>
     </div>
 
@@ -112,19 +112,15 @@ export default {
   }
   .navbar-burger {
     color: palegoldenrod;
-    &:hover {
-      color: palegoldenrod;
-    }
   }
   .navbar-menu {
     padding-right: 0.5rem;
     text-align: right;
     .navbar-item {
+      outline: 0;
       color: palegoldenrod;
       text-shadow: 1px 1px 4px #101010, -1px -1px 4px #101010;
-      &:hover {
-        color: snow;
-      }
+      &:hover,
       &:focus {
         color: snow;
       }

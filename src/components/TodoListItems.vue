@@ -1,18 +1,23 @@
 <template>
-  <li :class="{ is_done: item.isDone }">
-    <b-icon id="drag-icon" icon="drag-vertical" size="is-small"></b-icon>
+  <li :class="{ is_done: item.isDone }" :id="item.id">
+    <b-icon class="drag-icon"
+      :id="'dg-' + item.id"
+      icon="drag-vertical"
+      size="is-small">
+    </b-icon>
 
     <input
-      class="check-todo"
-      :id="item.id"
+      class="todo-check"
+      :id="'cb-' + item.id"
       type="checkbox"
-      v-model="item.isDone"
+      :checked="item.isDone"
       @click="DONE_TODO_ITEM(item)"
     />
-    <label :for="item.id"></label>
+    <label :for="'cb-' + item.id"></label>
 
     <input
-      class="subject-todo"
+      class="todo-subject"
+      :id="'sj-' + item.id"
       type="text"
       maxlength="15"
       :value="item.subject"
@@ -20,10 +25,10 @@
       @change="updateTodoItem(item, $event)"
     />
 
-    <div class="timestamp-todo">
-      <span>確認日時：{{ item.timestamp }}</span>
+    <div class="todo-sub-info">
+      <span class="todo-timestamp" :id="'ts-' + item.id">確認日時：{{ item.timestamp }}</span>
 
-      <button class="remove-todo" @click="REMOVE_TODO_ITEM(item)">
+      <button class="todo-remove" :id="'rm-' + item.id" @click="REMOVE_TODO_ITEM(item)">
         <b-icon id="remove-icon" icon="delete" size="is-small"></b-icon>
       </button>
     </div>
@@ -73,7 +78,7 @@ li {
   .icon {
     color: gray;
   }
-  #drag-icon {
+  .drag-icon {
     width: 16px;
     height: 18px;
     transform: scale(1.3);
@@ -83,7 +88,8 @@ li {
   input[type=checkbox] {
     appearance: none;
     width: 0;
-    border: none;
+    border: 0;
+    outline: 0;
   }
   label {
     display: inline-block;
@@ -125,10 +131,10 @@ li {
   }
   input[type="text"] {
     width: 15.5rem;
-    border-top: none;
-    border-right: none;
+    border-top: 0;
+    border-right: 0;
     border-bottom: 1px solid darkgray;
-    border-left: none;
+    border-left: 0;
     border-radius: 0;
     background-color: inherit;
     font-size: 1rem;
@@ -141,18 +147,19 @@ li {
       background-color: #f8f4f4;
     }
   }
-  .timestamp-todo {
+  .todo-sub-info {
     margin-right: 0.3rem;
     text-align: right;
     span {
       font-size: small;
     }
-    .remove-todo {
+    .todo-remove {
       margin: 0.5rem;
       padding: 0rem;
       transform: scale(1.3);
-      border: none;
+      border: 0;
       background-color: inherit;
+      cursor: default;
     }
   }
 }

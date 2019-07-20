@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="page-base" id="home-page">
     <div id="top-image"></div>
 
     <section class="hero is-fullheight">
@@ -8,16 +8,27 @@
         <div class="container">
           <div class="columns is-tablet is-gapless">
             <div class="column is-full-mobile is-half-tablet has-text-left">
-              <h1 class="title">
-                TEST<br>AUTOMATION<br>EXERCISE<br>SITE
-              </h1>
+              <h1 class="title">TEST <br>AUTOMATION <br>EXERCISE <br>SITE</h1>
             </div>
 
-            <div class="column" id="link-buttons">
-              <router-link class="button" id="about-button" tag="button" to="/about" ontouchstart>
+            <div class="column link-buttons">
+              <router-link
+                class="button"
+                id="about-button"
+                tag="button"
+                to="/about"
+                ontouchstart
+              >
                 このサイトについて - About
               </router-link>
-              <router-link class="button" id="todo-button" tag="button" to="/todo" ontouchstart>
+
+              <router-link
+                class="button"
+                id="todo-button"
+                tag="button"
+                to="/todo"
+                ontouchstart
+              >
                 テストコンテンツ - TodoList
               </router-link>
             </div>
@@ -43,10 +54,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home {
-  height: 100vh;
-  background-color: #141414;
+.page-base {
+  min-height: 100vh;
   overflow: hidden;
+}
+#home-page {
+  background-color: #141414;
 }
 #top-image {
   position: absolute;
@@ -73,7 +86,7 @@ export default {
         text-shadow: 1px 1px 4px rgba(10, 10, 10, 0.7), -1px -1px 3px rgba(10, 10, 10, 0.7);
         opacity: 0.7;
       }
-      #link-buttons {
+      .link-buttons {
         position: absolute;
         right: 0;
         bottom: 0;
@@ -83,7 +96,7 @@ export default {
           min-width: 16rem;
           height: 3rem;
           margin-top: 1rem;
-          border-style: none;
+          border: 0;
           border-top-right-radius: 0;
           border-top-left-radius: 290486px;
           border-bottom-right-radius: 0;
@@ -94,9 +107,7 @@ export default {
           font-weight: 600;
           line-height: 2.5rem;
           opacity: 0.7;
-          &:hover {
-            animation: emphasis 0.4s ease-out forwards;
-          }
+          &:hover,
           &:active {
             animation: emphasis 0.4s ease-out forwards;
           }

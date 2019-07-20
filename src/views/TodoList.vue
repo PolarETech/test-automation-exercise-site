@@ -1,16 +1,16 @@
 <template>
-  <div class="todo">
+  <div class="page-base" id="todo-page">
     <section>
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
         <b-icon icon="check-circle"></b-icon>ToDoリスト
       </h1>
 
-      <p id="empty-message" v-if="items.length == 0">
+      <p class="info-message" id="empty-message" v-if="items.length == 0">
         {{ this.$store.state.message.emptyItem }}
       </p>
 
-      <draggable class="todo-list" tag="ul" handle="#drag-icon" v-else>
+      <draggable class="todo-list" tag="ul" handle=".drag-icon" v-else>
         <item v-for="item in items" :item="item" :key="item.id" />
       </draggable>
 
@@ -20,7 +20,7 @@
         @submit.prevent="addTodoItem"
       >
         <button
-          class="register-subject"
+          id="subject-submit"
           type="submit"
           :disabled="subject.length == 0"
         >
@@ -28,9 +28,10 @@
         </button>
 
         <input
-          class="input-subject"
+          id="subject-input"
           type="text"
           maxlength="15"
+          autocomplete="off"
           v-model="subject"
           :placeholder="this.$store.state.message.requireImputTodo"
         />
@@ -82,9 +83,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.todo {
+.page-base {
   min-height: 100vh;
   overflow: hidden;
+}
+#todo-page {
   background-color: #f4efef;
 }
 section {
@@ -106,11 +109,11 @@ ul {
 }
 form {
   margin: 2rem auto 1rem;
-  .register-subject {
+  #subject-submit {
     margin: 0 0.5rem 0 0;
     padding: 0;
     transform: scale(1.0);
-    border: none;
+    border: 0;
     background-color: inherit;
     vertical-align: middle;
     .icon {
@@ -123,10 +126,10 @@ form {
   }
   input[type="text"] {
     width: 14rem;
-    border-top: none;
-    border-right: none;
+    border-top: 0;
+    border-right: 0;
     border-bottom: 1px solid darkgray;
-    border-left: none;
+    border-left: 0;
     border-radius: 0;
     background-color: inherit;
     font-size: 0.8rem;

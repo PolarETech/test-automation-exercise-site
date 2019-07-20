@@ -72,16 +72,17 @@ describe('TodoItems.vue', () => {
       })
 
       test('show elements', () => {
-        expect(wrapper.find('.check-todo').exists()).toBeTruthy()
-        expect(wrapper.find('.subject-todo').exists()).toBeTruthy()
-        expect(wrapper.find('.remove-todo').exists()).toBeTruthy()
-        expect(wrapper.find('.timestamp-todo').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-check').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-subject').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-sub-info').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-timestamp').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-remove').exists()).toBeTruthy()
       })
     })
 
     describe('item control', () => {
       test('click checkbox', async () => {
-        wrapper.find('.check-todo').trigger('click')
+        wrapper.find('.todo-check').trigger('click')
         await flushPromises()
         expect(actions.DONE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
@@ -92,7 +93,7 @@ describe('TodoItems.vue', () => {
 
       test('update subject with new string', async () => {
         const newSubject = 'UpdateToDoItem'
-        const el = wrapper.find('.subject-todo')
+        const el = wrapper.find('.todo-subject')
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
@@ -115,7 +116,7 @@ describe('TodoItems.vue', () => {
 
       test('update subject with empty string', async () => {
         const newSubject = ''
-        const el = wrapper.find('.subject-todo')
+        const el = wrapper.find('.todo-subject')
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
@@ -130,7 +131,7 @@ describe('TodoItems.vue', () => {
       })
 
       test('remove item', async () => {
-        wrapper.find('.remove-todo').trigger('click')
+        wrapper.find('.todo-remove').trigger('click')
         await flushPromises()
         expect(actions.REMOVE_TODO_ITEM).toBeCalledWith(
           expect.anything(),

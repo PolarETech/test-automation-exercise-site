@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="page-base" id="about-page">
     <section>
       <h1 class="title is-4">このサイトについて</h1>
 
@@ -8,7 +8,7 @@
           <div class="content">
             <h2 class="subtitle is-5">テストコンテンツの利用について</h2>
             <p>
-              本サイトの "TodoList" およびTodoListにアクセスするための "Login" は、自動テストのスクリプト作成練習用のコンテンツです。<br>
+              本サイトの "TodoList" および "Login" は、自動テストのスクリプト作成練習用のコンテンツです。<br>
               テストスクリプト作成の練習を目的とする場合に限り、商用・非商用にかかわらず自由にお使いいただけます。<br>
               個人の勉強、企業の研修、テスト自動化に関する情報共有記事の作成などにご活用ください。
             </p>
@@ -72,34 +72,19 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.tabs {
-  a {
-    color: #080d07;
-  }
-  li.is-active {
-    a {
-      color: #01653d;
-      border-bottom-color: #01653d;
-    }
-  }
-}
-</style>
-
 <style lang="scss" scoped>
-.about {
+.page-base {
   min-height: 100vh;
+  overflow: hidden;
+}
+#about-page {
   padding-right: 1rem;
   padding-left: 1rem;
-  overflow: hidden;
   background-color: #f4efef;
 }
 section {
   border-radius: 6px;
-  background-color: #f8f4f4;
-}
-h1, h2, p, li {
-  color: #080d07;
+  background-color: #fcfcfd;
 }
 h1.title.is-4 {
   margin: 0;
@@ -107,5 +92,11 @@ h1.title.is-4 {
 }
 .content h2:not(:first-child) {
   margin-top: 2rem;
+}
+.b-tabs ::v-deep .tabs {
+  li.is-active a {
+    color: #01653d;
+    border-bottom-color: #01653d;
+  }
 }
 </style>

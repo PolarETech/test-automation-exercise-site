@@ -87,13 +87,13 @@ describe('Login.vue', () => {
       })
 
       test('hide "require log-in" message', () => {
-        const el = wrapper.find('#requireMessage')
+        const el = wrapper.find('#require-message')
         expect(el.exists()).toBeFalsy()
       })
 
       test('hide "log-in user error" message', () => {
         expect(getters.GET_LOGIN_USER_ERROR_STATUS).toBeCalled()
-        const el = wrapper.find('.errorMessage')
+        const el = wrapper.find('.error-message')
         expect(el.exists()).toBeFalsy()
       })
 
@@ -216,7 +216,7 @@ describe('Login.vue', () => {
     })
 
     test('show "log-in user error" message', () => {
-      const el = wrapper.find('.errorMessage')
+      const el = wrapper.find('.error-message')
       expect(el.exists()).toBeTruthy()
       expect(el.text()).toBe(dummyUserErrorMessage)
     })
@@ -248,7 +248,7 @@ describe('Login.vue', () => {
     })
 
     test('show "require log-in" message', () => {
-      const el = wrapper.find('#requireMessage')
+      const el = wrapper.find('#require-message')
       expect(el.exists()).toBeTruthy()
       expect(el.text()).toBe(dummyRequireMessage)
     })

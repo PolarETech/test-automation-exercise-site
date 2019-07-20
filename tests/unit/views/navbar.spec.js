@@ -74,20 +74,20 @@ describe('NavBar.vue', () => {
       })
 
       test('show elements', () => {
-        expect(wrapper.find('#home').exists()).toBeTruthy()
-        expect(wrapper.find('#about').exists()).toBeTruthy()
-        expect(wrapper.find('#todo').exists()).toBeTruthy()
+        expect(wrapper.find('#nav-home-link').exists()).toBeTruthy()
+        expect(wrapper.find('#nav-about-link').exists()).toBeTruthy()
+        expect(wrapper.find('#nav-todo-link').exists()).toBeTruthy()
       })
 
       test('show "Login" menu', () => {
         expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
-        const el = wrapper.find('#login')
+        const el = wrapper.find('#nav-login-link')
         expect(el.exists()).toBeTruthy()
       })
 
       test('hide "Logout" menu', () => {
         expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
-        const el = wrapper.find('#logout')
+        const el = wrapper.find('#nav-logout-link')
         expect(el.exists()).toBeFalsy()
       })
 
@@ -124,22 +124,22 @@ describe('NavBar.vue', () => {
 
     describe('router control', () => {
       test('Home menu has to="/todo" props', () => {
-        const el = wrapper.find('#home')
+        const el = wrapper.find('#nav-home-link')
         expect(el.props().to).toBe('/')
       })
 
       test('About menu has to="/about" props', () => {
-        const el = wrapper.find('#about')
+        const el = wrapper.find('#nav-about-link')
         expect(el.props().to).toBe('/about')
       })
 
       test('TodoList menu has to="/todo" props', () => {
-        const el = wrapper.find('#todo')
+        const el = wrapper.find('#nav-todo-link')
         expect(el.props().to).toBe('/todo')
       })
 
       test('Login menu has to="/todo" props', () => {
-        const el = wrapper.find('#login')
+        const el = wrapper.find('#nav-login-link')
         expect(el.props().to).toBe('/login')
       })
     })
@@ -175,20 +175,20 @@ describe('NavBar.vue', () => {
 
       test('hide "Login" menu', () => {
         expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
-        const el = wrapper.find('#login')
+        const el = wrapper.find('#nav-login-link')
         expect(el.exists()).toBeFalsy()
       })
 
       test('show "Logout" menu', () => {
         expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
-        const el = wrapper.find('#logout')
+        const el = wrapper.find('#nav-logout-link')
         expect(el.exists()).toBeTruthy()
       })
     })
 
     describe('logout control', () => {
       test('click "logout" menu', async () => {
-        wrapper.find('#logout').trigger('click')
+        wrapper.find('#nav-logout-link').trigger('click')
         await flushPromises()
         expect(actions.LOGOUT).toBeCalled()
         expect(spyRouter.push).toBeCalledWith('/')

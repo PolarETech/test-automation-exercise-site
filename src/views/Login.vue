@@ -1,18 +1,20 @@
 <template>
-  <div class="login">
+  <div class="page-base" id="login-page">
     <section>
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
         <b-icon icon="account-circle"></b-icon>ログイン
       </h1>
 
-      <p id="requireMessage" v-if="this.$route.query.message">
+      <p class="info-message" id="require-message" v-if="this.$route.query.message">
         {{ this.$store.state.message.requireLogin }}
       </p>
 
       <form class="login-form" @submit.prevent="login">
         <b-field label="ユーザーID">
           <b-input
+            id="user-id-input"
+            name="id-field"
             v-model="userId"
             placeholder="ユーザーIDを入力してください"
             autofocus>
@@ -21,6 +23,8 @@
 
         <b-field label="パスワード">
           <b-input
+            id="password-input"
+            name="pw-field"
             v-model="password"
             type="password"
             placeholder="パスワードを入力してください"
@@ -28,10 +32,18 @@
           </b-input>
         </b-field>
 
-        <b-button native-type="submit" :loading="loading" :disabled="!userId || !password">ログイン</b-button>
+        <b-button
+          id="login-submit"
+          name="login-btn"
+          native-type="submit"
+          :loading="loading"
+          :disabled="!userId || !password"
+        >
+          ログイン
+        </b-button>
       </form>
 
-      <p class="errorMessage has-text-danger"
+      <p class="error-message has-text-danger"
         v-if="loginUserError"
         v-html="this.$store.state.message.loginError">
       </p>
@@ -81,29 +93,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.input {
-  &:active,
-  &:focus {
-    border-color: #01653d;
-  }
-}
-.mdi-eye,
-.mdi-eye-off {
-  color: #dbdbdb;
-}
-.input:focus + .icon > .mdi-eye,
-.input:focus + .icon > .mdi-eye-off {
-  color: cadetblue;
-}
-</style>
-
 <style lang="scss" scoped>
-.login {
+.page-base {
   min-height: 100vh;
+  overflow: hidden;
+}
+#login-page {
   padding-right: 1rem;
   padding-left: 1rem;
-  overflow: hidden;
   background-color: #f4efef;
 }
 section {
@@ -135,9 +132,28 @@ form {
       border-color: #dbdbdb;
       color: #363636;
     }
+    &::-moz-focus-inner {
+      border: 0;
+    }
   }
 }
-.errorMessage {
+form ::v-deep {
+  input {
+    &:active,
+    &:focus {
+      border-color: #01653d;
+    }
+    &:focus ~ .icon > .mdi-eye,
+    &:focus ~ .icon > .mdi-eye-off {
+      color: cadetblue;
+    }
+  }
+  .mdi-eye,
+  .mdi-eye-off {
+    color: #dbdbdb;
+  }
+}
+.error-message {
   margin: 1rem 0;
 }
 article.message {

@@ -87,8 +87,8 @@ describe('Todo.vue', () => {
 
       test('show "add-todo" elements', () => {
         expect(wrapper.find('.add-todo').exists()).toBeTruthy()
-        expect(wrapper.find('.input-subject').exists()).toBeTruthy()
-        expect(wrapper.find('.register-subject').exists()).toBeTruthy()
+        expect(wrapper.find('#subject-input').exists()).toBeTruthy()
+        expect(wrapper.find('#subject-submit').exists()).toBeTruthy()
       })
 
       test('show "item-count" message with correct number', () => {
@@ -98,20 +98,20 @@ describe('Todo.vue', () => {
       })
 
       test('disable "register" button before input new subject', () => {
-        const submit = wrapper.find('.register-subject')
+        const submit = wrapper.find('#subject-submit')
         expect(submit.attributes().disabled).toBe('disabled')
       })
 
       test('enable "register" button when input new subject', () => {
-        const submit = wrapper.find('.register-subject')
+        const submit = wrapper.find('#subject-submit')
         expect(submit.attributes().disabled).toBe('disabled')
-        wrapper.find('.input-subject').setValue('test')
+        wrapper.find('#subject-input').setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "register" button when clear/input new subject', () => {
-        const el = wrapper.find('.input-subject')
-        const submit = wrapper.find('.register-subject')
+        const el = wrapper.find('#subject-input')
+        const submit = wrapper.find('#subject-submit')
         el.setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
 
@@ -124,7 +124,7 @@ describe('Todo.vue', () => {
 
     describe('add todo control', () => {
       test('should not call "todo/ADD_TODO_ITEM" when submit with empty subject', async () => {
-        const el = wrapper.find('.input-subject')
+        const el = wrapper.find('#subject-input')
         const newSubject = ''
         el.setValue(newSubject)
         wrapper.find('.add-todo').trigger('submit.prevent')
@@ -133,7 +133,7 @@ describe('Todo.vue', () => {
       })
 
       test('call store action "todo/ADD_TODO_ITEM" with correct args when submit', async () => {
-        const el = wrapper.find('.input-subject')
+        const el = wrapper.find('#subject-input')
         const newSubject = 'test'
         el.setValue(newSubject)
         wrapper.find('.add-todo').trigger('submit.prevent')
