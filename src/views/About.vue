@@ -19,6 +19,22 @@
               <li>ログイン機能はダミーです。個人情報を保護する機能はありません。他者と共有しているブラウザでは重要なデータを保存しないでください。</li>
               <li>本サイトの公開サーバへ過度な負荷がかかるような利用はご遠慮ください。</li>
             </ul>
+
+            <h2 class="subtitle is-5">TodoList 機能概要</h2>
+            <ul>
+              <li>TodoListへアクセスするにはログインが必要です。</li>
+              <li>ログイン画面ではユーザーIDとパスワードの入力が必要です。</li>
+              <li>ログインに失敗すると、ログイン画面上にエラーメッセージが表示されます。</li>
+              <li>ログインに成功すると、TodoList画面へ移動します。</li>
+              <li>登録フォームにToDoの件名を入力して＋アイコンを選択するかEnterキーを押すと、新しいToDoを登録できます。</li>
+              <li>ToDoの件名の最大登録可能文字数は15文字です。登録文字種の制限はありません。</li>
+              <li>最大5件までToDoを登録できます。5件登録されている状態では登録フォームが非表示になります。</li>
+              <li>1件のToDoには、件名、処理済／未済のチェック、処理済／未済の最終確認日時の情報が含まれます。</li>
+              <li>ToDoの件名は登録後に修正できます。</li>
+              <li>各ToDoの左端にあるドラッグアイコンをドラッグすると、ToDoの順番を変更できます。</li>
+              <li>各ToDoの右下にあるゴミ箱アイコンを選択すると、そのToDoを削除できます。</li>
+              <li>メニューバーのLogoutをクリックすると、ログアウトしてHome画面へ移動します。</li>
+            </ul>
           </div>
         </b-tab-item>
 
@@ -54,6 +70,48 @@
               予告なしに本サイトの公開を中断または中止、内容を修正、変更、削除する場合があります。<br>
               本サイトを利用することによって生じたいかなる損害についても、一切の責任を負いません。
             </p>
+          </div>
+        </b-tab-item>
+
+        <b-tab-item label="技術情報">
+          <div class="content">
+            <h2 class="subtitle is-5">ソースコードの公開について</h2>
+            <p>
+              本サイトのソースコードをGitHubで公開しています。
+            </p>
+            <p>
+              GitHub URL：<br>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site">https://github.com/PolarETech/test-automation-exercise-site</a>
+            </p>
+            <p>
+              サイトソース：<br>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/src">https://github.com/PolarETech/test-automation-exercise-site/tree/master/src</a>
+            </p>
+            <p>
+              テストコード：<br>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests">https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests</a>
+            </p>
+
+            <h2 class="subtitle is-5">本サイトの作成で使用している主な技術要素</h2>
+            <ul>
+              <li>Vue.js</li>
+              <li>Vue CLI 3</li>
+              <li>Vuex</li>
+              <li>Buefy</li>
+              <li>Jest</li>
+              <li>Cypress</li>
+              <li>HTML5</li>
+              <li>CSS3/SCSS</li>
+              <li>SVG</li>
+              <li>JavaScript</li>
+              <li>Node.js</li>
+              <li>npm</li>
+              <li>Git</li>
+              <li>GitHub Pages</li>
+              <li>Google Analytics</li>
+              <li>Single Page Application (SPA)</li>
+              <li>Responsive Web Design (RWD)</li>
+            </ul>
           </div>
         </b-tab-item>
       </b-tabs>
