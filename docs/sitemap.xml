@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://polaretech.github.io/test-automation-exercise-site/</loc>
+  </url>
+  <url>
+    <loc>https://polaretech.github.io/test-automation-exercise-site/about</loc>
+  </url>
+  <url>
+    <loc>https://polaretech.github.io/test-automation-exercise-site/login</loc>
+  </url>
+  <url>
+    <loc>https://polaretech.github.io/test-automation-exercise-site/todo</loc>
+  </url>
+</urlset>
