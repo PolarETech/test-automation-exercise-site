@@ -38,7 +38,7 @@ const getModules = {
   }
 }
 
-describe('TodoItems.vue', () => {
+describe('TodoListItems.vue', () => {
   let store
   let wrapper
 

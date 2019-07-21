@@ -62,7 +62,7 @@ const getModules = {
   }
 }
 
-describe('Todo.vue', () => {
+describe('TodoList.vue', () => {
   let store
   let wrapper
 
