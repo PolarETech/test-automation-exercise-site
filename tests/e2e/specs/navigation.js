@@ -28,11 +28,20 @@ describe('Navigation menu test', () => {
       cy.title().should('eq', 'Login | test automation exercise site')
     })
 
-    it('moves to Home view after selecting "Logout" in navigation menu', () => {
+    it('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', () => {
       cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
       cy.visit('/')
       cy.contains('a', 'Logout').click()
       cy.title().should('eq', 'Home | test automation exercise site')
+      cy.get('.toast')
+        .should('be.visible')
+        .should('contain', 'ログアウトしました')
+      cy.getCookie('PtExampleToken')
+        .should('exist')
+        .and((cookieData) => {
+          const cookieValue = JSON.parse(decodeURI(cookieData.value))
+          expect(cookieValue.auth.token).to.eq('')
+        })
     })
 
     it('moves to Login view after selecting "TodoList" in navigation menu without logged in', () => {
@@ -83,12 +92,21 @@ describe('Navigation menu test', () => {
       cy.title().should('eq', 'Login | test automation exercise site')
     })
 
-    it('moves to Home view after selecting "Logout" in navigation menu', () => {
+    it('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', () => {
       cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
       cy.visit('/')
       cy.get('.navbar-burger').click()
       cy.contains('a', 'Logout').click()
       cy.title().should('eq', 'Home | test automation exercise site')
+      cy.get('.toast')
+        .should('be.visible')
+        .should('contain', 'ログアウトしました')
+      cy.getCookie('PtExampleToken')
+        .should('exist')
+        .and((cookieData) => {
+          const cookieValue = JSON.parse(decodeURI(cookieData.value))
+          expect(cookieValue.auth.token).to.eq('')
+        })
     })
 
     it('moves to Login view after selecting "TodoList" in navigation menu without logged in', () => {
