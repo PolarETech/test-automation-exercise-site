@@ -74,6 +74,7 @@ describe('NavBar.vue', () => {
       })
 
       test('show elements', () => {
+        expect(wrapper.find('#top-logo-link').exists()).toBeTruthy()
         expect(wrapper.find('#nav-home-link').exists()).toBeTruthy()
         expect(wrapper.find('#nav-about-link').exists()).toBeTruthy()
         expect(wrapper.find('#nav-todo-link').exists()).toBeTruthy()
@@ -123,7 +124,12 @@ describe('NavBar.vue', () => {
     })
 
     describe('router control', () => {
-      test('Home menu has to="/todo" props', () => {
+      test('Top Logo has to="/" props', () => {
+        const el = wrapper.find('#top-logo-link')
+        expect(el.props().to).toBe('/')
+      })
+
+      test('Home menu has to="/" props', () => {
         const el = wrapper.find('#nav-home-link')
         expect(el.props().to).toBe('/')
       })
