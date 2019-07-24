@@ -6,11 +6,20 @@
         <b-icon icon="check-circle"></b-icon>ToDoリスト
       </h1>
 
-      <p class="info-message" id="empty-message" v-if="items.length == 0">
+      <p class="info-message"
+        id="empty-message"
+        v-if="items.length == 0"
+      >
         {{ this.$store.state.message.emptyItem }}
       </p>
 
-      <draggable class="todo-list" tag="ul" v-model="items" handle=".drag-icon" v-else>
+      <draggable
+        class="todo-list"
+        handle=".drag-icon"
+        tag="ul"
+        v-model="items"
+        v-else
+      >
         <item v-for="item in items" :item="item" :key="item.id" />
       </draggable>
 
@@ -23,6 +32,7 @@
           id="subject-submit"
           type="submit"
           :disabled="subject.length == 0"
+          aria-label="add new todo item"
         >
           <b-icon icon="plus-box" type="is-small"></b-icon>
         </button>
@@ -32,8 +42,9 @@
           type="text"
           maxlength="15"
           autocomplete="off"
-          v-model="subject"
           :placeholder="this.$store.state.message.requireImputTodo"
+          v-model="subject"
+          aria-label="input new todo item subject"
         />
       </form>
 

@@ -20,8 +20,8 @@
       :id="'sj-' + item.id"
       type="text"
       maxlength="15"
-      :value="item.subject"
       :placeholder="this.$store.state.message.requireImputTodo"
+      :value="item.subject"
       @change="updateTodoItem(item, $event)"
     />
 

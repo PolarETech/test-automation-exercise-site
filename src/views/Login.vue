@@ -15,9 +15,10 @@
           <b-input
             id="user-id-input"
             name="id-field"
-            v-model="userId"
+            autofocus
             placeholder="ユーザーIDを入力してください"
-            autofocus>
+            v-model="userId"
+            aria-label="input user id">
           </b-input>
         </b-field>
 
@@ -25,10 +26,11 @@
           <b-input
             id="password-input"
             name="pw-field"
-            v-model="password"
             type="password"
+            password-reveal
             placeholder="パスワードを入力してください"
-            password-reveal>
+            v-model="password"
+            aria-label="input password">
           </b-input>
         </b-field>
 
@@ -36,8 +38,8 @@
           id="login-submit"
           name="login-btn"
           native-type="submit"
-          :loading="loading"
           :disabled="!userId || !password"
+          :loading="loading"
         >
           ログイン
         </b-button>

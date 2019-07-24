@@ -5,7 +5,12 @@
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link class="navbar-item" id="top-logo-link" to="/">
+      <router-link
+        class="navbar-item"
+        id="top-logo-link"
+        to="/"
+        aria-label="Go to Home page"
+      >
         <svg viewBox="0 0 64 64" id="top-logo">
           <use xlink:href="#polartech-logo"></use>
         </svg>
