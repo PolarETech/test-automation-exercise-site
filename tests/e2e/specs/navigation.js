@@ -5,13 +5,13 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to Home view after selecting Top Logo in navigation menu', () => {
-      cy.visit('/About')
+      cy.visit('/about')
       cy.get('#top-logo-link').click()
       cy.title().should('eq', 'Home | test automation exercise site')
     })
 
     it('moves to Home view after selecting "Home" in navigation menu', () => {
-      cy.visit('/About')
+      cy.visit('/about')
       cy.contains('a', 'Home').click()
       cy.title().should('eq', 'Home | test automation exercise site')
     })
@@ -73,7 +73,7 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to Home view after selecting Top Logo in navigation menu', () => {
-      cy.visit('/About')
+      cy.visit('/about')
       cy.get('#top-logo-link').click()
       cy.title().should('eq', 'Home | test automation exercise site')
     })
