@@ -2,13 +2,11 @@ import dayjs from 'dayjs'
 
 describe('TodoList view test', () => {
   beforeEach(() => {
-    cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+    cy.setTokenCookie()
     cy.visit('/todo')
   })
 
   it('displays "TodoList" page', () => {
-    cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
-    cy.visit('/todo')
     cy.title().should('eq', 'TodoList | test automation exercise site')
     cy.get('header .navbar').should('be.visible')
     cy.get('h1').should('contain', 'ToDoリスト')

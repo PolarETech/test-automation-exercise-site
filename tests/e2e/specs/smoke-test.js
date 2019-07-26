@@ -21,7 +21,7 @@ describe('Smoke Testing Suite', () => {
     })
 
     it('loads "Todo" page', () => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/todo')
       cy.title().should('eq', 'TodoList | test automation exercise site')
       cy.get('h1').should('contain', 'ToDoリスト')
@@ -46,7 +46,7 @@ describe('Smoke Testing Suite', () => {
 
   describe('TodoList operation test', () => {
     beforeEach(() => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/todo')
     })
 
@@ -203,7 +203,7 @@ describe('Smoke Testing Suite', () => {
 
   describe('Logout operation test', () => {
     beforeEach(() => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/todo')
     })
 

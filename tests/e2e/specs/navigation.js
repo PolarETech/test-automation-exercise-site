@@ -29,7 +29,7 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', () => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/')
       cy.contains('a', 'Logout').click()
       cy.title().should('eq', 'Home | test automation exercise site')
@@ -51,7 +51,7 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to TodoList view after selecting "TodoList" in navigation menu with logged in', () => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/')
       cy.contains('a', 'TodoList').click()
       cy.title().should('eq', 'TodoList | test automation exercise site')
@@ -93,7 +93,7 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', () => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/')
       cy.get('.navbar-burger').click()
       cy.contains('a', 'Logout').click()
@@ -117,7 +117,7 @@ describe('Navigation menu test', () => {
     })
 
     it('moves to TodoList view after selecting "TodoList" in navigation menu with logged in', () => {
-      cy.setCookie('PtExampleToken', '{%22auth%22:{%22token%22:%22dummy-token%22}}')
+      cy.setTokenCookie()
       cy.visit('/')
       cy.get('.navbar-burger').click()
       cy.contains('a', 'TodoList').click()

@@ -23,3 +23,10 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+import Cookies from 'js-cookie'
+Cypress.Commands.add('setTokenCookie', () => {
+  const cookieKey = 'PtExampleToken'
+  const cookieValue = '{"auth":{"token":"dummy-token"}}'
+  Cookies.set(cookieKey, cookieValue)
+})
