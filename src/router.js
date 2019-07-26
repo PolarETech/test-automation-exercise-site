@@ -29,6 +29,10 @@ const router = new Router({
       name: 'todo',
       component: () => import('./views/TodoList.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ],
   scrollBehavior (to, from, savedPosition) {
