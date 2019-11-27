@@ -17,6 +17,10 @@ describe('About view test', () => {
 
   it('displays "Test Contents" tab', () => {
     cy.contains('nav li', 'テストコンテンツ').click()
+    cy.get('div.tab-item:nth-of-type(1)').should('be.visible')
+    cy.get('div.tab-item:nth-of-type(2)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(3)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(4)').should('not.be.visible')
     cy.get('h2')
       .should('contain', 'テストコンテンツの利用について')
       .should('contain', '利用上の注意')
@@ -25,12 +29,20 @@ describe('About view test', () => {
 
   it('displays "Environment" tab', () => {
     cy.contains('nav li', '動作環境').click()
+    cy.get('div.tab-item:nth-of-type(1)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(2)').should('be.visible')
+    cy.get('div.tab-item:nth-of-type(3)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(4)').should('not.be.visible')
     cy.get('h2')
       .should('contain', '動作環境')
   })
 
   it('displays "Copyright and Disclaimer" tab', () => {
     cy.contains('nav li', '著作権と免責事項').click()
+    cy.get('div.tab-item:nth-of-type(1)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(2)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(3)').should('be.visible')
+    cy.get('div.tab-item:nth-of-type(4)').should('not.be.visible')
     cy.get('h2')
       .should('contain', '著作権')
       .should('contain', '免責事項')
@@ -38,6 +50,10 @@ describe('About view test', () => {
 
   it('displays "Technical Information" tab', () => {
     cy.contains('nav li', '技術情報').click()
+    cy.get('div.tab-item:nth-of-type(1)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(2)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(3)').should('not.be.visible')
+    cy.get('div.tab-item:nth-of-type(4)').should('be.visible')
     cy.get('h2')
       .should('contain', 'ソースコードの公開について')
       .should('contain', '本サイトの作成で使用している主な技術要素')
