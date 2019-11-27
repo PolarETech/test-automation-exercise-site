@@ -1,7 +1,7 @@
 @home @desktop
 Feature: Home view test
 
-  @sanity
+  @smoke
   Scenario: displays 'Home' page
     Given I am on the Home view
     Then the page title should be correct as the Home view

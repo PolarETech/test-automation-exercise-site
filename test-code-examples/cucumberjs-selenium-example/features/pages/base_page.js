@@ -16,4 +16,8 @@ module.exports = class BasePage {
     }
     return message
   }
+
+  numberText2index (text) {
+    return text.replace(/[^\d]/g, '') - 1
+  }
 }

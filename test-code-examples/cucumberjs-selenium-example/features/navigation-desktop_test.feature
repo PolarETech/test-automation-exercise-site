@@ -19,7 +19,7 @@ Feature: Navigation menu test with desktop screen
     | Home     | 'Login'    | Login     |
     | Home     | 'TodoList' | Login     |
 
-  @sanity @login
+  @smoke @login
   Scenario: moves to Home view and unsets auth token cookie after selecting 'Logout' in navigation menu
     Given I am already logged in
     And I am on the Home view

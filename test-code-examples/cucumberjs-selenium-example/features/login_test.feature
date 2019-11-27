@@ -1,7 +1,7 @@
 @login @desktop
 Feature: Login view test
 
-  @sanity
+  @smoke
   Scenario: displays 'Login' page
     Given I am on the Login view
     Then the page title should be correct as the Login view
@@ -15,7 +15,7 @@ Feature: Login view test
     And the Login-Error-Message should NOT be displayed in the Login view
     And the 'footer' element should have the correct text as the Login view
 
-  @sanity
+  @smoke
   Scenario: moves to TodoList view and sets auth token cookie after selecting 'Login' button with valid ID and Password
     Given I am on the Login view
     When I input the valid user id in the Login view

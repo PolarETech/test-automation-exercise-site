@@ -28,12 +28,13 @@ When('I input the {word} user {word} in the Login view', async function (userSta
 
   const locator = page.key2locator(key)
   await this.driver
-  .wait(
-    until.elementLocated(locator),
-    10000,
-    `the ${key} input form is not located in the Login view.`
-  )
-  .sendKeys(value)
+    .wait(
+      until.elementLocated(locator),
+      10000,
+      `the ${key} input form is not located in the Login view.`
+    )
+    .sendKeys(value)
+    .catch(error => { throw error })
 })
 
 Then('the login token cookie should be stored correctly', async function () {
