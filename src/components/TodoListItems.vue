@@ -29,7 +29,7 @@
       <span class="todo-timestamp" :id="'ts-' + item.id">確認日時：{{ item.timestamp }}</span>
 
       <button class="todo-remove" :id="'rm-' + item.id" @click="REMOVE_TODO_ITEM(item)">
-        <b-icon id="remove-icon" icon="delete" size="is-small"></b-icon>
+        <b-icon class="remove-icon" icon="delete" size="is-small"></b-icon>
       </button>
     </div>
 
