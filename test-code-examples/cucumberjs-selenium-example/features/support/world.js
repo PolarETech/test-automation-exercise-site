@@ -23,6 +23,10 @@ class CustomWorld {
       .build()
 
     this.baseURL = baseURL
+
+    // Use this variable if the test scenario needs to 
+    // store a temporary value for sharing between steps.
+    this.tempValue = null
   }
 }
 

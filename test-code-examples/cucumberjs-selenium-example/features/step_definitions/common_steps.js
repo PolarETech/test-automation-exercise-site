@@ -1,4 +1,4 @@
-const { By, Key, until } = require('selenium-webdriver')
+const { By, until } = require('selenium-webdriver')
 const { Given, When, Then } = require('cucumber')
 const { createPageObject, objectName2tagName, headerTarget2selector } = require('../support/helpers.js')
 const assert = require('assert')
