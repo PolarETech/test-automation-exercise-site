@@ -23,7 +23,7 @@
             <h2 class="subtitle is-5">TodoList 機能概要</h2>
             <ul>
               <li>TodoListへアクセスするにはログインが必要です。</li>
-              <li>ログイン画面ではユーザーIDとパスワードの入力が必要です。</li>
+              <li>ログイン画面ではユーザーIDとパスワードの入力が必要です。（ユーザーID：testID、パスワード：testPASS）</li>
               <li>ログインに失敗すると、ログイン画面上にエラーメッセージが表示されます。</li>
               <li>ログインに成功すると、TodoList画面へ移動します。</li>
               <li>登録フォームにToDoの件名を入力して＋アイコンを選択するかEnterキーを押すと、新しいToDoを登録できます。</li>
@@ -89,7 +89,8 @@
             </p>
             <p>
               テストコード：<br>
-              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests">https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests</a>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests">https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests</a><br>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/test-code-examples">https://github.com/PolarETech/test-automation-exercise-site/tree/master/test-code-examples</a>
             </p>
 
             <h2 class="subtitle is-5">本サイトの作成で使用している主な技術要素</h2>
