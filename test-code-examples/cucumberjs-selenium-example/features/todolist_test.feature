@@ -34,7 +34,7 @@ Feature: TodoList view test
     And the 1st 'isDone' data in the Todo storage items should match the data on the view
     And the 1st 'timestamp' data in the Todo storage items should match the data on the view
 
-  @smoke 
+  @smoke
   Scenario: changes ToDo item checkbox to ON
     When I input 'テストアイテム' in the Subject-Input-Form in the TodoList view
     And I register the todo in the TodoList view

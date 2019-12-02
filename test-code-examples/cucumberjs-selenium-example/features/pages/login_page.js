@@ -4,9 +4,9 @@ const BasePage = require('./base_page.js')
 module.exports = class LoginPage extends BasePage {
   constructor () {
     super()
-    
+
     this.path = '/login',
-    
+
     this.locators = {
       'UserID-Input-Form': By.css('#user-id-input'),
       'Password-Input-Form': By.css('#password-input'),
@@ -33,7 +33,7 @@ module.exports = class LoginPage extends BasePage {
         password: 'boo',
       }
     },
-    
+
     this.tokenCookie = {
       key: 'PtExampleToken',
       value: '{%22auth%22:{%22token%22:%22dummy-token%22}}',
@@ -43,11 +43,9 @@ module.exports = class LoginPage extends BasePage {
   async getLoginTokenCookie (world) {
     const cookieValue = await world.driver
       .manage().getCookie(this.tokenCookie.key)
-      .then(function (cookieData) {
-        return cookieData.value
-      })
+      .then(cookieData => cookieData.value)
       .catch(error => { throw error })
-      
+
     return cookieValue
   }
 
@@ -55,7 +53,7 @@ module.exports = class LoginPage extends BasePage {
     await world.driver
       .get(`${world.baseURL}`)
       .catch(error => { throw error })
-  
+
     await world.driver
       .manage().addCookie({
         name: this.tokenCookie.key,

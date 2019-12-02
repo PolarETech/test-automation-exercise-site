@@ -26,7 +26,7 @@ When('I input the subject variation No. {int} in the Subject-Input-Form in the T
 
   // NOTE: sendKeys function can not input utf8mb4 character like 𠀋🍺
   await this.driver.executeScript(
-    function(args) {
+    args => {
       args.element.value = args.inputText
     }, { element, inputText })
     .catch(error => { throw error })
@@ -59,8 +59,8 @@ When ('I register the todo in the TodoList view', async function () {
   await page.registerSubject(this)
 
   // WARNING:
-  // In rare cases, the test about timestamp may fail due to a second difference 
-  // between the timestamp stored in Vuex and 
+  // In rare cases, the test about timestamp may fail due to a second difference
+  // between the timestamp stored in Vuex and
   // the timestamp obtained by the following function.
   page.storeOperationDateTimeToWorld(this)
 })
@@ -76,8 +76,8 @@ When('I click the {word} {word} in the TodoList view', async function (itemIndex
   elements[index].click()
 
   // WARNING:
-  // In rare cases, the test about timestamp may fail due to a second difference 
-  // between the timestamp stored in Vuex and 
+  // In rare cases, the test about timestamp may fail due to a second difference
+  // between the timestamp stored in Vuex and
   // the timestamp obtained by the following function.
   if (target === 'Todo-Checkbox-Click-Area') {
     page.storeOperationDateTimeToWorld(this)
@@ -209,6 +209,6 @@ Then('the the Todo storage items should be empty', async function () {
   const page = createPageObject('TodoList')
   const storageData = await page.getTodoLocalStorage(this)
   const actual = storageData.todo.items.length
-  
+
   assert.strictEqual(actual, 0)
 })

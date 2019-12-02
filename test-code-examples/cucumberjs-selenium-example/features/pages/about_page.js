@@ -4,9 +4,9 @@ const BasePage = require('./base_page.js')
 module.exports = class AboutPage extends BasePage {
   constructor () {
     super()
-    
+
     this.path = '/about'
-  
+
     this.locators = {
       'About-Tab': By.css('nav.tabs li'),
       'Tab-Content-Transitioning': By.css('section.tab-content.is-transitioning'),
@@ -58,9 +58,7 @@ module.exports = class AboutPage extends BasePage {
         until.elementLocated(locator),
         2000,
       )
-      .catch(error => {
-        return true
-      })
+      .catch(error => { return true })
 
     // wait until the end of tab content transition
     await world.driver
@@ -68,8 +66,6 @@ module.exports = class AboutPage extends BasePage {
         until.stalenessOf(element),
         2000,
       )
-      .catch(error => {
-        return true
-      })
+      .catch(error => { return true })
   }
 }

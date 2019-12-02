@@ -9,7 +9,7 @@ module.exports = class HomePage extends BasePage {
 
     this.locators = {
       'About-Button': By.xpath('//button[normalize-space(.)="このサイトについて - About"]'),
-      'TodoList-Button': By.xpath('//button[normalize-space(.)="テストコンテンツ - TodoList"]'), 
+      'TodoList-Button': By.xpath('//button[normalize-space(.)="テストコンテンツ - TodoList"]'),
     }
 
     this.text = {

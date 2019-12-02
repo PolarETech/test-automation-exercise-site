@@ -5,9 +5,9 @@ const dayjs = require('dayjs')
 module.exports = class TodoListPage extends BasePage {
   constructor () {
     super()
-    
+
     this.path = '/todo'
-  
+
     this.locators = {
       'Todo-List': By.css('.todo-list'),
       'Todo-Subject': By.css('.todo-subject'),
@@ -82,7 +82,7 @@ module.exports = class TodoListPage extends BasePage {
   async registerSubject (world) {
     const locator = this.locators['Subject-Submit-Button']
     const element = await world.driver.findElement(locator)
-  
+
     // NOTE: wait until the target status change from disabled to enabled
     await world.driver
     .wait(
@@ -103,11 +103,7 @@ module.exports = class TodoListPage extends BasePage {
     const locator = this.locators['Todo-Checkbox']
     const elements = await world.driver.findElements(locator)
     const statusText = await elements[index].getAttribute('checked')
-    if (statusText === 'true') {
-      return true
-    } else {
-      return false
-    }
+    return statusText === 'true'
   }
 
   async getTimestampDateTimeValue (index, world) {
@@ -144,10 +140,14 @@ module.exports = class TodoListPage extends BasePage {
     // webdriver's dragAndDrop action does not work for vuedraggable component
 
     await world.driver.executeScript(
-      async function(args) {
+      async args => {
+        const targetRect = args.targetElement.getBoundingClientRect()
+        const targetPositionX = (targetRect.left + targetRect.right) / 2
+        const targetPositionY = (targetRect.top + targetRect.bottom) / 2
+
         const pointerDownEvent = new PointerEvent('pointerdown', {
           bubbles: true,
-          cancelable: true
+          cancelable: true,
         })
 
         const dragStartEvent = new DragEvent('dragstart', {
@@ -156,6 +156,8 @@ module.exports = class TodoListPage extends BasePage {
 
         const dragOverEvent = new DragEvent('dragover', {
           bubbles: true,
+          clientX: targetPositionX,
+          clientY: targetPositionY,
         })
 
         const dropEvent = new DragEvent('drop', {
@@ -164,11 +166,11 @@ module.exports = class TodoListPage extends BasePage {
 
         const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 
-        await args.sourceElement.dispatchEvent(pointerDownEvent)
-        await args.sourceElement.dispatchEvent(dragStartEvent)
+        args.sourceElement.dispatchEvent(pointerDownEvent)
+        args.sourceElement.dispatchEvent(dragStartEvent)
         await sleep(1)
-        await args.targetElement.dispatchEvent(dragOverEvent)
-        await args.targetElement.dispatchEvent(dropEvent)
+        args.targetElement.dispatchEvent(dragOverEvent)
+        args.targetElement.dispatchEvent(dropEvent)
       }, { sourceElement, targetElement }
     )
     .then(() => { return true })

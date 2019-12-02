@@ -7,7 +7,7 @@ const { promisify } = require('util')
 const fs = require('fs')
 
 module.exports = {
-  createPageObject: function (viewName) {
+  createPageObject: viewName => {
     switch (viewName) {
       case 'Home':
         return new HomePage()
@@ -22,7 +22,7 @@ module.exports = {
     }
   },
 
-  objectName2tagName: function (element) {
+  objectName2tagName: element => {
     switch (element) {
       case 'link':
         return 'a'
@@ -32,8 +32,8 @@ module.exports = {
         throw new Error(`an unexpected element name "${element}" is given.`)
     }
   },
-  
-  headerTarget2selector: function (target) {
+
+  headerTarget2selector: target => {
     switch (target) {
       case 'Top-Logo':
         return 'header #top-logo-link'
@@ -47,20 +47,20 @@ module.exports = {
         throw new Error(`an unexpected item name "${target}" is given.`)
     }
   },
-  
-  changeWindowWidth: async function (driver, w) {
+
+  changeWindowWidth: async (driver, width) => {
     const { height, x, y } = await driver.manage().window().getRect()
-    await driver.manage().window().setRect({ width: w, height, x, y })
+    await driver.manage().window().setRect({ width, height, x, y })
 
     await driver
       .wait(
-        _forWindowSizeToBe(driver, w, height),
+        _forWindowSizeToBe(driver, width, height),
         10000,
         'Failed to resize window.'
       )
   },
 
-  saveScreenshot: async function (driver, filename) {
+  saveScreenshot: async (driver, filename) => {
     const path = './output/'
     const image = await driver.takeScreenshot()
 
@@ -74,14 +74,14 @@ module.exports = {
 
     await writeFile(
       `${path}${filename}.png`,
-      image.replace(/^data:image\/png;base64,/,''), 
+      image.replace(/^data:image\/png;base64,/,''),
       'base64'
     ).catch(error => { throw error })
   },
 }
 
 function _forWindowSizeToBe (driver, w, h) {
-  return async function () {
+  return async () => {
     const { width, height } = await driver.manage().window().getRect()
     return width === w && height === h
   }

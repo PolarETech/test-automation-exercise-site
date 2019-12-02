@@ -64,12 +64,11 @@ Then('the {string} element should have the correct text as the {word} view', asy
   const page = createPageObject(viewName)
   const expected = page.text[selector]
 
-  let locator = null
-  if (selector.indexOf('/') !== -1) {
-    locator = By.xpath(selector)
-  } else {
-    locator = By.css(selector)
-  }
+  const locator = (
+    (selector.indexOf('/') !== -1)
+    ? By.xpath(selector)
+    : By.css(selector)
+  )
 
   if (expected === undefined || locator === undefined) {
     throw new Error(`an unexpected element "${selector}" is given by scenario.`)

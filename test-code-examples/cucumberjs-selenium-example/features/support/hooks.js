@@ -22,5 +22,5 @@ After(async function (scenario) {
     await saveScreenshot(this.driver, filename)
   }
 
-  await this.driver.quit().catch(error=> { throw error })
+  await this.driver.quit().catch(error => { throw error })
 })

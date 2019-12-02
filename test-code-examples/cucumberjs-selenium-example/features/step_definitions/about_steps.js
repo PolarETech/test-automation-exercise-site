@@ -21,11 +21,9 @@ Then('the About-Tab should have the correct tab list in the About view', async f
   const expected = page.tabs.map(item => { return item.label })
   const locator = page.getTargetLocator('About-Tab')
 
-  const tabList = await this.driver.findElements(locator) 
+  const tabList = await this.driver.findElements(locator)
   const actual = await Promise.all (
-    tabList.map (async function (tab) {
-      return await tab.getAttribute('outerText')
-    })
+    tabList.map (async tab => await tab.getAttribute('outerText'))
   )
 
   assert.deepStrictEqual(actual, expected)
