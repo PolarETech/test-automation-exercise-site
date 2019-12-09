@@ -167,8 +167,7 @@ describe('Login.vue', () => {
           expect.objectContaining({
             userId: correctID,
             password: correctPass
-          }),
-          undefined
+          })
         )
       })
 

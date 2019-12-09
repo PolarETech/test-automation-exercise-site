@@ -114,11 +114,11 @@ describe('NavBar.vue', () => {
       test('close expanded menu when route is changed', () => {
         const burger = wrapper.find('.navbar-burger')
         const menuArea = wrapper.find('.navbar-menu')
-        wrapper.vm.$router.push({ path: '/' })
+        wrapper.vm.$router.push({ path: '/about' })
 
         burger.trigger('click')
         expect(menuArea.classes()).toContain('is-active')
-        wrapper.vm.$router.push({ path: '/about' })
+        wrapper.vm.$router.push({ path: '/' })
         expect(menuArea.classes()).not.toContain('is-active')
       })
     })

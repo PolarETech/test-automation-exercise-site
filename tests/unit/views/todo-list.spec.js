@@ -157,8 +157,7 @@ describe('TodoList.vue', () => {
         await flushPromises()
         expect(todoActions.ADD_TODO_ITEM).toBeCalledWith(
           expect.anything(),
-          expect.stringMatching(newSubject),
-          undefined
+          expect.stringMatching(newSubject)
         )
         expect(el.element.value).toBe('')
       })
@@ -170,8 +169,7 @@ describe('TodoList.vue', () => {
         await flushPromises()
         expect(todoActions.SET_TODO_ITEMS).toBeCalledWith(
           expect.anything(),
-          expect.objectContaining(dummyItems),
-          undefined
+          expect.objectContaining(dummyItems)
         )
       })
     })

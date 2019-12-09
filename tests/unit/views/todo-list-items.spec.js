@@ -86,8 +86,7 @@ describe('TodoListItems.vue', () => {
         await flushPromises()
         expect(actions.DONE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
-          expect.objectContaining(dummyItem),
-          undefined
+          expect.objectContaining(dummyItem)
         )
       })
 
@@ -108,8 +107,7 @@ describe('TodoListItems.vue', () => {
           expect.objectContaining({
             item: dummyItem,
             newSubject
-          }),
-          undefined
+          })
         )
         expect(el.element.value).toBe(newSubject)
       })
@@ -135,8 +133,7 @@ describe('TodoListItems.vue', () => {
         await flushPromises()
         expect(actions.REMOVE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
-          expect.objectContaining(dummyItem),
-          undefined
+          expect.objectContaining(dummyItem)
         )
       })
     })
