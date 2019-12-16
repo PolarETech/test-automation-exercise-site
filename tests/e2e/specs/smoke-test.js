@@ -224,4 +224,26 @@ describe('Smoke Testing Suite', () => {
         })
     })
   })
+
+  describe('Mobile screen navigation menu control test', () => {
+    beforeEach(() => {
+      cy.viewport(375, 667)
+    })
+
+    it('closes navigation menu after moving page', () => {
+      cy.visit('/')
+
+      cy.get('.navbar-burger').click()
+      cy.get('.navbar-menu').should('be.visible')
+      cy.contains('button', 'このサイトについて - About').click()
+      cy.title().should('eq', 'About | test automation exercise site')
+      cy.get('.navbar-menu').should('not.be.visible')
+
+      cy.get('.navbar-burger').click()
+      cy.get('.navbar-menu').should('be.visible')
+      cy.contains('a', 'Home').click()
+      cy.title().should('eq', 'Home | test automation exercise site')
+      cy.get('.navbar-menu').should('not.be.visible')
+    })
+  })
 })

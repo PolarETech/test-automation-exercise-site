@@ -36,6 +36,9 @@ describe('Navigation menu test', () => {
       cy.get('.toast')
         .should('be.visible')
         .should('contain', 'ログアウトしました')
+      // the Buefy toast should disappear after 2000ms
+      cy.wait(2000)
+      cy.get('.toast').should('not.be.visible')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {
@@ -78,6 +81,13 @@ describe('Navigation menu test', () => {
       cy.title().should('eq', 'Home | test automation exercise site')
     })
 
+    it('moves to Home view after selecting "Home" in navigation menu', () => {
+      cy.visit('/about')
+      cy.get('.navbar-burger').click()
+      cy.contains('a', 'Home').click()
+      cy.title().should('eq', 'Home | test automation exercise site')
+    })
+
     it('moves to About view after selecting "About" in navigation menu', () => {
       cy.visit('/')
       cy.get('.navbar-burger').click()
@@ -101,6 +111,9 @@ describe('Navigation menu test', () => {
       cy.get('.toast')
         .should('be.visible')
         .should('contain', 'ログアウトしました')
+      // the Buefy toast should disappear after 2000ms
+      cy.wait(2000)
+      cy.get('.toast').should('not.be.visible')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {
@@ -136,8 +149,8 @@ describe('Navigation menu test', () => {
       cy.get('.navbar-burger').click()
       cy.get('.navbar-menu').should('be.visible')
       cy.contains('a', 'Home').click()
-      cy.get('.navbar-menu').should('not.be.visible')
       cy.title().should('eq', 'Home | test automation exercise site')
+      cy.get('.navbar-menu').should('not.be.visible')
     })
   })
 })

@@ -33,6 +33,7 @@ describe('Login view test', () => {
     cy.visit('/login')
     cy.get('input[type=text]').type('foo')
     cy.get('input[type=password]').type('boo{enter}')
+    cy.get('#login-submit.is-loading').should('not.be.visible')
     cy.title().should('eq', 'Login | test automation exercise site')
     cy.get('.error-message')
       .should('be.visible')
