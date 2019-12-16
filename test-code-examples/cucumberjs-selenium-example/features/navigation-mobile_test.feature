@@ -48,6 +48,7 @@ Feature: Navigation menu test with mobile screen
     When I click the 'TodoList' link in the header
     Then the page title should be correct as the TodoList view
 
+  @smoke
   Scenario: closes navigation menu after moving view
     Given I am on the Home view
     When I click the Hamburger-Icon in the header
