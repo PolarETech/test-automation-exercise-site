@@ -18,7 +18,7 @@ describe('Home.vue', () => {
 
     describe('display control', () => {
       test('show "Home" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(Home).exists()).toBeTruthy()
       })
 
       test('show elements', () => {

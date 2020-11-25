@@ -82,7 +82,7 @@ describe('Login.vue', () => {
 
     describe('display control', () => {
       test('show "Login" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(Login).exists()).toBeTruthy()
         expect(wrapper.vm.login).toBeTruthy()
       })
 
@@ -102,57 +102,68 @@ describe('Login.vue', () => {
         expect(submit.attributes().disabled).toBeTruthy()
       })
 
-      test('disable "login" button when input only ID', () => {
+      test('disable "login" button when input only ID', async () => {
         const submit = wrapper.find('b-button-stub[nativetype="submit"]')
         wrapper.setData({ userId: wrongID })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeTruthy()
       })
 
-      test('disable "login" button when input only Password', () => {
+      test('disable "login" button when input only Password', async () => {
         const submit = wrapper.find('b-button-stub[nativetype="submit"]')
         wrapper.setData({ password: wrongPass })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeTruthy()
       })
 
-      test('enable "login" button when input ID and Password', () => {
+      test('enable "login" button when input ID and Password', async () => {
         const submit = wrapper.find('b-button-stub[nativetype="submit"]')
         wrapper.setData({ userId: wrongID, password: wrongPass })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
-      test('disable/enable "login" button when clear/input ID', () => {
+      test('disable/enable "login" button when clear/input ID', async () => {
         const submit = wrapper.find('b-button-stub[nativetype="submit"]')
         wrapper.setData({ userId: wrongID, password: wrongPass })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
 
         wrapper.setData({ userId: '' })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeTruthy()
         wrapper.setData({ userId: wrongID })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
-      test('disable/enable "login" button when clear/input Password', () => {
+      test('disable/enable "login" button when clear/input Password', async () => {
         const submit = wrapper.find('b-button-stub[nativetype="submit"]')
         wrapper.setData({ userId: wrongID, password: wrongPass })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
 
         wrapper.setData({ password: '' })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeTruthy()
         wrapper.setData({ password: wrongPass })
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
       })
     })
 
     describe('binding control', () => {
-      test('text input bind "userId" props', () => {
+      test('text input bind "userId" props', async () => {
         const id = wrapper.find('b-input-stub[type="text"]')
         wrapper.setData({ userId: wrongID })
+        await flushPromises()
         expect(id.attributes().value).toBe(wrongID)
       })
 
-      test('password input bind "password" props', () => {
+      test('password input bind "password" props', async () => {
         const pass = wrapper.find('b-input-stub[type="password"]')
         wrapper.setData({ password: wrongPass })
+        await flushPromises()
         expect(pass.attributes().value).toBe(wrongPass)
       })
     })

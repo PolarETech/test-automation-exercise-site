@@ -33,8 +33,10 @@ const getAuthModules = {
 }
 
 const getMocks = () => ({
-  $toast: {
-    open: jest.fn()
+  $buefy: {
+    toast: {
+      open: jest.fn()
+    }
   }
 })
 
@@ -68,7 +70,7 @@ describe('NavBar.vue', () => {
 
     describe('display control', () => {
       test('show "NavBar" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(NavBar).exists()).toBeTruthy()
         expect(wrapper.vm.toggleMenuExpand).toBeTruthy()
         expect(wrapper.vm.logout).toBeTruthy()
       })
@@ -92,33 +94,41 @@ describe('NavBar.vue', () => {
         expect(el.exists()).toBeFalsy()
       })
 
-      test('toggle menu expand', () => {
+      test('toggle menu expand', async () => {
         const burger = wrapper.find('.navbar-burger')
         const menuArea = wrapper.find('.navbar-menu')
         const menuItem = wrapper.find('.navbar-end')
         expect(menuArea.classes()).not.toContain('is-active')
 
         burger.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).toContain('is-active')
         burger.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).not.toContain('is-active')
 
         burger.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).toContain('is-active')
         menuItem.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).not.toContain('is-active')
         menuItem.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).not.toContain('is-active')
       })
 
-      test('close expanded menu when route is changed', () => {
+      test('close expanded menu when route is changed', async () => {
         const burger = wrapper.find('.navbar-burger')
         const menuArea = wrapper.find('.navbar-menu')
         wrapper.vm.$router.push({ path: '/about' })
+        await flushPromises()
 
         burger.trigger('click')
+        await flushPromises()
         expect(menuArea.classes()).toContain('is-active')
         wrapper.vm.$router.push({ path: '/' })
+        await flushPromises()
         expect(menuArea.classes()).not.toContain('is-active')
       })
     })
@@ -174,7 +184,7 @@ describe('NavBar.vue', () => {
 
     describe('display control', () => {
       test('show "NavBar" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(NavBar).exists()).toBeTruthy()
         expect(wrapper.vm.toggleMenuExpand).toBeTruthy()
         expect(wrapper.vm.logout).toBeTruthy()
       })
@@ -198,7 +208,7 @@ describe('NavBar.vue', () => {
         await flushPromises()
         expect(actions.LOGOUT).toBeCalled()
         expect(spyRouter.push).toBeCalledWith('/')
-        expect(wrapper.vm.$toast.open).toBeCalled()
+        expect(wrapper.vm.$buefy.toast.open).toBeCalled()
       })
     })
   })

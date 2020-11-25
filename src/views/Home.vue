@@ -105,7 +105,6 @@ export default {
           box-shadow: -1px 2px 8px 2px rgba(0, 0, 0, 0.3);
           color: #fbf6a3;
           font-weight: 600;
-          line-height: 2.5rem;
           opacity: 0.7;
           &:hover,
           &:active {

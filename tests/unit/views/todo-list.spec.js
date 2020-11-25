@@ -86,7 +86,7 @@ describe('TodoList.vue', () => {
 
     describe('display control', () => {
       test('show "TodoList" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(TodoList).exists()).toBeTruthy()
         expect(wrapper.vm.addTodoItem).toBeTruthy()
       })
 
@@ -119,22 +119,26 @@ describe('TodoList.vue', () => {
         expect(submit.attributes().disabled).toBe('disabled')
       })
 
-      test('enable "register" button when input new subject', () => {
+      test('enable "register" button when input new subject', async () => {
         const submit = wrapper.find('#subject-submit')
         expect(submit.attributes().disabled).toBe('disabled')
         wrapper.find('#subject-input').setValue('test')
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
-      test('disable/enable "register" button when clear/input new subject', () => {
+      test('disable/enable "register" button when clear/input new subject', async () => {
         const el = wrapper.find('#subject-input')
         const submit = wrapper.find('#subject-submit')
         el.setValue('test')
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
 
         el.setValue('')
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('disabled')
         el.setValue('test')
+        await flushPromises()
         expect(submit.attributes().disabled).toBeUndefined()
       })
     })

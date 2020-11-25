@@ -65,7 +65,7 @@ describe('TodoListItems.vue', () => {
 
     describe('display control', () => {
       test('show "TodoItems" vue', () => {
-        expect(wrapper.isVueInstance()).toBeTruthy()
+        expect(wrapper.findComponent(TodoListItems).exists()).toBeTruthy()
         expect(wrapper.vm.updateTodoItem).toBeTruthy()
         expect(wrapper.vm.DONE_TODO_ITEM).toBeTruthy()
         expect(wrapper.vm.REMOVE_TODO_ITEM).toBeTruthy()
@@ -96,8 +96,8 @@ describe('TodoListItems.vue', () => {
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
-        expect(el.element.value).toBe(newSubject)
         await flushPromises()
+        expect(el.element.value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 
         el.trigger('change')
@@ -118,8 +118,8 @@ describe('TodoListItems.vue', () => {
         expect(el.element.value).toBe(dummyItem.subject)
 
         el.setValue(newSubject)
-        expect(el.element.value).toBe(newSubject)
         await flushPromises()
+        expect(el.element.value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 
         el.trigger('change')

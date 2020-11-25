@@ -56,7 +56,7 @@ describe('Smoke Testing Suite', () => {
 
     it('adds a ToDo item', () => {
       // omit HH:mm:ss confirmation in timestamp because it is difficult to match the time in seconds
-      let date = dayjs(new Date()).format('YYYY/MM/DD')
+      const date = dayjs(new Date()).format('YYYY/MM/DD')
       cy.get('#subject-input').type('テストアイテム１')
       cy.get('#subject-submit').click()
       cy.get('.todo-check').should('not.be.checked')

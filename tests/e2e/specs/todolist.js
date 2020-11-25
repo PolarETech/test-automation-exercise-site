@@ -24,7 +24,7 @@ describe('TodoList view test', () => {
 
   it('adds a ToDo item', () => {
     // omit HH:mm:ss confirmation in timestamp because it is difficult to match the time in seconds
-    let date = dayjs(new Date()).format('YYYY/MM/DD')
+    const date = dayjs(new Date()).format('YYYY/MM/DD')
     cy.get('#subject-input').type('テストアイテム１')
     cy.get('#subject-submit')
       .should('not.be.disabled')
@@ -34,7 +34,7 @@ describe('TodoList view test', () => {
     cy.get('.todo-check').should('not.be.checked')
     cy.get('.todo-timestamp').should('contain', date)
     cy.get('.todo-subject').should('have.value', 'テストアイテム１')
-    cy.get('#item-count').should('contain', `登録件数：1 / 5 件`)
+    cy.get('#item-count').should('contain', '登録件数：1 / 5 件')
       .then(() => {
         const storageData = JSON.parse(localStorage.getItem('PtExampleTodos'))
         expect(storageData.todo.items[0].isDone).to.eq(false)
