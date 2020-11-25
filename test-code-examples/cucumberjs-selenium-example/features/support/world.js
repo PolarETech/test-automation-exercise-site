@@ -1,6 +1,6 @@
 require('chromedriver')
 const { Builder, Capabilities } = require('selenium-webdriver')
-const { setWorldConstructor, setDefaultTimeout } = require('cucumber')
+const { setWorldConstructor, setDefaultTimeout } = require('@cucumber/cucumber')
 
 const baseURL = 'https://polaretech.github.io/test-automation-exercise-site'
 const timeout = 60 * 1000

@@ -1,7 +1,7 @@
 {
   "name": "cucumberjs-selenium-example",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
     "test": "mkdirp ./output/ && cucumber-js --format rerun:./output/@rerun.txt",
     "test:rerun": "mkdirp ./output/ && cucumber-js ./output/@rerun.txt --format rerun:./output/@rerun2.txt",
@@ -9,12 +9,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "chromedriver": "^78.0.1",
-    "cucumber": "^6.0.5",
-    "dayjs": "^1.8.17",
-    "eslint": "^6.7.0",
+    "@cucumber/cucumber": "^7.0.0-rc.0",
+    "babel-eslint": "^10.1.0",
+    "chromedriver": "^87.0.0",
+    "dayjs": "^1.9.6",
+    "eslint": "^7.14.0",
     "eslint-plugin-cucumber": "^1.4.0",
-    "selenium-webdriver": "^4.0.0-alpha.5"
+    "selenium-webdriver": "^4.0.0-alpha.7"
   }
 }

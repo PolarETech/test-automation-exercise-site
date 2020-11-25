@@ -1,4 +1,4 @@
-const { After, Before, Status } = require('cucumber')
+const { After, Before, Status } = require('@cucumber/cucumber')
 const { changeWindowWidth, saveScreenshot } = require('./helpers.js')
 
 Before({ tags: '@desktop' }, async function () {

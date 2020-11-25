@@ -1,4 +1,4 @@
-const { When, Then } = require('cucumber')
+const { When, Then } = require('@cucumber/cucumber')
 const { createPageObject } = require('../support/helpers.js')
 const assert = require('assert')
 

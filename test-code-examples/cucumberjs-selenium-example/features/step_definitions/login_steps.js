@@ -1,5 +1,5 @@
 const { until } = require('selenium-webdriver')
-const { Given, When, Then } = require('cucumber')
+const { Given, When, Then } = require('@cucumber/cucumber')
 const { createPageObject } = require('../support/helpers.js')
 const assert = require('assert')
 
