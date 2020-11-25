@@ -1,10 +1,10 @@
 Feature('Navigation menu with mobile screen test.js @navigation @mobile')
 
-Before((I) => {
+Before(({ I }) => {
   I.resizeWindow(768, 600)
 })
 
-Scenario('toggles expand navigation menu', (I) => {
+Scenario('toggles expand navigation menu', ({ I }) => {
   I.amOnPage('/')
   I.dontSeeElement({ css: '.navbar-menu' })
   I.click({ css: '.navbar-burger' })
@@ -13,34 +13,34 @@ Scenario('toggles expand navigation menu', (I) => {
   I.dontSeeElement({ css: '.navbar-menu' })
 })
 
-Scenario('moves to Home view after selecting Top Logo in navigation menu', (I) => {
+Scenario('moves to Home view after selecting Top Logo in navigation menu', ({ I }) => {
   I.amOnPage('/about')
   I.click({ css: '#top-logo-link' })
   I.seeTitleEquals('Home | test automation exercise site')
 })
 
-Scenario('moves to Home view after selecting "Home" in navigation menu', (I) => {
+Scenario('moves to Home view after selecting "Home" in navigation menu', ({ I }) => {
   I.amOnPage('/about')
   I.click({ css: '.navbar-burger' })
   I.click('Home', { css: '.navbar-menu' })
   I.seeTitleEquals('Home | test automation exercise site')
 })
 
-Scenario('moves to About view after selecting "About" in navigation menu', (I) => {
+Scenario('moves to About view after selecting "About" in navigation menu', ({ I }) => {
   I.amOnPage('/')
   I.click({ css: '.navbar-burger' })
   I.click('About', { css: '.navbar-menu' })
   I.seeTitleEquals('About | test automation exercise site')
 })
 
-Scenario('moves to Login view after selecting "Login" in navigation menu', (I) => {
+Scenario('moves to Login view after selecting "Login" in navigation menu', ({ I }) => {
   I.amOnPage('/')
   I.click({ css: '.navbar-burger' })
   I.click('Login', { css: '.navbar-menu' })
   I.seeTitleEquals('Login | test automation exercise site')
 })
 
-Scenario('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', async (I) => {
+Scenario('moves to Home view and unsets auth token cookie after selecting "Logout" in navigation menu', async ({ I }) => {
   I.setTokenCookie()
   I.amOnPage('/')
   I.click({ css: '.navbar-burger' })
@@ -55,14 +55,14 @@ Scenario('moves to Home view and unsets auth token cookie after selecting "Logou
   I.seeEqual(cookieValue.auth.token, '')
 }).tag('@login')
 
-Scenario('moves to Login view after selecting "TodoList" in navigation menu without logged in', (I) => {
+Scenario('moves to Login view after selecting "TodoList" in navigation menu without logged in', ({ I }) => {
   I.amOnPage('/')
   I.click({ css: '.navbar-burger' })
   I.click('TodoList', { css: '.navbar-menu' })
   I.seeTitleEquals('Login | test automation exercise site')
 })
 
-Scenario('moves to TodoList view after selecting "TodoList" in navigation menu with logged in', async (I) => {
+Scenario('moves to TodoList view after selecting "TodoList" in navigation menu with logged in', async ({ I }) => {
   I.setTokenCookie()
   I.amOnPage('/')
   I.click({ css: '.navbar-burger' })
@@ -70,7 +70,7 @@ Scenario('moves to TodoList view after selecting "TodoList" in navigation menu w
   I.seeTitleEquals('TodoList | test automation exercise site')
 })
 
-Scenario('closes navigation menu after moving page', (I) => {
+Scenario('closes navigation menu after moving page', ({ I }) => {
   I.amOnPage('/')
 
   I.click({ css: '.navbar-burger' })

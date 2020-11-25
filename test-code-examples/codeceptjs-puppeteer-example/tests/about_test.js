@@ -1,10 +1,10 @@
 Feature('About view test.js @about @desktop')
 
-Before((I) => {
+Before(({ I }) => {
   I.amOnPage('/about')
 })
 
-Scenario('displays "About" page', (I) => {
+Scenario('displays "About" page', ({ I }) => {
   I.seeTitleEquals('About | test automation exercise site')
   I.seeElement({ css: 'header .navbar' })
   I.see('このサイトについて', { css: 'h1' })
@@ -15,7 +15,7 @@ Scenario('displays "About" page', (I) => {
   I.see('© 2019 Polar Tech', { css: 'footer' })
 }).tag('@smoke')
 
-Scenario('displays "Test Contents" tab', (I) => {
+Scenario('displays "Test Contents" tab', ({ I }) => {
   I.click('テストコンテンツ', { css: 'nav.tabs' })
   I.seeElement({ css: 'div.tab-item:nth-of-type(1)' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(2)' })
@@ -26,7 +26,7 @@ Scenario('displays "Test Contents" tab', (I) => {
   I.see('TodoList 機能概要', { css: 'h2' })
 })
 
-Scenario('displays "Environment" tab', (I) => {
+Scenario('displays "Environment" tab', ({ I }) => {
   I.click('動作環境', { css: 'nav.tabs' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(1)' })
   I.seeElement({ css: 'div.tab-item:nth-of-type(2)' })
@@ -35,7 +35,7 @@ Scenario('displays "Environment" tab', (I) => {
   I.see('動作環境', { css: 'h2' })
 })
 
-Scenario('displays "Copyright and Disclaimer" tab', (I) => {
+Scenario('displays "Copyright and Disclaimer" tab', ({ I }) => {
   I.click('著作権と免責事項', { css: 'nav.tabs' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(1)' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(2)' })
@@ -45,7 +45,7 @@ Scenario('displays "Copyright and Disclaimer" tab', (I) => {
   I.see('免責事項', { css: 'h2' })
 })
 
-Scenario('displays "Technical Information" tab', (I) => {
+Scenario('displays "Technical Information" tab', ({ I }) => {
   I.click('技術情報', { css: 'nav.tabs' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(1)' })
   I.dontSeeElement({ css: 'div.tab-item:nth-of-type(2)' })

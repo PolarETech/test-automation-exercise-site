@@ -6,12 +6,12 @@ const dayjs = require('dayjs')
 
 Feature('TodoList view test.js @todo @desktop')
 
-Before((I) => {
+Before(({ I }) => {
   I.setTokenCookie()
   I.amOnPage('/todo')
 })
 
-Scenario('displays "TodoList" page', (I) => {
+Scenario('displays "TodoList" page', ({ I }) => {
   I.seeTitleEquals('TodoList | test automation exercise site')
   I.seeElement({ css: 'header .navbar' })
   I.see('ToDoリスト', { css: 'h1' })
@@ -23,7 +23,7 @@ Scenario('displays "TodoList" page', (I) => {
   I.see('© 2019 Polar Tech', { css: 'footer' })
 }).tag('@smoke')
 
-Scenario('adds a ToDo item', async (I) => {
+Scenario('adds a ToDo item', async ({ I }) => {
   let timestamp
   I.fillField('ToDoの件名を入力してください', 'テストアイテム１')
   I.waitForEnabled({ css: 'button#subject-submit' })
@@ -46,7 +46,7 @@ Scenario('adds a ToDo item', async (I) => {
   I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
-Scenario('changes ToDo item checkbox to ON', async (I) => {
+Scenario('changes ToDo item checkbox to ON', async ({ I }) => {
   let timestamp
   I.registerNewSubject('テストアイテム１')
   I.dontSeeCheckboxIsChecked({ css: '.todo-check' })
@@ -69,7 +69,7 @@ Scenario('changes ToDo item checkbox to ON', async (I) => {
   I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
-Scenario('changes ToDo item checkbox to OFF', async (I) => {
+Scenario('changes ToDo item checkbox to OFF', async ({ I }) => {
   let timestamp
   I.registerNewSubject('テストアイテム１')
   I.click({ css: '.todo-check+label' })
@@ -93,7 +93,7 @@ Scenario('changes ToDo item checkbox to OFF', async (I) => {
   I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
-Scenario('changes a ToDo item subject', async (I) => {
+Scenario('changes a ToDo item subject', async ({ I }) => {
   let storageData
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
@@ -112,7 +112,7 @@ Scenario('changes a ToDo item subject', async (I) => {
   I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム２')
 }).tag('@smoke')
 
-Scenario('re-order ToDo items', async (I) => {
+Scenario('re-order ToDo items', async ({ I }) => {
   let storageData
   I.registerNewSubject('テストアイテム１')
   I.registerNewSubject('テストアイテム２')
@@ -138,7 +138,7 @@ Scenario('re-order ToDo items', async (I) => {
   I.seeEqual(storageData.todo.items[1].subject, 'テストアイテム１')
 }).tag('@smoke')
 
-Scenario('removes a ToDo item and the list is empty', async (I) => {
+Scenario('removes a ToDo item and the list is empty', async ({ I }) => {
   let storageData
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
@@ -153,7 +153,7 @@ Scenario('removes a ToDo item and the list is empty', async (I) => {
   I.see('ToDoは登録されていません', { css: '#empty-message' })
 }).tag('@smoke')
 
-Scenario('removes a ToDo item and another ToDo item remains in the list', async (I) => {
+Scenario('removes a ToDo item and another ToDo item remains in the list', async ({ I }) => {
   let storageData
   I.registerNewSubject('テストアイテム１')
   I.registerNewSubject('テストアイテム２')
@@ -172,7 +172,7 @@ Scenario('removes a ToDo item and another ToDo item remains in the list', async 
   I.dontSee('ToDoは登録されていません')
 })
 
-Scenario('stores a ToDo item after logging out/in', async (I) => {
+Scenario('stores a ToDo item after logging out/in', async ({ I }) => {
   let timestamp
   let storageData
   I.registerNewSubject('テストアイテム１')
@@ -208,14 +208,14 @@ Scenario('stores a ToDo item after logging out/in', async (I) => {
   I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
 })
 
-Scenario('adds the ToDo item which has maximum number of characters', async (I) => {
+Scenario('adds the ToDo item which has maximum number of characters', async ({ I }) => {
   I.registerNewSubject('1234567890ABCDE')
   I.seeInField({ css: '.todo-subject' }, '1234567890ABCDE')
   const storageData = await I.grabTodoLocalStorage()
   I.seeEqual(storageData.todo.items[0].subject, '1234567890ABCDE')
 })
 
-Scenario('tries to add the ToDo item which has exceeded the number of characters', async (I) => {
+Scenario('tries to add the ToDo item which has exceeded the number of characters', async ({ I }) => {
   I.registerNewSubject('1234567890ABCDEF')
   I.seeInField({ css: '.todo-subject' }, '1234567890ABCDE')
   const storageData = await I.grabTodoLocalStorage()
@@ -230,14 +230,14 @@ subjects.add(['Ａｱ@&lt;(&copy;)'])
 subjects.add(['亜,\'&amp;㈱£𠀋表\''])
 subjects.add(['<span>🍺</span>'])
 
-Data(subjects).Scenario('adds the ToDo item which has each character type', async (I, current) => {
+Data(subjects).Scenario('adds the ToDo item which has each character type', async ({ I, current }) => {
   I.registerNewSubject(current.subject)
   I.seeInField({ css: '.todo-subject' }, current.subject)
   const storageData = await I.grabTodoLocalStorage()
   I.seeEqual(storageData.todo.items[0].subject, current.subject)
 })
 
-Scenario('adds maximum number of Todo items', async (I) => {
+Scenario('adds maximum number of Todo items', async ({ I }) => {
   let storageData
 
   for (let i = 1; i < 6; i++) {
@@ -253,7 +253,7 @@ Scenario('adds maximum number of Todo items', async (I) => {
   I.dontSeeElement({ css: 'input#subject-input' })
 })
 
-Scenario('tries to change a ToDo item subject to empty', async (I) => {
+Scenario('tries to change a ToDo item subject to empty', async ({ I }) => {
   let storageData
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')

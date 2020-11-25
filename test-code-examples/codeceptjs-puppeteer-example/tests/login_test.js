@@ -1,6 +1,6 @@
 Feature('Login view test.js @login @desktop')
 
-Scenario('displays "Login" page', (I) => {
+Scenario('displays "Login" page', ({ I }) => {
   I.amOnPage('/login')
   I.seeTitleEquals('Login | test automation exercise site')
   I.seeElement({ css: 'header .navbar' })
@@ -14,7 +14,7 @@ Scenario('displays "Login" page', (I) => {
   I.see('© 2019 Polar Tech', { css: 'footer' })
 }).tag('@smoke')
 
-Scenario('moves to TodoList view and sets auth token cookie after selecting "Login" button with correct ID and Password', async (I) => {
+Scenario('moves to TodoList view and sets auth token cookie after selecting "Login" button with correct ID and Password', async ({ I }) => {
   I.amOnPage('/login')
   I.fillField('ユーザーIDを入力してください', 'testID')
   I.fillField('パスワードを入力してください', 'testPASS')
@@ -28,7 +28,7 @@ Scenario('moves to TodoList view and sets auth token cookie after selecting "Log
   I.seeEqual(cookieValue.auth.token, 'dummy-token')
 }).tag('@smoke')
 
-Scenario('shows error message after selecting "Login" button with wrong ID and Password', (I) => {
+Scenario('shows error message after selecting "Login" button with wrong ID and Password', ({ I }) => {
   I.amOnPage('/login')
   I.fillField('ユーザーIDを入力してください', 'foo')
   I.fillField('パスワードを入力してください', 'boo')
@@ -38,7 +38,7 @@ Scenario('shows error message after selecting "Login" button with wrong ID and P
   I.see('ログインエラー\nユーザーIDまたはパスワードが違います', { css: '.error-message' })
 })
 
-Scenario('shows require log-in message if user accessed Login view by redirect', (I) => {
+Scenario('shows require log-in message if user accessed Login view by redirect', ({ I }) => {
   I.amOnPage('/todo')
   I.seeTitleEquals('Login | test automation exercise site')
   I.see('ログインが必要です', { css: '#require-message' })
