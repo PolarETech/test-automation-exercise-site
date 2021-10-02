@@ -1,16 +1,19 @@
 {
   "name": "codeceptjs-puppeteer-example",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "test": "codeceptjs run --steps"
   },
   "license": "MIT",
   "devDependencies": {
-    "codeceptjs": "^3.0.2",
-    "dayjs": "^1.9.6",
-    "eslint": "^7.14.0",
+    "codeceptjs": "~3.0.7",
+    "dayjs": "^1.10.7",
+    "eslint": "^7.32.0",
     "eslint-plugin-codeceptjs": "^1.3.0",
-    "puppeteer": "^5.5.0"
+    "puppeteer": "^10.4.0"
+  },
+  "engines": {
+    "node": ">=12.6"
   }
 }
