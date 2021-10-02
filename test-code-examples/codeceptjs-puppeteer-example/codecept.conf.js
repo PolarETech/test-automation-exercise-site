@@ -18,5 +18,5 @@ exports.config = {
   },
   bootstrap: null,
   mocha: {},
-  name: 'codeceptjs-puppeteerpexample',
+  name: 'codeceptjs-puppeteer-example',
 }
