@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   plugins: [
     'cucumber',
   ],
@@ -16,5 +16,6 @@ module.exports = {
     'cucumber/no-arrow-functions': 2,
   },
   parserOptions: {
+    'requireConfigFile': false,
   }
 }
