@@ -62,7 +62,7 @@ export default {
             newSubject
           })
         } else {
-          // Restore the original string if inpur value is empty
+          // Restore the original string if input value is empty
           e.target.value = item.subject
         }
       }

@@ -12,24 +12,16 @@
             </div>
 
             <div class="column link-buttons">
-              <router-link
-                class="button"
-                id="about-button"
-                tag="button"
-                to="/about"
-                ontouchstart
-              >
-                このサイトについて - About
+              <router-link to="/about" custom v-slot="{ navigate }">
+                <button @click="navigate" class="button" id="about-button" role="link" ontouchstart>
+                  このサイトについて - About
+                </button>
               </router-link>
 
-              <router-link
-                class="button"
-                id="todo-button"
-                tag="button"
-                to="/todo"
-                ontouchstart
-              >
-                テストコンテンツ - TodoList
+              <router-link to="/todo" custom v-slot="{ navigate }">
+                <button @click="navigate" class="button" id="todo-button" role="link" ontouchstart>
+                  テストコンテンツ - TodoList
+                </button>
               </router-link>
             </div>
           </div>
@@ -44,11 +36,13 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
-  head: {
-    title: {
-      inner: 'Home'
-    }
+  setup () {
+    useHead({
+      title: 'Home | test automation exercise site'
+    })
   }
 }
 </script>

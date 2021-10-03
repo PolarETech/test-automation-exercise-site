@@ -1,17 +1,15 @@
 <template>
-  <div id="app">
-    <header>
-      <navbar/>
-    </header>
+  <header>
+    <navbar/>
+  </header>
 
-    <router-view/>
+  <router-view/>
 
-    <footer class="footer">
-      <div class="content has-text-centered">
-        <p>© 2019 Polar Tech</p>
-      </div>
-    </footer>
-  </div>
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>© 2019 Polar Tech</p>
+    </div>
+  </footer>
 </template>
 
 <script>

@@ -122,11 +122,13 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
-  head: {
-    title: {
-      inner: 'About'
-    }
+  setup () {
+    useHead({
+      title: 'About | test automation exercise site'
+    })
   }
 }
 </script>
@@ -152,7 +154,7 @@ h1.title.is-4 {
 .content h2:not(:first-child) {
   margin-top: 2rem;
 }
-.b-tabs ::v-deep .tabs {
+.b-tabs :deep(.tabs) {
   li.is-active a {
     color: #01653d;
     border-bottom-color: #01653d;

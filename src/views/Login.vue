@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head'
+
 export default {
   data () {
     return {
@@ -68,10 +70,10 @@ export default {
       loading: false
     }
   },
-  head: {
-    title: {
-      inner: 'Login'
-    }
+  setup () {
+    useHead({
+      title: 'Login | test automation exercise site'
+    })
   },
   methods: {
     async login () {
@@ -139,8 +141,8 @@ form {
     }
   }
 }
-form ::v-deep {
-  input {
+form {
+  :deep(input) {
     &:active,
     &:focus {
       border-color: #01653d;
@@ -150,8 +152,9 @@ form ::v-deep {
       color: cadetblue;
     }
   }
+  :deep(
   .mdi-eye,
-  .mdi-eye-off {
+  .mdi-eye-off) {
     color: #dbdbdb;
   }
 }

@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
 
@@ -69,10 +70,10 @@ export default {
       subject: ''
     }
   },
-  head: {
-    title: {
-      inner: 'TodoList'
-    }
+  setup () {
+    useHead({
+      title: 'TodoList | test automation exercise site'
+    })
   },
   methods: {
     ...mapActions({
