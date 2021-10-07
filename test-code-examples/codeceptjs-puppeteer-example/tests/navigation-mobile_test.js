@@ -46,9 +46,9 @@ Scenario('moves to Home view and unsets auth token cookie after selecting "Logou
   I.click({ css: '.navbar-burger' })
   I.click('Logout', { css: '.navbar-menu' })
   I.seeTitleEquals('Home | test automation exercise site')
-  I.see('ログアウトしました', { css: '.toast' })
-  // the Buefy toast should disappear after 2000ms
-  I.waitForDetached({ css: '.toast' }, 3)
+  I.see('ログアウトしました', { css: '.p-toast-message' })
+  // the PrimeVue toast should disappear after 2000ms
+  I.waitForDetached({ css: '.p-toast-message' }, 3)
   I.seeCookie('PtExampleToken')
   const cookie = await I.grabCookie('PtExampleToken')
   const cookieValue = JSON.parse(decodeURI(cookie.value))
