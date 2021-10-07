@@ -3,29 +3,34 @@
     <section>
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
-        <b-icon icon="check-circle"></b-icon>ToDoリスト
+        <span class="icon pi pi-check-circle"></span>ToDoリスト
       </h1>
 
-      <p class="info-message"
-        id="empty-message"
-        v-if="items.length == 0"
-      >
-        {{ this.$store.state.message.emptyItem }}
-      </p>
+      <template v-if="todoItems.length == 0">
+        <p class="info-message"
+          id="empty-message"
+        >
+          {{ this.$store.state.message.emptyItem }}
+        </p>
+      </template>
 
-      <draggable
-        class="todo-list"
-        handle=".drag-icon"
-        tag="ul"
-        v-model="items"
-        v-else
-      >
-        <item v-for="item in items" :item="item" :key="item.id" />
-      </draggable>
+      <template v-else>
+        <draggable
+          class="todo-list"
+          handle=".drag-icon"
+          tag="ul"
+          v-model="todoItems"
+          item-key="id"
+        >
+          <template #item="{element}">
+            <TodoListItems :item="element" />
+          </template>
+        </draggable>
+      </template>
 
       <form
         class="add-todo"
-        v-show="items.length < 5"
+        v-show="todoItems.length < 5"
         @submit.prevent="addTodoItem"
       >
         <button
@@ -34,7 +39,7 @@
           :disabled="subject.length == 0"
           aria-label="add new todo item"
         >
-          <b-icon icon="plus-box" type="is-small"></b-icon>
+          <span class="icon pi pi-plus-circle"></span>
         </button>
 
         <input
@@ -48,7 +53,7 @@
         />
       </form>
 
-      <p id="item-count">登録件数：{{ items.length }} / 5 件</p>
+      <p id="item-count">登録件数：{{ todoItems.length }} / 5 件</p>
     </section>
   </div>
 </template>
@@ -58,11 +63,17 @@ import { mapActions } from 'vuex'
 import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
+import { configureCompat } from 'vue'
+
+configureCompat({
+  COMPONENT_V_MODEL: false,
+  RENDER_FUNCTION: false
+})
 
 export default {
   name: 'TodoList',
   components: {
-    item: TodoListItems,
+    TodoListItems,
     draggable
   },
   data () {
@@ -86,12 +97,12 @@ export default {
     })
   },
   computed: {
-    items: {
+    todoItems: {
       get () {
         return this.$store.getters['todo/GET_TODO_ITEMS']
       },
-      set (items) {
-        this.$store.dispatch('todo/SET_TODO_ITEMS', items)
+      set (todoItems) {
+        this.$store.dispatch('todo/SET_TODO_ITEMS', todoItems)
       }
     }
   }
@@ -110,6 +121,9 @@ section {
   width: 19rem;
   margin: 0 auto;
   text-align: center;
+}
+:deep(.p-component) {
+  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
 }
 h1.title.is-4 {
   margin: 0;
@@ -134,6 +148,7 @@ form {
     vertical-align: middle;
     .icon {
       color: #01653d;
+      font-size: 1.2rem;
       transition: 0.2s ease-in-out;
     }
     &:disabled .icon {

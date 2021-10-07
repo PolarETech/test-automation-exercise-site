@@ -62,11 +62,18 @@
       </svg>
     </div>
   </div>
+
+  <Toast position="top-center" />
 </template>
 
 <script>
+import Toast from 'primevue/toast'
+
 export default {
   name: 'NavBar',
+  components: {
+    Toast
+  },
   data () {
     return {
       isNavMenuOpen: false
@@ -84,10 +91,9 @@ export default {
     async logout (dispatch) {
       this.$store.dispatch('auth/LOGOUT')
       this.$router.push('/')
-      this.$buefy.toast.open({
-        message: 'ログアウトしました',
-        position: 'is-top',
-        type: 'is-dark'
+      this.$toast.add({
+        detail: 'ログアウトしました',
+        life: 2000
       })
     }
   },
@@ -134,6 +140,26 @@ export default {
       color: khaki;
       font-weight: bold;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.p-toast.p-toast-top-center {
+  width: 12rem;
+  .p-toast-message {
+    border: none;
+    background-color: hsl(0, 0%, 29%);
+    color: hsl(0, 0%, 98%);
+  }
+  .p-toast-message-icon,
+  .p-toast-icon-close {
+    display: none;
+  }
+  .p-toast-message-text,
+  .p-toast-detail {
+    margin: 0 !important;
+    text-align: center;
   }
 }
 </style>

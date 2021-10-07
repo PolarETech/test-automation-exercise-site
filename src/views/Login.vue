@@ -3,7 +3,7 @@
     <section>
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
-        <b-icon icon="account-circle"></b-icon>ログイン
+        <span class="icon pi pi-user"></span>ログイン
       </h1>
 
       <p class="info-message" id="require-message" v-if="this.$route.query.message">
@@ -11,38 +11,41 @@
       </p>
 
       <form class="login-form" @submit.prevent="login">
-        <b-field label="ユーザーID">
-          <b-input
+        <div class="p-field">
+          <label for="user-id-input">ユーザーID</label>
+          <InputText
+            type="text"
             id="user-id-input"
             name="id-field"
             autofocus
             placeholder="ユーザーIDを入力してください"
             v-model="userId"
-            aria-label="input user id">
-          </b-input>
-        </b-field>
+            aria-label="input user id"
+          />
+        </div>
 
-        <b-field label="パスワード">
-          <b-input
+        <div class="p-field">
+          <label for="password-input">パスワード</label>
+          <Password
             id="password-input"
             name="pw-field"
-            type="password"
-            password-reveal
             placeholder="パスワードを入力してください"
+            :feedback="false"
+            toggleMask
             v-model="password"
-            aria-label="input password">
-          </b-input>
-        </b-field>
+            aria-label="input password"
+          />
+        </div>
 
-        <b-button
+        <Button
+          class="p-button-outlined"
           id="login-submit"
           name="login-btn"
-          native-type="submit"
+          type="submit"
           :disabled="!userId || !password"
           :loading="loading"
-        >
-          ログイン
-        </b-button>
+          label="ログイン"
+        />
       </form>
 
       <p class="error-message has-text-danger"
@@ -50,19 +53,34 @@
         v-html="this.$store.state.message.loginError">
       </p>
 
-      <b-message title="Info" aria-close-label="Close message">
-        このログイン画面はテスト用のダミーです。以下のユーザー情報でログインできます。<br>
-        ユーザーID：testID<br>
-        パスワード：testPASS
-      </b-message>
+      <Panel header="Info">
+        <p>このログイン画面はテスト用のダミーです。以下のユーザー情報でログインできます。<br>
+        ユーザーID : testID<br>
+        パスワード : testPASS</p>
+      </Panel>
     </section>
   </div>
 </template>
 
 <script>
 import { useHead } from '@vueuse/head'
+import InputText from 'primevue/inputtext'
+import Password from '@/components/Password.vue'
+import Button from 'primevue/button'
+import Panel from 'primevue/panel'
+import { configureCompat } from 'vue'
+
+configureCompat({
+  COMPONENT_V_MODEL: false
+})
 
 export default {
+  components: {
+    InputText,
+    Password,
+    Button,
+    Panel
+  },
   data () {
     return {
       userId: '',
@@ -108,12 +126,14 @@ export default {
   background-color: #f4efef;
 }
 section {
-  width: 80vw;
   margin: 0 auto;
   text-align: center;
 }
+:deep(.p-component) {
+  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+}
 h1.title.is-4 {
-  margin: 0;
+  margin: 0 auto;
   padding: 0.8rem 0;
   color: #01653d;
   .icon {
@@ -124,16 +144,34 @@ form {
   width: 20rem;
   max-width: 80vw;
   margin: 1rem auto;
-  .field {
-    text-align: left;
-  }
-  .button {
+  .p-field {
     margin-top: 1rem;
+    text-align: left;
+    * {
+      display: block;
+    }
+    label {
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      line-height: 1.5rem;
+    }
+    :deep(input) {
+      width: 100%;
+    }
+  }
+  .p-button.p-button-outlined {
+    margin-top: 2rem;
     border-color: #01653d;
+    background: #ffffff;
     color: #01653d;
     transition: 0.2s ease-in-out;
+    &:enabled:active,
+    &:enabled:hover {
+      background: #ffffff;
+    }
     &:disabled {
       border-color: #dbdbdb;
+      background: #ffffff;
       color: #363636;
     }
     &::-moz-focus-inner {
@@ -141,27 +179,18 @@ form {
     }
   }
 }
-form {
-  :deep(input) {
-    &:active,
-    &:focus {
-      border-color: #01653d;
-    }
-    &:focus ~ .icon > .mdi-eye,
-    &:focus ~ .icon > .mdi-eye-off {
-      color: cadetblue;
-    }
-  }
-  :deep(
-  .mdi-eye,
-  .mdi-eye-off) {
-    color: #dbdbdb;
-  }
-}
 .error-message {
   margin: 1rem 0;
 }
-article.message {
-  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+:deep(.p-panel) {
+  max-width: 46rem;
+  margin: 3rem auto 1rem;
+  box-shadow: 0 1px 3px 1px hsla(0, 0%, 71%, 0.1);
+  .p-panel-header {
+    background-color: hsl(0, 0%, 29%);
+  }
+  .p-panel-title {
+    color: hsl(0, 0%, 98%);
+  }
 }
 </style>

@@ -3,8 +3,8 @@
     <section>
       <h1 class="title is-4">このサイトについて</h1>
 
-      <b-tabs position="is-centered">
-        <b-tab-item label="テストコンテンツ">
+      <TabView scrollable>
+        <TabPanel header="テストコンテンツ">
           <div class="content">
             <h2 class="subtitle is-5">テストコンテンツの利用について</h2>
             <p>
@@ -36,9 +36,9 @@
               <li>メニューバーのLogoutをクリックすると、ログアウトしてHome画面へ移動します。</li>
             </ul>
           </div>
-        </b-tab-item>
+        </TabPanel>
 
-        <b-tab-item label="動作環境">
+        <TabPanel header="動作環境">
           <div class="content">
             <h2 class="subtitle is-5">動作環境</h2>
             <p>
@@ -55,9 +55,9 @@
               ブラウザのJavaScript設定を無効にしている場合は正しく機能しません。
             </p>
           </div>
-        </b-tab-item>
+        </TabPanel>
 
-        <b-tab-item label="著作権と免責事項">
+        <TabPanel header="著作権と免責事項">
           <div class="content">
             <h2 class="subtitle is-5">著作権</h2>
             <p>
@@ -71,9 +71,9 @@
               本サイトを利用することによって生じたいかなる損害についても、一切の責任を負いません。
             </p>
           </div>
-        </b-tab-item>
+        </TabPanel>
 
-        <b-tab-item label="技術情報">
+        <TabPanel header="技術情報">
           <div class="content">
             <h2 class="subtitle is-5">ソースコードの公開について</h2>
             <p>
@@ -98,7 +98,9 @@
               <li>Vue.js</li>
               <li>Vue CLI 3</li>
               <li>Vuex</li>
-              <li>Buefy</li>
+              <li>PrimeVue</li>
+              <li>Bulma</li>
+              <!-- <li>Buefy</li> -->
               <li>Jest</li>
               <li>Cypress</li>
               <li>HTML5</li>
@@ -114,8 +116,8 @@
               <li>Responsive Web Design (RWD)</li>
             </ul>
           </div>
-        </b-tab-item>
-      </b-tabs>
+        </TabPanel>
+      </TabView>
 
     </section>
   </div>
@@ -123,8 +125,14 @@
 
 <script>
 import { useHead } from '@vueuse/head'
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
 
 export default {
+  components: {
+    TabView,
+    TabPanel
+  },
   setup () {
     useHead({
       title: 'About | test automation exercise site'
@@ -147,6 +155,9 @@ section {
   border-radius: 6px;
   background-color: #fcfcfd;
 }
+:deep(.p-component) {
+  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+}
 h1.title.is-4 {
   margin: 0;
   padding: 0.8rem 0 0.8rem 0.5rem;
@@ -154,10 +165,20 @@ h1.title.is-4 {
 .content h2:not(:first-child) {
   margin-top: 2rem;
 }
-.b-tabs :deep(.tabs) {
-  li.is-active a {
-    color: #01653d;
+:deep(.p-tabview-nav) {
+  li.p-highlight a.p-tabview-nav-link:not(.p-disabled) {
     border-bottom-color: #01653d;
+    &:focus {
+      box-shadow: none;
+    }
+    .p-tabview-title {
+      color: #01653d;
+    }
+  }
+}
+:deep(.p-tabview-nav-next) {
+  @media screen and (min-width: 769px) {
+    display: none;
   }
 }
 </style>

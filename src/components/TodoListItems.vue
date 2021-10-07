@@ -1,10 +1,8 @@
 <template>
   <li :class="{ is_done: item.isDone }" :id="item.id">
-    <b-icon class="drag-icon"
-      :id="'dg-' + item.id"
-      icon="drag-vertical"
-      size="is-small">
-    </b-icon>
+    <span class="icon pi pi-ellipsis-v drag-icon" :id="'dg-' + item.id">
+      <i class="pi pi-ellipsis-v drag-icon_right"></i>
+    </span>
 
     <input
       class="todo-check"
@@ -29,7 +27,7 @@
       <span class="todo-timestamp" :id="'ts-' + item.id">確認日時：{{ item.timestamp }}</span>
 
       <button class="todo-remove" :id="'rm-' + item.id" @click="REMOVE_TODO_ITEM(item)">
-        <b-icon class="remove-icon" icon="delete" size="is-small"></b-icon>
+        <span class="icon pi pi-trash remove-icon"></span>
       </button>
     </div>
 
@@ -77,13 +75,20 @@ li {
   list-style-type: none;
   .icon {
     color: gray;
-  }
-  .drag-icon {
-    width: 16px;
-    height: 18px;
-    transform: scale(1.3);
-    vertical-align: middle;
-    cursor: move;
+    &.drag-icon {
+      width: 16px;
+      height: 18px;
+      transform: scale(0.9);
+      vertical-align: middle;
+      letter-spacing: -0.6rem;
+      cursor: move;
+    }
+    .drag-icon_right {
+      letter-spacing: -0.1rem;
+    }
+    &.remove-icon {
+      font-size: 0.6rem;
+    }
   }
   input[type=checkbox] {
     appearance: none;
@@ -154,7 +159,7 @@ li {
       font-size: small;
     }
     .todo-remove {
-      margin: 0.5rem;
+      margin: 0.3rem;
       padding: 0rem;
       transform: scale(1.3);
       border: 0;

@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import { createHead } from '@vueuse/head'
 import App from './App.vue'
-import Buefy from 'buefy'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import VueGtag from 'vue-gtag'
 import '@/assets/style.scss'
 import router from './router'
@@ -14,7 +15,9 @@ app.use(head)
 app.use(router)
 app.use(store)
 
-app.use(Buefy)
+app.use(PrimeVue)
+app.use(ToastService)
+
 app.use(VueGtag, {
   config: {
     id: 'UA-144246391-1',
