@@ -33,12 +33,12 @@ describe('Navigation menu test', () => {
       cy.visit('/')
       cy.contains('a', 'Logout').click()
       cy.title().should('eq', 'Home | test automation exercise site')
-      cy.get('.toast')
+      cy.get('.p-toast-message')
         .should('be.visible')
         .should('contain', 'ログアウトしました')
-      // the Buefy toast should disappear after 2000ms
-      cy.wait(2000)
-      cy.get('.toast').should('not.be.visible')
+      // the PrimeVue toast should disappear after 2000ms
+      cy.wait(2500)
+      cy.get('.p-toast-message').should('not.be.visible')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {
@@ -108,12 +108,12 @@ describe('Navigation menu test', () => {
       cy.get('.navbar-burger').click()
       cy.contains('a', 'Logout').click()
       cy.title().should('eq', 'Home | test automation exercise site')
-      cy.get('.toast')
+      cy.get('.p-toast-message')
         .should('be.visible')
         .should('contain', 'ログアウトしました')
-      // the Buefy toast should disappear after 2000ms
-      cy.wait(2000)
-      cy.get('.toast').should('not.be.visible')
+      // the PrimeVue toast should disappear after 2000ms
+      cy.wait(2500)
+      cy.get('.p-toast-message').should('not.be.visible')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {
