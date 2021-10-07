@@ -8,9 +8,9 @@ module.exports = class AboutPage extends BasePage {
     this.path = '/about'
 
     this.locators = {
-      'About-Tab': By.css('nav.tabs li'),
+      'About-Tab': By.css('ul.p-tabview-nav li[role = "presentation"]'),
       'Tab-Content-Transitioning': By.css('section.tab-content.is-transitioning'),
-      'Tab-Items': By.css('.tab-item'),
+      'Tab-Items': By.css('.p-tabview-panel'),
       'Tab-Item-Headers': By.css('h2'),
     }
 
@@ -49,6 +49,9 @@ module.exports = class AboutPage extends BasePage {
     ]
   }
 
+  // NOTE:
+  // Buefy has the tab transition state,
+  // but PrimeVue does not have the state at v3.8.0.
   async waitTabTransition (world) {
     const locator = this.getTargetLocator('Tab-Content-Transitioning')
 

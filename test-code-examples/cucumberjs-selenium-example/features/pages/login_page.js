@@ -12,7 +12,8 @@ module.exports = class LoginPage extends BasePage {
       'Password-Input-Form': By.css('#password-input'),
       'Require-Login-Message': By.css('#require-message'),
       'Login-Error-Message': By.css('.error-message'),
-      'Login-Button': By.xpath('//button[normalize-space(.)="ログイン"]')
+      'Login-Button': By.xpath('//button[normalize-space(.)="ログイン"]'),
+      'Login-Button-With-Loading-Icon': By.css('#login-submit .p-button-loading-icon')
     }
 
     this.text = {

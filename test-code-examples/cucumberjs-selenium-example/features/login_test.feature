@@ -30,7 +30,10 @@ Feature: Login view test
     When I input the invalid user id in the Login view
     And I input the invalid user password in the Login view
     And I click the Login-Button in the Login view
-    Then the Login-Error-Message should be displayed in the Login view
+    Then the Login-Button-With-Loading-Icon should be displayed in the Login view
+    When I wait for 3 seconds
+    Then the Login-Button-With-Loading-Icon should NOT be displayed in the Login view
+    And the Login-Error-Message should be displayed in the Login view
     And the Login-Error-Message should have the correct text errorMessage in the Login view
 
   Scenario: shows require log-in message if user accessed Login view by redirect

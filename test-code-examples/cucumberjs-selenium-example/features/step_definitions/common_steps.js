@@ -194,7 +194,7 @@ Then('the {word} should be disabled in the {word} view', async function (target,
 
 Then('the {string} toast should be pop-up', async function (text) {
   let actual = null
-  const locator = By.xpath(`//div[contains(@class, "toast") and normalize-space(.)="${text}"]`)
+  const locator = By.xpath(`//div[contains(@class, "p-toast-message") and normalize-space(.)="${text}"]`)
 
   actual = await this.driver
     .wait(
@@ -206,7 +206,7 @@ Then('the {string} toast should be pop-up', async function (text) {
 
   assert.ok(actual)
 
-  // the Buefy toast should disappear after 2000ms
+  // the PrimeVue toast should disappear after 2000ms
   const element = await this.driver.findElement(locator)
   actual = await this.driver
     .wait(
@@ -216,6 +216,10 @@ Then('the {string} toast should be pop-up', async function (text) {
     )
 
   assert.ok(actual)
+})
+
+When('I wait for {float} seconds', async function (time) {
+  await new Promise(resolve => setTimeout(resolve, time * 1000))
 })
 
 /*****************************
