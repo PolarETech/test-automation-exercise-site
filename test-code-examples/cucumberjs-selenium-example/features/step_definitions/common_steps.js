@@ -196,18 +196,24 @@ Then('the {string} toast should be pop-up', async function (text) {
   let actual = null
   const locator = By.xpath(`//div[contains(@class, "p-toast-message") and normalize-space(.)="${text}"]`)
 
-  actual = await this.driver
+  const element = await this.driver
     .wait(
       until.elementLocated(locator),
       10000,
-      `the "${text}" toast does not appear.`
+      `the "${text}" toast element is not added to the DOM.`
+    )
+
+  actual = await this.driver
+    .wait(
+      until.elementIsVisible(element),
+      10000,
+      `the "${text}" toast does not become visible.`
     )
     .isDisplayed()
 
   assert.ok(actual)
 
   // the PrimeVue toast should disappear after 2000ms
-  const element = await this.driver.findElement(locator)
   actual = await this.driver
     .wait(
       until.stalenessOf(element),

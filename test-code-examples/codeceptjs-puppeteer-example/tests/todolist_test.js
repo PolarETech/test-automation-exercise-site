@@ -29,8 +29,9 @@ Scenario('adds a ToDo item', async ({ I }) => {
   I.waitForEnabled({ css: 'button#subject-submit' })
 
   // NOTE:
-  // await is required to adjust the timing of assignment to the timestamp variable
+  // await are required to adjust the timing of assignment to the timestamp variable
   await I.click({ css: 'button#subject-submit' })
+  await I.wait(0.01)
   timestamp = dayjs(new Date()).format('YYYY/MM/DD HH:mm:ss')
 
   I.waitForElement({ css: '.todo-list' })
@@ -178,8 +179,9 @@ Scenario('stores a ToDo item after logging out/in', async ({ I }) => {
   I.registerNewSubject('テストアイテム１')
 
   // NOTE:
-  // await is required to adjust the timing of assignment to the timestamp variable
+  // await are required to adjust the timing of assignment to the timestamp variable
   await I.click({ css: '.todo-check+label' })
+  await I.wait(0.01)
   timestamp = dayjs(new Date()).format('YYYY/MM/DD HH:mm:ss')
 
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
