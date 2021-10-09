@@ -1,8 +1,10 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-import Buefy from 'buefy'
+import { mount } from '@vue/test-utils'
+import { createStore } from 'vuex'
+import { createHead } from '@vueuse/head'
+import PrimeVue from 'primevue/config'
 import TodoList from '@/views/TodoList.vue'
-import flushPromises from 'flush-promises'
+
+const head = createHead()
 
 const dummyItem = {
   id: 0,
@@ -28,10 +30,6 @@ const dummyItems = [
 
 const dummyEmptyMessage = 'dummy-empty'
 const dummyRequireMessage = 'dummy-require'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
-localVue.use(Buefy)
 
 const todoActions = {
   ADD_TODO_ITEM: jest.fn(),
@@ -68,19 +66,25 @@ describe('TodoList.vue', () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    wrapper.unmount()
   })
 
   describe('a todo item is registered', () => {
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules
         }
       })
 
-      wrapper = shallowMount(TodoList, {
-        store,
-        localVue
+      wrapper = mount(TodoList, {
+        global: {
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 
@@ -116,29 +120,25 @@ describe('TodoList.vue', () => {
 
       test('disable "register" button before input new subject', () => {
         const submit = wrapper.find('#subject-submit')
-        expect(submit.attributes().disabled).toBe('disabled')
+        expect(submit.attributes().disabled).toBe('') // WARNING: Suspicious behavior of @vue/test-utils v2.0.0-rc.15
       })
 
       test('enable "register" button when input new subject', async () => {
         const submit = wrapper.find('#subject-submit')
-        expect(submit.attributes().disabled).toBe('disabled')
-        wrapper.find('#subject-input').setValue('test')
-        await flushPromises()
+        expect(submit.attributes().disabled).toBe('') // WARNING: Suspicious behavior of @vue/test-utils v2.0.0-rc.15
+        await wrapper.find('#subject-input').setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "register" button when clear/input new subject', async () => {
         const el = wrapper.find('#subject-input')
         const submit = wrapper.find('#subject-submit')
-        el.setValue('test')
-        await flushPromises()
+        await el.setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
 
-        el.setValue('')
-        await flushPromises()
-        expect(submit.attributes().disabled).toBe('disabled')
-        el.setValue('test')
-        await flushPromises()
+        await el.setValue('')
+        expect(submit.attributes().disabled).toBe('') // WARNING: Suspicious behavior of @vue/test-utils v2.0.0-rc.15
+        await el.setValue('test')
         expect(submit.attributes().disabled).toBeUndefined()
       })
     })
@@ -147,18 +147,16 @@ describe('TodoList.vue', () => {
       test('should not call "todo/ADD_TODO_ITEM" when submit with empty subject', async () => {
         const el = wrapper.find('#subject-input')
         const newSubject = ''
-        el.setValue(newSubject)
-        wrapper.find('.add-todo').trigger('submit.prevent')
-        await flushPromises()
+        await el.setValue(newSubject)
+        await wrapper.find('.add-todo').trigger('submit.prevent')
         expect(todoActions.ADD_TODO_ITEM).not.toBeCalled()
       })
 
       test('call store action "todo/ADD_TODO_ITEM" with correct args when submit', async () => {
         const el = wrapper.find('#subject-input')
         const newSubject = 'test'
-        el.setValue(newSubject)
-        wrapper.find('.add-todo').trigger('submit.prevent')
-        await flushPromises()
+        await el.setValue(newSubject)
+        await wrapper.find('.add-todo').trigger('submit.prevent')
         expect(todoActions.ADD_TODO_ITEM).toBeCalledWith(
           expect.anything(),
           expect.stringMatching(newSubject)
@@ -168,9 +166,9 @@ describe('TodoList.vue', () => {
     })
 
     describe('set todo control', () => {
-      test('call store action "todo/SET_TODO_ITEMS" with correct args when change items', async () => {
-        wrapper.setData({ items: dummyItems })
-        await flushPromises()
+      test('call store action "todo/SET_TODO_ITEMS" with correct args when change todoItems', async () => {
+        // await wrapper.vm.setData({ todoItems: dummyItems })
+        wrapper.vm.todoItems = dummyItems
         expect(todoActions.SET_TODO_ITEMS).toBeCalledWith(
           expect.anything(),
           expect.objectContaining(dummyItems)
@@ -187,7 +185,7 @@ describe('TodoList.vue', () => {
     }
 
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules,
           todo: {
@@ -201,9 +199,14 @@ describe('TodoList.vue', () => {
         }
       })
 
-      wrapper = shallowMount(TodoList, {
-        store,
-        localVue
+      wrapper = mount(TodoList, {
+        global: {
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 

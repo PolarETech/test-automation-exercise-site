@@ -1,8 +1,10 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-import Buefy from 'buefy'
+import { mount } from '@vue/test-utils'
+import { createStore } from 'vuex'
+import { createHead } from '@vueuse/head'
+import PrimeVue from 'primevue/config'
 import Login from '@/views/Login.vue'
-import flushPromises from 'flush-promises'
+
+const head = createHead()
 
 const correctID = 'testID'
 const correctPass = 'testPASS'
@@ -10,10 +12,6 @@ const wrongID = 'foo'
 const wrongPass = 'boo'
 const dummyRequireMessage = 'dummy-require'
 const dummyUserErrorMessage = 'dummy-user-error'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
-localVue.use(Buefy)
 
 const actions = {
   LOGIN: jest.fn((commit, data) => {
@@ -61,22 +59,29 @@ describe('Login.vue', () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    wrapper.unmount()
   })
 
   describe('directly access login page', () => {
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules
         }
       })
 
-      wrapper = shallowMount(Login, {
-        mocks: {
-          ...getMocks()
-        },
-        store,
-        localVue
+      wrapper = mount(Login, {
+        shallow: true,
+        global: {
+          mocks: {
+            ...getMocks()
+          },
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 
@@ -84,6 +89,12 @@ describe('Login.vue', () => {
       test('show "Login" vue', () => {
         expect(wrapper.findComponent(Login).exists()).toBeTruthy()
         expect(wrapper.vm.login).toBeTruthy()
+      })
+
+      test('show elements', () => {
+        expect(wrapper.find('#user-id-input').exists()).toBeTruthy()
+        expect(wrapper.find('#password-input').exists()).toBeTruthy()
+        expect(wrapper.find('#login-submit').exists()).toBeTruthy()
       })
 
       test('hide "require log-in" message', () => {
@@ -98,81 +109,69 @@ describe('Login.vue', () => {
       })
 
       test('disable "login" button before input ID and Password', () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        expect(submit.attributes().disabled).toBeTruthy()
+        const submit = wrapper.find('#login-submit')
+        expect(submit.attributes().disabled).toBe('true')
       })
 
       test('disable "login" button when input only ID', async () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        wrapper.setData({ userId: wrongID })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeTruthy()
+        const submit = wrapper.find('#login-submit')
+        await wrapper.setData({ userId: wrongID })
+        expect(submit.attributes().disabled).toBe('true')
       })
 
       test('disable "login" button when input only Password', async () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        wrapper.setData({ password: wrongPass })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeTruthy()
+        const submit = wrapper.find('#login-submit')
+        await wrapper.setData({ password: wrongPass })
+        expect(submit.attributes().disabled).toBe('true')
       })
 
       test('enable "login" button when input ID and Password', async () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        wrapper.setData({ userId: wrongID, password: wrongPass })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeUndefined()
+        const submit = wrapper.find('#login-submit')
+        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input ID', async () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        wrapper.setData({ userId: wrongID, password: wrongPass })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeUndefined()
+        const submit = wrapper.find('#login-submit')
+        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        expect(submit.attributes().disabled).toBe('false')
 
-        wrapper.setData({ userId: '' })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeTruthy()
-        wrapper.setData({ userId: wrongID })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeUndefined()
+        await wrapper.setData({ userId: '' })
+        expect(submit.attributes().disabled).toBe('true')
+        await wrapper.setData({ userId: wrongID })
+        expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input Password', async () => {
-        const submit = wrapper.find('b-button-stub[nativetype="submit"]')
-        wrapper.setData({ userId: wrongID, password: wrongPass })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeUndefined()
+        const submit = wrapper.find('#login-submit')
+        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        expect(submit.attributes().disabled).toBe('false')
 
-        wrapper.setData({ password: '' })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeTruthy()
-        wrapper.setData({ password: wrongPass })
-        await flushPromises()
-        expect(submit.attributes().disabled).toBeUndefined()
+        await wrapper.setData({ password: '' })
+        expect(submit.attributes().disabled).toBe('true')
+        await wrapper.setData({ password: wrongPass })
+        expect(submit.attributes().disabled).toBe('false')
       })
     })
 
     describe('binding control', () => {
       test('text input bind "userId" props', async () => {
-        const id = wrapper.find('b-input-stub[type="text"]')
-        wrapper.setData({ userId: wrongID })
-        await flushPromises()
-        expect(id.attributes().value).toBe(wrongID)
+        const id = wrapper.find('#user-id-input')
+        await wrapper.setData({ userId: wrongID })
+        expect(id.attributes('modelvalue')).toBe(wrongID)
       })
 
       test('password input bind "password" props', async () => {
-        const pass = wrapper.find('b-input-stub[type="password"]')
-        wrapper.setData({ password: wrongPass })
-        await flushPromises()
-        expect(pass.attributes().value).toBe(wrongPass)
+        const pass = wrapper.find('#password-input')
+        await wrapper.setData({ password: wrongPass })
+        expect(pass.attributes('modelvalue')).toBe(wrongPass)
       })
     })
 
     describe('login control', () => {
       test('call store action "auth/LOGIN" with correct args when submit', async () => {
-        wrapper.setData({ userId: correctID, password: correctPass })
-        wrapper.find('form').trigger('submit.prevent')
-        await flushPromises()
+        await wrapper.setData({ userId: correctID, password: correctPass })
+        await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toBeCalledWith(
           expect.anything(),
           expect.objectContaining({
@@ -183,18 +182,16 @@ describe('Login.vue', () => {
       })
 
       test('call "$router.push" with "/todo" path when login succeeded', async () => {
-        wrapper.setData({ userId: correctID, password: correctPass })
-        wrapper.find('form').trigger('submit.prevent')
-        await flushPromises()
+        await wrapper.setData({ userId: correctID, password: correctPass })
+        await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toReturnWith(true)
         expect(wrapper.vm.$route.path).toBe('/login')
         expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
       })
 
       test('should not call "$router.push" when login with wrong ID and Password', async () => {
-        wrapper.setData({ userId: wrongID, password: wrongPass })
-        wrapper.find('form').trigger('submit.prevent')
-        await flushPromises()
+        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toReturnWith(false)
         expect(wrapper.vm.$router.push).not.toBeCalled()
       })
@@ -203,7 +200,7 @@ describe('Login.vue', () => {
 
   describe('login with wrong ID/Password', () => {
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules,
           auth: {
@@ -216,12 +213,17 @@ describe('Login.vue', () => {
         }
       })
 
-      wrapper = shallowMount(Login, {
-        mocks: {
-          ...getMocks()
-        },
-        store,
-        localVue
+      wrapper = mount(Login, {
+        global: {
+          mocks: {
+            ...getMocks()
+          },
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 
@@ -234,26 +236,31 @@ describe('Login.vue', () => {
 
   describe('redirect to login page when access todo page without login', () => {
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules
         }
       })
 
-      wrapper = shallowMount(Login, {
-        mocks: {
-          ...getMocks(),
-          $route: {
-            path: '/login',
-            name: 'login',
-            query: {
-              redirect: '/todo',
-              message: true
+      wrapper = mount(Login, {
+        global: {
+          mocks: {
+            ...getMocks(),
+            $route: {
+              path: '/login',
+              name: 'login',
+              query: {
+                redirect: '/todo',
+                message: true
+              }
             }
-          }
-        },
-        store,
-        localVue
+          },
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 
@@ -264,9 +271,8 @@ describe('Login.vue', () => {
     })
 
     test('call "$router.push" with "/todo" path when login succeeded', async () => {
-      wrapper.setData({ userId: correctID, password: correctPass })
-      wrapper.find('form').trigger('submit.prevent')
-      await flushPromises()
+      await wrapper.setData({ userId: correctID, password: correctPass })
+      await wrapper.find('form').trigger('submit.prevent')
       expect(actions.LOGIN).toReturnWith(true)
       expect(wrapper.vm.$route.path).toBe('/login')
       expect(wrapper.vm.$route.query.redirect).toBe('/todo')

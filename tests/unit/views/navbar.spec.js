@@ -1,17 +1,20 @@
-import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Vuex from 'vuex'
-import VueRouter from 'vue-router'
+import { mount } from '@vue/test-utils'
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes } from '@/router.js'
+import { createStore } from 'vuex'
+import { createHead } from '@vueuse/head'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import NavBar from '@/components/NavBar.vue'
-import flushPromises from 'flush-promises'
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
-localVue.use(VueRouter)
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
 
-const router = new VueRouter()
+jest.spyOn(router, 'push')
 
-const spyRouter = new VueRouter()
-spyRouter.push = jest.fn()
+const head = createHead()
 
 const getLoginStatus = {
   GET_LOGIN_STATUS: jest.fn(() => true)
@@ -33,10 +36,8 @@ const getAuthModules = {
 }
 
 const getMocks = () => ({
-  $buefy: {
-    toast: {
-      open: jest.fn()
-    }
+  $toast: {
+    add: jest.fn()
   }
 })
 
@@ -46,11 +47,15 @@ describe('NavBar.vue', () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    wrapper.unmount()
   })
 
   describe('before login', () => {
-    beforeEach(() => {
-      store = new Vuex.Store({
+    beforeEach(async () => {
+      router.push('/')
+      await router.isReady()
+
+      store = createStore({
         modules: {
           auth: {
             ...getAuthModules
@@ -58,13 +63,16 @@ describe('NavBar.vue', () => {
         }
       })
 
-      wrapper = shallowMount(NavBar, {
-        stubs: {
-          RouterLink: RouterLinkStub
-        },
-        router,
-        store,
-        localVue
+      wrapper = mount(NavBar, {
+        global: {
+          plugins: [
+            router,
+            store,
+            head,
+            PrimeVue,
+            ToastService
+          ]
+        }
       })
     })
 
@@ -100,70 +108,65 @@ describe('NavBar.vue', () => {
         const menuItem = wrapper.find('.navbar-end')
         expect(menuArea.classes()).not.toContain('is-active')
 
-        burger.trigger('click')
-        await flushPromises()
+        await burger.trigger('click')
         expect(menuArea.classes()).toContain('is-active')
-        burger.trigger('click')
-        await flushPromises()
+        await burger.trigger('click')
         expect(menuArea.classes()).not.toContain('is-active')
 
-        burger.trigger('click')
-        await flushPromises()
+        await burger.trigger('click')
         expect(menuArea.classes()).toContain('is-active')
-        menuItem.trigger('click')
-        await flushPromises()
+        await menuItem.trigger('click')
         expect(menuArea.classes()).not.toContain('is-active')
-        menuItem.trigger('click')
-        await flushPromises()
+        await menuItem.trigger('click')
         expect(menuArea.classes()).not.toContain('is-active')
       })
 
       test('close expanded menu when route is changed', async () => {
         const burger = wrapper.find('.navbar-burger')
         const menuArea = wrapper.find('.navbar-menu')
-        wrapper.vm.$router.push({ path: '/about' })
-        await flushPromises()
+        await wrapper.vm.$router.push({ path: '/about' })
 
-        burger.trigger('click')
-        await flushPromises()
+        await burger.trigger('click')
         expect(menuArea.classes()).toContain('is-active')
-        wrapper.vm.$router.push({ path: '/' })
-        await flushPromises()
+        await wrapper.vm.$router.push({ path: '/' })
         expect(menuArea.classes()).not.toContain('is-active')
       })
     })
 
     describe('router control', () => {
-      test('Top Logo has to="/" props', () => {
-        const el = wrapper.find('#top-logo-link')
-        expect(el.props().to).toBe('/')
+      test('Top Logo links to "/" path', async () => {
+        await wrapper.find('#top-logo-link').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/')
       })
 
-      test('Home menu has to="/" props', () => {
-        const el = wrapper.find('#nav-home-link')
-        expect(el.props().to).toBe('/')
+      test('Home menu links to "/" path', async () => {
+        await wrapper.find('#nav-home-link').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/')
       })
 
-      test('About menu has to="/about" props', () => {
-        const el = wrapper.find('#nav-about-link')
-        expect(el.props().to).toBe('/about')
+      test('About menu links to "/about" path', async () => {
+        await wrapper.find('#nav-about-link').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/about')
       })
 
-      test('TodoList menu has to="/todo" props', () => {
-        const el = wrapper.find('#nav-todo-link')
-        expect(el.props().to).toBe('/todo')
+      test('TodoList menu links to "/todo" path', async () => {
+        await wrapper.find('#nav-todo-link').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
       })
 
-      test('Login menu has to="/todo" props', () => {
-        const el = wrapper.find('#nav-login-link')
-        expect(el.props().to).toBe('/login')
+      test('Login menu links to "/login" path', async () => {
+        await wrapper.find('#nav-login-link').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/login')
       })
     })
   })
 
   describe('after login', () => {
-    beforeEach(() => {
-      store = new Vuex.Store({
+    beforeEach(async () => {
+      router.push('/')
+      await router.isReady()
+
+      store = createStore({
         modules: {
           auth: {
             ...getAuthModules,
@@ -172,13 +175,19 @@ describe('NavBar.vue', () => {
         }
       })
 
-      wrapper = shallowMount(NavBar, {
-        mocks: {
-          ...getMocks()
-        },
-        router: spyRouter,
-        store,
-        localVue
+      wrapper = mount(NavBar, {
+        global: {
+          mocks: {
+            ...getMocks()
+          },
+          plugins: [
+            router,
+            store,
+            head,
+            PrimeVue,
+            ToastService
+          ]
+        }
       })
     })
 
@@ -203,12 +212,11 @@ describe('NavBar.vue', () => {
     })
 
     describe('logout control', () => {
-      test('click "logout" menu', async () => {
-        wrapper.find('#nav-logout-link').trigger('click')
-        await flushPromises()
+      test('call "$router.push" with "/" path and call "$toast.add" when click "logout" menu', async () => {
+        await wrapper.find('#nav-logout-link').trigger('click')
         expect(actions.LOGOUT).toBeCalled()
-        expect(spyRouter.push).toBeCalledWith('/')
-        expect(wrapper.vm.$buefy.toast.open).toBeCalled()
+        expect(wrapper.vm.$router.push).toBeCalledWith('/')
+        expect(wrapper.vm.$toast.add).toBeCalled()
       })
     })
   })

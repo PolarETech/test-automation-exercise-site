@@ -1,5 +1,4 @@
-import { createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import { cloneDeep } from 'lodash'
 import todo from '@/store/modules/todo'
 
@@ -30,15 +29,12 @@ const initStore = () => ({
 })
 
 describe('todo', () => {
-  let localVue
   let store
   let item
   let itemIndex
 
   beforeEach(() => {
-    localVue = createLocalVue()
-    localVue.use(Vuex)
-    store = new Vuex.Store(initStore())
+    store = createStore(initStore())
   })
 
   describe('commit', () => {
@@ -86,7 +82,7 @@ describe('todo', () => {
     test('SET_TODO_ITEMS', () => {
       const items = cloneDeep(testItems)
       store.commit('todo/SET_TODO_ITEMS', { items })
-      expect(store.state.todo.items).toBe(items)
+      expect(store.state.todo.items).toStrictEqual(items)
     })
   })
 
@@ -155,7 +151,7 @@ describe('todo', () => {
     test('SET_TODO_ITEMS', async () => {
       const items = cloneDeep(testItems)
       await store.dispatch('todo/SET_TODO_ITEMS', items)
-      expect(store.state.todo.items).toBe(items)
+      expect(store.state.todo.items).toStrictEqual(items)
     })
   })
 })

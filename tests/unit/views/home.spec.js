@@ -1,18 +1,41 @@
-import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import { createRouter, createWebHistory } from 'vue-router'
+import { createHead } from '@vueuse/head'
 import Home from '@/views/Home.vue'
 
-const localVue = createLocalVue()
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', component: Home },
+    { path: '/about', component: { template: 'about page' } },
+    { path: '/todo', component: { template: 'todo page' } }
+  ]
+})
+
+jest.spyOn(router, 'push')
+
+const head = createHead()
 
 describe('Home.vue', () => {
   let wrapper
 
+  afterEach(() => {
+    jest.clearAllMocks()
+    wrapper.unmount()
+  })
+
   describe('before login', () => {
-    beforeEach(() => {
-      wrapper = shallowMount(Home, {
-        stubs: {
-          RouterLink: RouterLinkStub
-        },
-        localVue
+    beforeEach(async () => {
+      router.push('/')
+      await router.isReady()
+
+      wrapper = mount(Home, {
+        global: {
+          plugins: [
+            router,
+            head
+          ]
+        }
       })
     })
 
@@ -28,14 +51,14 @@ describe('Home.vue', () => {
     })
 
     describe('router control', () => {
-      test('"#about-button" has to="/about" props', () => {
-        const el = wrapper.find('#about-button')
-        expect(el.props().to).toBe('/about')
+      test('"#about-button" links to "/about" path', async () => {
+        await wrapper.find('#about-button').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/about')
       })
 
-      test('"#todo-button" has to="/todo" props', () => {
-        const el = wrapper.find('#todo-button')
-        expect(el.props().to).toBe('/todo')
+      test('"#todo-button" links to "/todo" path', async () => {
+        await wrapper.find('#todo-button').trigger('click')
+        expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
       })
     })
   })

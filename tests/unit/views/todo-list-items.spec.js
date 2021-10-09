@@ -1,8 +1,10 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-import Buefy from 'buefy'
+import { mount } from '@vue/test-utils'
+import { createStore } from 'vuex'
+import { createHead } from '@vueuse/head'
+import PrimeVue from 'primevue/config'
 import TodoListItems from '@/components/TodoListItems.vue'
-import flushPromises from 'flush-promises'
+
+const head = createHead()
 
 const dummyItem = {
   id: 0,
@@ -11,10 +13,6 @@ const dummyItem = {
   subject: 'dummyItem'
 }
 const dummyRequireMessage = 'dummy-require'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
-localVue.use(Buefy)
 
 const actions = {
   DONE_TODO_ITEM: jest.fn(),
@@ -44,22 +42,28 @@ describe('TodoListItems.vue', () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    wrapper.unmount()
   })
 
   describe('a todo item is registered', () => {
     beforeEach(() => {
-      store = new Vuex.Store({
+      store = createStore({
         modules: {
           ...getModules
         }
       })
 
-      wrapper = shallowMount(TodoListItems, {
-        store,
-        propsData: {
+      wrapper = mount(TodoListItems, {
+        props: {
           item: dummyItem
         },
-        localVue
+        global: {
+          plugins: [
+            store,
+            head,
+            PrimeVue
+          ]
+        }
       })
     })
 
@@ -82,8 +86,7 @@ describe('TodoListItems.vue', () => {
 
     describe('item control', () => {
       test('click checkbox', async () => {
-        wrapper.find('.todo-check').trigger('click')
-        await flushPromises()
+        await wrapper.find('.todo-check').trigger('click')
         expect(actions.DONE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
           expect.objectContaining(dummyItem)
@@ -95,13 +98,18 @@ describe('TodoListItems.vue', () => {
         const el = wrapper.find('.todo-subject')
         expect(el.element.value).toBe(dummyItem.subject)
 
-        el.setValue(newSubject)
-        await flushPromises()
+        // NOTE:
+        //   onChange event is triggered by textInput.setValue() method at @vue/test-utils v2.0.0-rc.15.
+        //   In previous version, onChange event was not triggered in the same situation.
+        //   So I rewrote the method to directly assign value,
+        //   since I cannot confirm that the action is not called during text input.
+
+        // await el.setValue(newSubject)
+        el.element.value = newSubject
         expect(el.element.value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 
-        el.trigger('change')
-        await flushPromises()
+        await el.trigger('change')
         expect(actions.UPDATE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
           expect.objectContaining({
@@ -117,20 +125,25 @@ describe('TodoListItems.vue', () => {
         const el = wrapper.find('.todo-subject')
         expect(el.element.value).toBe(dummyItem.subject)
 
-        el.setValue(newSubject)
-        await flushPromises()
+        // NOTE:
+        //   onChange event is triggered by textInput.setValue() method at @vue/test-utils v2.0.0-rc.15.
+        //   In previous version, onChange event was not triggered in the same situation.
+        //   Due to this behavior change, the set empty string is immediately restored to the original strings.
+        //   So I rewrote the method to assign value directly,
+        //   since I cannot confirm that the empty string was entered correctly once.
+
+        // await el.setValue(newSubject)
+        el.element.value = newSubject
         expect(el.element.value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 
-        el.trigger('change')
-        await flushPromises()
+        await el.trigger('change')
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
         expect(el.element.value).toBe(dummyItem.subject)
       })
 
       test('remove item', async () => {
-        wrapper.find('.todo-remove').trigger('click')
-        await flushPromises()
+        await wrapper.find('.todo-remove').trigger('click')
         expect(actions.REMOVE_TODO_ITEM).toBeCalledWith(
           expect.anything(),
           expect.objectContaining(dummyItem)

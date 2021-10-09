@@ -1,5 +1,4 @@
-import { createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import { cloneDeep } from 'lodash'
 import auth from '@/store/modules/auth'
 
@@ -8,13 +7,10 @@ const initStore = () => ({
 })
 
 describe('auth', () => {
-  let localVue
   let store
 
   beforeEach(() => {
-    localVue = createLocalVue()
-    localVue.use(Vuex)
-    store = new Vuex.Store(initStore())
+    store = createStore(initStore())
   })
 
   test('commit LOGIN', () => {
