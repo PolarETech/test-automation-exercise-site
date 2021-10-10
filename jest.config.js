@@ -3,9 +3,9 @@ module.exports = {
   transform: {
     '^.+\\.vue$': 'vue-jest'
   },
-  moduleNameMapper: {
-    '^vue$': '@vue/compat'
-  },
+  // moduleNameMapper: {
+  //   '^vue$': '@vue/compat'
+  // },
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/views/**/*.vue',

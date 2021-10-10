@@ -1,6 +1,6 @@
 <!--
   Original source is 'primevue/password/sfc' in primevue@3.8.0.
-  Fix: v-model prop and event does not bind correctly
+  Fix: v-model prop and event does not bind correctly when used with @vue/compat
   Reference: https://v3.vuejs.org/guide/component-basics.html#using-v-model-on-components
 -->
 

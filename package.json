@@ -1,6 +1,6 @@
 {
   "name": "test-automation-exercise-site",
-  "version": "3.0.0-alpha2",
+  "version": "3.0.0-alpha3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

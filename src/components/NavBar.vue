@@ -69,6 +69,11 @@
 <script>
 import Toast from 'primevue/toast'
 
+// import { configureCompat } from 'vue'
+// configureCompat({
+//   RENDER_FUNCTION: false
+// })
+
 export default {
   name: 'NavBar',
   components: {

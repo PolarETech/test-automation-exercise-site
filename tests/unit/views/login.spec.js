@@ -128,29 +128,29 @@ describe('Login.vue', () => {
       test('enable "login" button when input ID and Password', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBe('false')
+        expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "login" button when clear/input ID', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBe('false')
+        expect(submit.attributes().disabled).toBeUndefined()
 
         await wrapper.setData({ userId: '' })
         expect(submit.attributes().disabled).toBe('true')
         await wrapper.setData({ userId: wrongID })
-        expect(submit.attributes().disabled).toBe('false')
+        expect(submit.attributes().disabled).toBeUndefined()
       })
 
       test('disable/enable "login" button when clear/input Password', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBe('false')
+        expect(submit.attributes().disabled).toBeUndefined()
 
         await wrapper.setData({ password: '' })
         expect(submit.attributes().disabled).toBe('true')
         await wrapper.setData({ password: wrongPass })
-        expect(submit.attributes().disabled).toBe('false')
+        expect(submit.attributes().disabled).toBeUndefined()
       })
     })
 

@@ -36,7 +36,7 @@
         <button
           id="subject-submit"
           type="submit"
-          :disabled="subject.length == 0"
+          :disabled="isSubmitButtonDisabled"
           aria-label="add new todo item"
         >
           <span class="icon pi pi-plus-circle"></span>
@@ -63,12 +63,12 @@ import { mapActions } from 'vuex'
 import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
-import { configureCompat } from 'vue'
 
-configureCompat({
-  COMPONENT_V_MODEL: false,
-  RENDER_FUNCTION: false
-})
+// import { configureCompat } from 'vue'
+// configureCompat({
+//   COMPONENT_V_MODEL: false,
+//   RENDER_FUNCTION: false
+// })
 
 export default {
   name: 'TodoList',
@@ -104,6 +104,9 @@ export default {
       set (todoItems) {
         this.$store.dispatch('todo/SET_TODO_ITEMS', todoItems)
       }
+    },
+    isSubmitButtonDisabled () {
+      return this.subject.length === 0 ? true : null
     }
   }
 }

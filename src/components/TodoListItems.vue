@@ -38,6 +38,11 @@
 import { mapActions } from 'vuex'
 import { DONE_TODO_ITEM, REMOVE_TODO_ITEM } from '@/store/mutation-types'
 
+// import { configureCompat } from 'vue'
+// configureCompat({
+//   RENDER_FUNCTION: false
+// })
+
 export default {
   name: 'TodoListItems',
   props: {

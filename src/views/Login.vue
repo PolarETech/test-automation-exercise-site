@@ -30,7 +30,7 @@
             id="password-input"
             name="pw-field"
             placeholder="パスワードを入力してください"
-            :feedback="false"
+            :feedback="null"
             toggleMask
             v-model="password"
             aria-label="input password"
@@ -42,8 +42,8 @@
           id="login-submit"
           name="login-btn"
           type="submit"
-          :disabled="!userId || !password"
-          :loading="loading"
+          :disabled="isLoginButtonDisabled"
+          :loading="isLoading"
           label="ログイン"
         />
       </form>
@@ -53,7 +53,7 @@
         v-html="this.$store.state.message.loginError">
       </p>
 
-      <Panel header="Info">
+      <Panel header="Info" :toggleable="null" :collapsed="null">
         <p>このログイン画面はテスト用のダミーです。以下のユーザー情報でログインできます。<br>
         ユーザーID : testID<br>
         パスワード : testPASS</p>
@@ -65,14 +65,16 @@
 <script>
 import { useHead } from '@vueuse/head'
 import InputText from 'primevue/inputtext'
-import Password from '@/components/Password.vue'
+import Password from 'primevue/password'
+// import _Password from '@/components/Password.vue'
 import Button from 'primevue/button'
 import Panel from 'primevue/panel'
-import { configureCompat } from 'vue'
 
-configureCompat({
-  COMPONENT_V_MODEL: false
-})
+// import { configureCompat } from 'vue'
+// configureCompat({
+//   COMPONENT_V_MODEL: false,
+//   RENDER_FUNCTION: false
+// })
 
 export default {
   components: {
@@ -85,7 +87,7 @@ export default {
     return {
       userId: '',
       password: '',
-      loading: false
+      isLoading: null
     }
   },
   setup () {
@@ -95,7 +97,7 @@ export default {
   },
   methods: {
     async login () {
-      this.loading = true
+      this.isLoading = true
       const res = await this.$store.dispatch('auth/LOGIN', {
         userId: this.userId,
         password: this.password
@@ -104,12 +106,15 @@ export default {
         const path = this.$route.query.redirect || '/todo'
         this.$router.push(path)
       }
-      this.loading = false
+      this.isLoading = null
     }
   },
   computed: {
     loginUserError () {
       return this.$store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']
+    },
+    isLoginButtonDisabled () {
+      return this.userId && this.password ? null : true
     }
   }
 }
