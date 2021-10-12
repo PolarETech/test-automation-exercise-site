@@ -3,7 +3,7 @@
     <section>
       <h1 class="title is-4">このサイトについて</h1>
 
-      <TabView scrollable>
+      <TabView scrollable @tab-change="unfocus" @tab-click="unfocus">
         <TabPanel header="テストコンテンツ">
           <div class="content">
             <h2 class="subtitle is-5">テストコンテンツの利用について</h2>
@@ -142,6 +142,11 @@ export default {
     useHead({
       title: 'About | test automation exercise site'
     })
+  },
+  methods: {
+    unfocus () {
+      document.activeElement.blur()
+    }
   }
 }
 </script>
@@ -173,9 +178,6 @@ h1.title.is-4 {
 :deep(.p-tabview-nav) {
   li.p-highlight a.p-tabview-nav-link:not(.p-disabled) {
     border-bottom-color: #01653d;
-    &:focus {
-      box-shadow: none;
-    }
     .p-tabview-title {
       color: #01653d;
     }

@@ -22,7 +22,9 @@
         aria-label="menu"
         aria-expanded="false"
         data-target="nav-menu"
+        tabindex="0"
         @click="toggleMenuExpand()"
+        @keydown.enter="toggleMenuExpand()"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -39,7 +41,7 @@
         <router-link class="navbar-item" id="nav-about-link" to="/about">About</router-link>
         <router-link class="navbar-item" id="nav-todo-link" to="/todo">TodoList</router-link>
         <router-link class="navbar-item" id="nav-login-link" v-if="!GET_LOGIN_STATUS" to="/login">Login</router-link>
-        <a class="navbar-item" id="nav-logout-link" v-if="GET_LOGIN_STATUS" @click="logout">Logout</a>
+        <a class="navbar-item" id="nav-logout-link" v-if="GET_LOGIN_STATUS" tabindex="0" @click="logout" @keydown.enter="logout">Logout</a>
       </div>
     </div>
 
@@ -139,6 +141,10 @@ export default {
       &:hover,
       &:focus {
         color: snow;
+      }
+      &:focus-visible {
+        text-decoration: underline;
+        text-underline-offset: 2px;
       }
     }
     .router-link-exact-active {

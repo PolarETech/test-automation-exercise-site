@@ -16,6 +16,7 @@
           <InputText
             type="text"
             id="user-id-input"
+            ref="userIdInput"
             name="id-field"
             autofocus
             placeholder="ユーザーIDを入力してください"
@@ -40,6 +41,7 @@
         <Button
           class="p-button-outlined"
           id="login-submit"
+          ref="loginSubmit"
           name="login-btn"
           type="submit"
           :disabled="isLoginButtonDisabled"
@@ -97,6 +99,7 @@ export default {
   },
   methods: {
     async login () {
+      this.$refs.loginSubmit.$el.focus()
       this.isLoading = true
       const res = await this.$store.dispatch('auth/LOGIN', {
         userId: this.userId,
@@ -107,6 +110,7 @@ export default {
         this.$router.push(path)
       }
       this.isLoading = null
+      this.$refs.loginSubmit.$el.blur()
     }
   },
   computed: {
@@ -116,6 +120,12 @@ export default {
     isLoginButtonDisabled () {
       return this.userId && this.password ? null : true
     }
+  },
+  mounted () {
+    this.$nextTick(function () {
+      // focus control
+      this.$refs.userIdInput.$el.focus()
+    })
   }
 }
 </script>
@@ -162,6 +172,13 @@ form {
     }
     :deep(input) {
       width: 100%;
+      background: #fcfcfd;
+      & + i.pi {
+        color: darkgray;
+      }
+       &:focus + i.pi {
+        color: gray;
+      }
     }
   }
   .p-button.p-button-outlined {
@@ -181,6 +198,9 @@ form {
     }
     &::-moz-focus-inner {
       border: 0;
+    }
+    &.p-disabled.p-button-loading {
+      opacity: 1;
     }
   }
 }

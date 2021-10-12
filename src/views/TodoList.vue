@@ -44,6 +44,7 @@
 
         <input
           id="subject-input"
+          ref="subjectInput"
           type="text"
           maxlength="15"
           autocomplete="off"
@@ -92,6 +93,7 @@ export default {
         if (this.subject.length > 0) {
           dispatch('todo/ADD_TODO_ITEM', this.subject)
           this.subject = ''
+          this.$refs.subjectInput.focus()
         }
       }
     })

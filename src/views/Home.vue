@@ -106,7 +106,8 @@ export default {
           font-weight: 600;
           opacity: 0.7;
           &:hover,
-          &:active {
+          &:active,
+          &:focus {
             animation: emphasis 0.4s ease-out forwards;
           }
           @keyframes emphasis {
