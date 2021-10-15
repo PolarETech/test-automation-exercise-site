@@ -162,8 +162,8 @@ describe('Smoke Testing Suite', () => {
         })
 
       // Drag and Drop
-      cy.get('.drag-icon').first().as('sourceItem')
-      cy.get('.drag-icon').last().as('targetItem')
+      cy.get('.todo-drag').first().as('sourceItem')
+      cy.get('.todo-drag').last().as('targetItem')
       cy.get('@sourceItem')
         .trigger('pointerdown', { which: 1, button: 0 })
         .trigger('dragstart')

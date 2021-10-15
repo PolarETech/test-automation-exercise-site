@@ -81,7 +81,7 @@ Feature: TodoList view test
     And the 2nd Todo-Subject should have the text 'テストアイテム２' in the TodoList view
     And the 1st 'subject' data in the Todo storage items should match the data on the view
     And the 2nd 'subject' data in the Todo storage items should match the data on the view
-    When I drag and drop the 1st Todo-Drag-Icon onto the 2nd Todo-Drag-Icon
+    When I drag and drop the 1st Todo-Drag-Button onto the 2nd Todo-Drag-Button
     Then the 1st Todo-Subject should have the text 'テストアイテム２' in the TodoList view
     And the 2nd Todo-Subject should have the text 'テストアイテム１' in the TodoList view
     And the 1st 'subject' data in the Todo storage items should match the data on the view

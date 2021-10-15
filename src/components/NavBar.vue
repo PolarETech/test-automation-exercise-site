@@ -119,28 +119,27 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  background-color: #0a0a0a;
-  border-bottom: 1px solid #060606;
+  background-color: $color-black;
+  border-bottom: 1px solid $color-black-dark;
   opacity: 0.9;
   #top-logo {
     width: 30px;
     height: 30px;
-    stroke: palegoldenrod;
+    stroke: $color-gold;
     stroke-width: 4;
   }
   .navbar-burger {
-    color: palegoldenrod;
+    color: $color-gold;
   }
   .navbar-menu {
     padding-right: 0.5rem;
     text-align: right;
     .navbar-item {
       outline: 0;
-      color: palegoldenrod;
-      text-shadow: 1px 1px 4px #101010, -1px -1px 4px #101010;
+      text-shadow: 1px 1px 4px $color-black, -1px -1px 4px $color-black;
       &:hover,
       &:focus {
-        color: snow;
+        color: $color-gold-light;
       }
       &:focus-visible {
         text-decoration: underline;
@@ -148,7 +147,7 @@ export default {
       }
     }
     .router-link-exact-active {
-      color: khaki;
+      color: $color-gold-dark;
       font-weight: bold;
     }
   }

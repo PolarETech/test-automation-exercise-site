@@ -14,7 +14,7 @@ module.exports = class TodoListPage extends BasePage {
       'Todo-Checkbox': By.css('.todo-check'),
       'Todo-Checkbox-Click-Area': By.css('.todo-check+label'),
       'Todo-Timestamp': By.css('.todo-timestamp'),
-      'Todo-Drag-Icon': By.css('.drag-icon'),
+      'Todo-Drag-Button': By.css('.todo-drag'),
       'Todo-Remove-Button': By.css('.todo-remove'),
       'Subject-Input-Form': By.css('input#subject-input'),
       'Subject-Submit-Button': By.css('button#subject-submit'),

@@ -159,14 +159,14 @@ export default {
 #about-page {
   padding-right: 1rem;
   padding-left: 1rem;
-  background-color: #f4efef;
+  background-color: $color-page-back;
 }
 section {
   border-radius: 6px;
-  background-color: #fcfcfd;
+  background-color: $color-text-back;
 }
 :deep(.p-component) {
-  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+  font-family: $font-set;
 }
 h1.title.is-4 {
   margin: 0;
@@ -177,14 +177,14 @@ h1.title.is-4 {
 }
 :deep(.p-tabview-nav) {
   li.p-highlight a.p-tabview-nav-link:not(.p-disabled) {
-    border-bottom-color: #01653d;
+    border-bottom-color: $color-accent;
     .p-tabview-title {
-      color: #01653d;
+      color: $color-accent;
     }
   }
 }
 :deep(.p-tabview-nav-next) {
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: $navbar-breakpoint) {
     display: none;
   }
 }

@@ -1,0 +1,32 @@
+$color-black: #0a0a0a;
+$color-black-dark: #060606;
+
+$color-gold: palegoldenrod;
+$color-gold-dark: khaki;
+$color-gold-light: snow;
+$color-gold-middle: #fbf6a3;
+
+$color-accent: #01653d;
+
+$color-selectable-object: gray;
+$color-editable-object: darkgray;
+$color-disabled-object: lightgray;
+$color-disabled-text: #363636;
+
+$color-text-back: #fcfcfd;
+$color-page-back: #f4efef;
+$color-page-light: #f8f4f4;
+
+$color-home-back: #141414;
+$color-home-title: ghostwhite;
+
+$navbar-background-color: hsl(0, 0%, 14%);
+$navbar-item-color: $color-gold;
+$navbar-item-hover-background-color: transparent;
+$navbar-breakpoint: 769px;
+
+$footer-background-color: $color-black;
+$footer-color: $color-gold;
+$footer-padding: 0.5rem;
+
+$font-set: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;

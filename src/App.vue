@@ -29,7 +29,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+  font-family: $font-set;
 }
 header + div {
   margin-top: -3.25rem;
@@ -38,8 +38,7 @@ header + div {
 }
 footer {
   margin: calc(-2rem - 1px) auto 0;
-  border-top: 1px solid #060606;
-  color: palegoldenrod;
+  border-top: 1px solid $color-black-dark;
   font-size: 0.8rem;
   line-height: 1rem;
   opacity: 0.9;

@@ -86,7 +86,7 @@ When('I click the {word} {word} in the TodoList view', async function (itemIndex
 
 When('I drag and drop the {word} {word} onto the {word} {word}', async function (fromItemIndex, fromTarget, ontoItemIndex, ontoTarget) {
   // Step example:
-  // I drag and drop the 1st Todo-Drag-Icon onto the 2nd Todo-Drag-Icon
+  // I drag and drop the 1st Todo-Drag-Button onto the 2nd Todo-Drag-Button
 
   const page = createPageObject('TodoList')
 

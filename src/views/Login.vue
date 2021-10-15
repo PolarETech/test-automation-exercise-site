@@ -138,19 +138,19 @@ export default {
 #login-page {
   padding-right: 1rem;
   padding-left: 1rem;
-  background-color: #f4efef;
+  background-color: $color-page-back;
 }
 section {
   margin: 0 auto;
   text-align: center;
 }
 :deep(.p-component) {
-  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+  font-family: $font-set;
 }
 h1.title.is-4 {
   margin: 0 auto;
   padding: 0.8rem 0;
-  color: #01653d;
+  color: $color-accent;
   .icon {
     margin-right: 0.3rem;
   }
@@ -172,29 +172,29 @@ form {
     }
     :deep(input) {
       width: 100%;
-      background: #fcfcfd;
+      background: $color-text-back;
       & + i.pi {
-        color: darkgray;
+        color: $color-editable-object;
       }
-       &:focus + i.pi {
-        color: gray;
+      &:focus + i.pi {
+        color: $color-selectable-object;
       }
     }
   }
   .p-button.p-button-outlined {
     margin-top: 2rem;
-    border-color: #01653d;
-    background: #ffffff;
-    color: #01653d;
+    border-color: $color-accent;
+    background: $color-text-back;
+    color: $color-accent;
     transition: 0.2s ease-in-out;
     &:enabled:active,
     &:enabled:hover {
-      background: #ffffff;
+      background: $color-text-back;
     }
     &:disabled {
-      border-color: #dbdbdb;
-      background: #ffffff;
-      color: #363636;
+      border-color: $color-disabled-object;
+      background: $color-text-back;
+      color: $color-disabled-text;
     }
     &::-moz-focus-inner {
       border: 0;

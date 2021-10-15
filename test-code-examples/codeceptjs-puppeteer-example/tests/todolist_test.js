@@ -126,8 +126,8 @@ Scenario('re-order ToDo items', async ({ I }) => {
 
   // Drag and Drop
   await I.simulateDragAndDrop(
-    { css: 'ul.todo-list li:first-of-type .drag-icon' },
-    { css: 'ul.todo-list li:last-of-type .drag-icon' }
+    { css: 'ul.todo-list li:first-of-type .todo-drag' },
+    { css: 'ul.todo-list li:last-of-type .todo-drag' }
   )
 
   I.seeNumberOfElements({ css: '.todo-subject' }, 2)

@@ -1,12 +1,5 @@
 @import "~bulma/sass/utilities/_all";
 
-$navbar-background-color: $black-ter;
-$navbar-item-hover-background-color: transparent;
-$navbar-breakpoint: 769px;
-
-$footer-background-color: $black;
-$footer-padding: 0.5rem;
-
 // for iPhone browser's safe area
 html {
   padding-top: constant(safe-area-inset-top);

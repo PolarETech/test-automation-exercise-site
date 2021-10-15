@@ -1,8 +1,9 @@
 <template>
   <li :class="{ is_done: item.isDone }" :id="item.id">
-    <span class="icon pi pi-ellipsis-v drag-icon" :id="'dg-' + item.id">
-      <i class="pi pi-ellipsis-v drag-icon_right"></i>
-    </span>
+    <button class="todo-drag" :id="'dg-' + item.id">
+      <span class="icon pi pi-ellipsis-v drag-icon"></span>
+      <span class="icon pi pi-ellipsis-v drag-icon"></span>
+    </button>
 
     <input
       class="todo-check"
@@ -78,21 +79,24 @@ export default {
 li {
   margin-bottom: 1rem;
   list-style-type: none;
-  .icon {
-    color: gray;
-    &.drag-icon {
-      width: 16px;
-      height: 18px;
+  .todo-drag {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: inherit;
+    color: $color-selectable-object;
+    cursor: move;
+    .drag-icon {
+      width: 10px;
+      height: 20px;
       transform: scale(0.9);
       vertical-align: middle;
-      letter-spacing: -0.6rem;
-      cursor: move;
-    }
-    .drag-icon_right {
-      letter-spacing: -0.1rem;
-    }
-    &.remove-icon {
-      font-size: 0.6rem;
+      &:first-child {
+        letter-spacing: -0.4rem;
+      }
+      &:last-child {
+        letter-spacing: 0.3rem;
+      }
     }
   }
   input[type="checkbox"] {
@@ -101,7 +105,7 @@ li {
     border: 0;
     outline: 0;
     &:checked + label:before {
-      border-color: #01653d;
+      border-color: $color-accent;
     }
     &:checked + label:after {
       transform: scale(1);
@@ -128,8 +132,8 @@ li {
     &:before {
       width: 18px;
       height: 18px;
-      border: solid 1px darkgray;
-      background-color: #f8f4f4;
+      border: solid 1px $color-editable-object;
+      background-color: $color-page-light;
     }
     &:after {
       top: 6px;
@@ -137,7 +141,7 @@ li {
       width: 12px;
       height: 12px;
       transform: scale(0.5);
-      background-color: #01653d;
+      background-color: $color-accent;
       opacity: 0;
     }
   }
@@ -145,7 +149,7 @@ li {
     width: 15.5rem;
     border-top: 0;
     border-right: 0;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid $color-editable-object;
     border-left: 0;
     border-radius: 0;
     background-color: inherit;
@@ -154,24 +158,25 @@ li {
     vertical-align: middle;
     transition: 0.2s ease-in-out;
     &:focus {
-      border-bottom: 1px solid #01653d;
+      border-bottom: 1px solid $color-accent;
       outline: 0;
-      background-color: #f8f4f4;
+      background-color: $color-page-light;
     }
   }
   .todo-sub-info {
-    margin-right: 0.3rem;
+    margin: 0.3rem;
     text-align: right;
     span {
       font-size: small;
     }
     .todo-remove {
-      margin: 0.3rem;
-      padding: 0rem;
-      transform: scale(1.3);
+      margin-left: 0.3rem;
+      padding: 0;
       border: 0;
       background-color: inherit;
-      cursor: default;
+      .remove-icon {
+        color: $color-selectable-object;
+      }
     }
   }
 }

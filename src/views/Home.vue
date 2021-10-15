@@ -58,7 +58,7 @@ export default {
   overflow: hidden;
 }
 #home-page {
-  background-color: #141414;
+  background-color: $color-home-back;
 }
 #top-image {
   position: absolute;
@@ -80,9 +80,9 @@ export default {
       max-width: initial;
       height: 60vh;
       .title {
-        color: ghostwhite;
+        color: $color-home-title;
         letter-spacing: 0.2rem;
-        text-shadow: 1px 1px 4px rgba(10, 10, 10, 0.7), -1px -1px 3px rgba(10, 10, 10, 0.7);
+        text-shadow: 1px 1px 4px rgba($color-black, 0.7), -1px -1px 3px rgba($color-black, 0.7);
         opacity: 0.7;
       }
       .link-buttons {
@@ -100,9 +100,9 @@ export default {
           border-top-left-radius: 290486px;
           border-bottom-right-radius: 0;
           border-bottom-left-radius: 290486px;
-          background-color: rgba(#01653d, 0.8);
-          box-shadow: -1px 2px 8px 2px rgba(0, 0, 0, 0.3);
-          color: #fbf6a3;
+          background-color: rgba($color-accent, 0.8);
+          box-shadow: -1px 2px 8px 2px rgba($color-black, 0.3);
+          color: $color-gold-middle;
           font-weight: 600;
           opacity: 0.7;
           &:hover,

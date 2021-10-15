@@ -19,6 +19,13 @@ module.exports = {
   //       }
   //     })
   // },
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `@import "@/assets/style-vars.scss";`
+      }
+    }
+  },
   configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
       return {

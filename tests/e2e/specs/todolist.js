@@ -31,8 +31,10 @@ describe('TodoList view test', () => {
       .click()
     cy.get('#empty-message').should('not.be.visible')
     cy.get('.todo-list').should('be.visible')
+    cy.get('.todo-drag').should('be.visible')
     cy.get('.todo-check').should('not.be.checked')
     cy.get('.todo-timestamp').should('contain', date)
+    cy.get('.todo-remove').should('be.visible')
     cy.get('.todo-subject').should('have.value', 'テストアイテム１')
     cy.get('#item-count').should('contain', '登録件数：1 / 5 件')
       .then(() => {
@@ -135,8 +137,8 @@ describe('TodoList view test', () => {
       })
 
     // Drag and Drop
-    cy.get('.drag-icon').first().as('sourceItem')
-    cy.get('.drag-icon').last().as('targetItem')
+    cy.get('.todo-drag').first().as('sourceItem')
+    cy.get('.todo-drag').last().as('targetItem')
     cy.get('@sourceItem')
       .trigger('pointerdown', { which: 1, button: 0 })
       .trigger('dragstart')

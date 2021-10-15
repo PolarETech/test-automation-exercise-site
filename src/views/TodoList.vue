@@ -17,7 +17,7 @@
       <template v-else>
         <draggable
           class="todo-list"
-          handle=".drag-icon"
+          handle=".todo-drag"
           tag="ul"
           v-model="todoItems"
           item-key="id"
@@ -120,7 +120,7 @@ export default {
   overflow: hidden;
 }
 #todo-page {
-  background-color: #f4efef;
+  background-color: $color-page-back;
 }
 section {
   width: 19rem;
@@ -128,12 +128,12 @@ section {
   text-align: center;
 }
 :deep(.p-component) {
-  font-family: 'Avenir', 'Yu Gothic Medium', 'YuGothic', Helvetica, Arial, verdana, sans-serif;
+  font-family: $font-set;
 }
 h1.title.is-4 {
   margin: 0;
   padding: 0.8rem 0;
-  color: #01653d;
+  color: $color-accent;
   .icon {
     margin-right: 0.3rem;
   }
@@ -152,19 +152,19 @@ form {
     background-color: inherit;
     vertical-align: middle;
     .icon {
-      color: #01653d;
+      color: $color-accent;
       font-size: 1.2rem;
       transition: 0.2s ease-in-out;
     }
     &:disabled .icon {
-      color: lightgray;
+      color: $color-disabled-object;
     }
   }
   input[type="text"] {
     width: 14rem;
     border-top: 0;
     border-right: 0;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid $color-editable-object;
     border-left: 0;
     border-radius: 0;
     background-color: inherit;
@@ -172,9 +172,9 @@ form {
     vertical-align: middle;
     transition: 0.2s ease-in-out;
     &:focus {
-      border-bottom: 1px solid #01653d;
+      border-bottom: 1px solid $color-accent;
       outline: 0;
-      background-color: #f8f4f4;
+      background-color: $color-page-light;
     }
   }
 }
