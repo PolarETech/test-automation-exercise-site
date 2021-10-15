@@ -9,7 +9,7 @@
         class="navbar-item"
         id="top-logo-link"
         to="/"
-        aria-label="Go to Home page"
+        aria-label="Home"
       >
         <svg viewBox="0 0 64 64" id="top-logo">
           <use xlink:href="#polartech-logo"></use>
@@ -35,6 +35,7 @@
     <div
       class="navbar-menu"
       :class="{ 'is-active': isNavMenuOpen }"
+      id="nav-menu"
     >
       <div class="navbar-end" @click="closeMenu()">
         <router-link class="navbar-item" id="nav-home-link" to="/">Home</router-link>

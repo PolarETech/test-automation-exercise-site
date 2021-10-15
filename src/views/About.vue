@@ -1,6 +1,6 @@
 <template>
   <div class="page-base" id="about-page">
-    <section>
+    <section role="main">
       <h1 class="title is-4">このサイトについて</h1>
 
       <TabView scrollable @tab-change="unfocus" @tab-click="unfocus">

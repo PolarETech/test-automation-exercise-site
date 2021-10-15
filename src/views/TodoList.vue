@@ -1,6 +1,6 @@
 <template>
   <div class="page-base" id="todo-page">
-    <section>
+    <section role="main">
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
         <span class="icon pi pi-check-circle"></span>ToDoリスト
@@ -36,8 +36,8 @@
         <button
           id="subject-submit"
           type="submit"
-          :disabled="isSubmitButtonDisabled"
           aria-label="add new todo item"
+          :disabled="isSubmitButtonDisabled"
         >
           <span class="icon pi pi-plus-circle"></span>
         </button>
@@ -46,11 +46,11 @@
           id="subject-input"
           ref="subjectInput"
           type="text"
+          aria-label="new todo item subject"
           maxlength="15"
           autocomplete="off"
           :placeholder="this.$store.state.message.requireImputTodo"
           v-model="subject"
-          aria-label="input new todo item subject"
         />
       </form>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="page-base" id="login-page">
-    <section>
+    <section role="main">
       <h1 class="title is-4">
         <!-- should not add new line before title string -->
         <span class="icon pi pi-user"></span>ログイン
@@ -14,14 +14,14 @@
         <div class="p-field">
           <label for="user-id-input">ユーザーID</label>
           <InputText
-            type="text"
             id="user-id-input"
             ref="userIdInput"
             name="id-field"
+            type="text"
+            required
             autofocus
             placeholder="ユーザーIDを入力してください"
             v-model="userId"
-            aria-label="input user id"
           />
         </div>
 
@@ -30,11 +30,11 @@
           <Password
             id="password-input"
             name="pw-field"
+            required
             placeholder="パスワードを入力してください"
             :feedback="null"
             toggleMask
             v-model="password"
-            aria-label="input password"
           />
         </div>
 

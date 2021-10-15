@@ -1,6 +1,10 @@
 <template>
   <li :class="{ is_done: item.isDone }" :id="item.id">
-    <button class="todo-drag" :id="'dg-' + item.id">
+    <button
+      class="todo-drag"
+      :id="'dg-' + item.id"
+      aria-label="drag to reorder todo items"
+    >
       <span class="icon pi pi-ellipsis-v drag-icon"></span>
       <span class="icon pi pi-ellipsis-v drag-icon"></span>
     </button>
@@ -12,7 +16,7 @@
       :checked="item.isDone"
       @click="DONE_TODO_ITEM(item)"
     />
-    <label :for="'cb-' + item.id"></label>
+    <label :for="'cb-' + item.id" :aria-label="item.subject"></label>
 
     <input
       class="todo-subject"
@@ -27,7 +31,12 @@
     <div class="todo-sub-info">
       <span class="todo-timestamp" :id="'ts-' + item.id">確認日時：{{ item.timestamp }}</span>
 
-      <button class="todo-remove" :id="'rm-' + item.id" @click="REMOVE_TODO_ITEM(item)">
+      <button
+        class="todo-remove"
+        :id="'rm-' + item.id"
+        aria-label="delete the todo item"
+        @click="REMOVE_TODO_ITEM(item)"
+      >
         <span class="icon pi pi-trash remove-icon"></span>
       </button>
     </div>

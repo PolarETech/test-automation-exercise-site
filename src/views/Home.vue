@@ -2,7 +2,7 @@
   <div class="page-base" id="home-page">
     <div id="top-image"></div>
 
-    <section class="hero is-fullheight">
+    <section class="hero is-fullheight" role="main">
       <div class="hero-body">
 
         <div class="container">
