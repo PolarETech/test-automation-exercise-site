@@ -96,8 +96,9 @@
             <h2 class="subtitle is-5">本サイトの作成で使用している主な技術要素</h2>
             <ul>
               <li>Vue.js</li>
-              <li>Vue CLI 3</li>
               <li>Vuex</li>
+              <li>Vite</li>
+              <!-- <li>Vue CLI 3</li> -->
               <li>PrimeVue</li>
               <li>Bulma</li>
               <!-- <li>Buefy</li> -->

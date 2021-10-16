@@ -13,7 +13,7 @@ describe('TodoList view test', () => {
     cy.get('#empty-message')
       .should('be.visible')
       .and('contain', 'ToDoは登録されていません')
-    cy.get('.todo-list').should('not.be.visible')
+    cy.get('.todo-list').should('not.exist')
     cy.get('button#subject-submit')
       .should('be.visible')
       .and('be.disabled')
@@ -29,7 +29,7 @@ describe('TodoList view test', () => {
     cy.get('#subject-submit')
       .should('not.be.disabled')
       .click()
-    cy.get('#empty-message').should('not.be.visible')
+    cy.get('#empty-message').should('not.exist')
     cy.get('.todo-list').should('be.visible')
     cy.get('.todo-drag').should('be.visible')
     cy.get('.todo-check').should('not.be.checked')
@@ -168,7 +168,7 @@ describe('TodoList view test', () => {
         expect(storageData.todo.items[0].subject).to.eq('テストアイテム１')
       })
     cy.get('.todo-remove').click()
-    cy.get('.todo-subject').should('not.have.value', 'テストアイテム１')
+    cy.get('.todo-list').should('not.exist')
       .then(() => {
         const storageData = JSON.parse(localStorage.getItem('PtExampleTodos'))
         expect(storageData.todo.items).to.have.lengthOf(0)
@@ -205,8 +205,7 @@ describe('TodoList view test', () => {
         const storageData = JSON.parse(localStorage.getItem('PtExampleTodos'))
         expect(storageData.todo.items[0].subject).to.eq('テストアイテム２')
       })
-    cy.get('#empty-message')
-      .should('not.be.visible')
+    cy.get('#empty-message').should('not.exist')
   })
 
   it('stores a ToDo item after logging out/in', () => {
@@ -280,7 +279,7 @@ describe('TodoList view test', () => {
             expect(storageData.todo.items[0].subject).to.eq(str)
           })
         cy.get('.todo-remove').click()
-        cy.get('.todo-list').should('not.be.visible')
+        cy.get('.todo-list').should('not.exist')
       })
     })
 

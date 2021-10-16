@@ -38,7 +38,7 @@ describe('Navigation menu test', () => {
         .should('contain', 'ログアウトしました')
       // the PrimeVue toast should disappear after 2000ms
       cy.wait(2500)
-      cy.get('.p-toast-message').should('not.be.visible')
+      cy.get('.p-toast-message').should('not.exist')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {
@@ -113,7 +113,7 @@ describe('Navigation menu test', () => {
         .should('contain', 'ログアウトしました')
       // the PrimeVue toast should disappear after 2000ms
       cy.wait(2500)
-      cy.get('.p-toast-message').should('not.be.visible')
+      cy.get('.p-toast-message').should('not.exist')
       cy.getCookie('PtExampleToken')
         .should('exist')
         .and((cookieData) => {

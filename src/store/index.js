@@ -13,7 +13,7 @@ const store = createStore({
     todo,
     message
   },
-  strict: Boolean(process.env.NODE_ENV !== 'production'),
+  strict: Boolean(import.meta.env.MODE !== 'production'),
   plugins: [
     createPersistedState({
       key: 'PtExampleToken',
@@ -22,7 +22,7 @@ const store = createStore({
         getItem: key => Cookies.get(key),
         setItem: (key, value) => Cookies.set(key, value, {
           expires: 1 / 24,
-          secure: Boolean(process.env.NODE_ENV === 'production')
+          secure: Boolean(import.meta.env.MODE === 'production')
         }),
         removeItem: key => Cookies.remove(key)
       }

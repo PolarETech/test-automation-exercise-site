@@ -193,7 +193,7 @@ describe('Smoke Testing Suite', () => {
           expect(storageData.todo.items[0].subject).to.eq('テストアイテム１')
         })
       cy.get('.todo-remove').click()
-      cy.get('.todo-subject').should('not.have.value', 'テストアイテム１')
+      cy.get('.todo-list').should('not.exist')
         .then(() => {
           const storageData = JSON.parse(localStorage.getItem('PtExampleTodos'))
           expect(storageData.todo.items).to.have.lengthOf(0)
