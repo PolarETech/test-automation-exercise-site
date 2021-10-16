@@ -1,11 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from './store'
 
-// import { configureCompat } from 'vue'
-// configureCompat({
-//   WATCH_ARRAY: false
-// })
-
 export const routes = [
   {
     path: '/',

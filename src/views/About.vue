@@ -128,11 +128,6 @@ import { useHead } from '@vueuse/head'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 
-// import { configureCompat } from 'vue'
-// configureCompat({
-//   RENDER_FUNCTION: false
-// })
-
 export default {
   components: {
     TabView,

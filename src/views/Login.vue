@@ -68,15 +68,8 @@
 import { useHead } from '@vueuse/head'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
-// import _Password from '@/components/Password.vue'
 import Button from 'primevue/button'
 import Panel from 'primevue/panel'
-
-// import { configureCompat } from 'vue'
-// configureCompat({
-//   COMPONENT_V_MODEL: false,
-//   RENDER_FUNCTION: false
-// })
 
 export default {
   components: {

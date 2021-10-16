@@ -38,11 +38,6 @@
 <script>
 import { useHead } from '@vueuse/head'
 
-// import { configureCompat } from 'vue'
-// configureCompat({
-//   RENDER_FUNCTION: false
-// })
-
 export default {
   setup () {
     useHead({

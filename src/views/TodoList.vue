@@ -65,12 +65,6 @@ import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
 
-// import { configureCompat } from 'vue'
-// configureCompat({
-//   COMPONENT_V_MODEL: false,
-//   RENDER_FUNCTION: false
-// })
-
 export default {
   name: 'TodoList',
   components: {
