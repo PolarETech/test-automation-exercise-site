@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
-import { createStore } from 'vuex'
+import { mount, VueWrapper } from '@vue/test-utils'
+import { createStore, Store, StoreOptions } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import Login from '@/views/Login.vue'
@@ -54,8 +54,8 @@ const getMocks = () => ({
 })
 
 describe('Login.vue', () => {
-  let store
-  let wrapper
+  let store: Store<StoreOptions<unknown>>
+  let wrapper: VueWrapper<InstanceType<typeof Login>>
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -128,29 +128,29 @@ describe('Login.vue', () => {
       test('enable "login" button when input ID and Password', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBeUndefined()
+        expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input ID', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBeUndefined()
+        expect(submit.attributes().disabled).toBe('false')
 
         await wrapper.setData({ userId: '' })
         expect(submit.attributes().disabled).toBe('true')
         await wrapper.setData({ userId: wrongID })
-        expect(submit.attributes().disabled).toBeUndefined()
+        expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input Password', async () => {
         const submit = wrapper.find('#login-submit')
         await wrapper.setData({ userId: wrongID, password: wrongPass })
-        expect(submit.attributes().disabled).toBeUndefined()
+        expect(submit.attributes().disabled).toBe('false')
 
         await wrapper.setData({ password: '' })
         expect(submit.attributes().disabled).toBe('true')
         await wrapper.setData({ password: wrongPass })
-        expect(submit.attributes().disabled).toBeUndefined()
+        expect(submit.attributes().disabled).toBe('false')
       })
     })
 
@@ -251,7 +251,7 @@ describe('Login.vue', () => {
               name: 'login',
               query: {
                 redirect: '/todo',
-                message: true
+                message: 'true'
               }
             }
           },

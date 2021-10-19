@@ -1,6 +1,8 @@
-import { createStore } from 'vuex'
+import { createStore, Store } from 'vuex'
+import { State } from '@vue/runtime-core'
 import { cloneDeep } from 'lodash'
 import todo from '@/store/modules/todo'
+import { TodoItem } from '@/types/store'
 
 const testItem = {
   id: 88888888,
@@ -29,9 +31,9 @@ const initStore = () => ({
 })
 
 describe('todo', () => {
-  let store
-  let item
-  let itemIndex
+  let store: Store<State>
+  let item: TodoItem
+  let itemIndex: number
 
   beforeEach(() => {
     store = createStore(initStore())

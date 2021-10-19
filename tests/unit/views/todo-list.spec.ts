@@ -1,5 +1,5 @@
-import { mount } from '@vue/test-utils'
-import { createStore } from 'vuex'
+import { mount, VueWrapper } from '@vue/test-utils'
+import { createStore, Store, StoreOptions } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import TodoList from '@/views/TodoList.vue'
@@ -55,14 +55,14 @@ const getModules = {
     namespaced: true,
     state: {
       emptyItem: dummyEmptyMessage,
-      requireImputTodo: dummyRequireMessage
+      requireInputTodo: dummyRequireMessage
     }
   }
 }
 
 describe('TodoList.vue', () => {
-  let store
-  let wrapper
+  let store: Store<StoreOptions<unknown>>
+  let wrapper: VueWrapper<InstanceType<typeof TodoList>>
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -161,7 +161,7 @@ describe('TodoList.vue', () => {
           expect.anything(),
           expect.stringMatching(newSubject)
         )
-        expect(el.element.value).toBe('')
+        expect((el.element as HTMLInputElement).value).toBe('')
       })
     })
 

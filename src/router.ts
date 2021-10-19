@@ -1,7 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import store from './store'
 
-export const routes = [
+export const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
@@ -46,10 +46,10 @@ router.beforeEach((to, from, next) => {
     if (!store.getters['auth/GET_LOGIN_STATUS']) {
       next({
         path: '/login',
-        query: {
+        query: Object({
           redirect: to.fullPath,
-          message: true
-        }
+          message: 'true'
+        })
       })
     } else {
       next()

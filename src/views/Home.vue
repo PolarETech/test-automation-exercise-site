@@ -35,16 +35,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useHead } from '@vueuse/head'
 
-export default {
+export default defineComponent({
   setup () {
     useHead({
       title: 'Home | test automation exercise site'
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

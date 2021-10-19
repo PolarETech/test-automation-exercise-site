@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createHead } from '@vueuse/head'
 import Home from '@/views/Home.vue'
@@ -17,7 +17,7 @@ jest.spyOn(router, 'push')
 const head = createHead()
 
 describe('Home.vue', () => {
-  let wrapper
+  let wrapper: VueWrapper<InstanceType<typeof Home>>
 
   afterEach(() => {
     jest.clearAllMocks()
