@@ -6,11 +6,11 @@
         <span class="icon pi pi-user"></span>ログイン
       </h1>
 
-      <p class="info-message" id="require-message" v-if="this.$route.query.message">
-        {{ this.$store.state.message.requireLogin }}
+      <p class="info-message" id="require-message" v-if="isLoginRequired">
+        {{ requireLoginMessage }}
       </p>
 
-      <form class="login-form" @submit.prevent="login">
+      <form class="login-form" @submit.prevent="login(userId, password)">
         <div class="p-field">
           <label for="user-id-input">ユーザーID</label>
           <InputText
@@ -32,7 +32,7 @@
             name="pw-field"
             required
             placeholder="パスワードを入力してください"
-            :feedback="null"
+            :feedback="false"
             toggleMask
             v-model="password"
           />
@@ -51,11 +51,11 @@
       </form>
 
       <p class="error-message has-text-danger"
-        v-if="loginUserError"
-        v-html="this.$store.state.message.loginError">
+        v-if="isLoginUserError"
+        v-html="loginErrorMessage">
       </p>
 
-      <Panel header="Info" :toggleable="null" :collapsed="null">
+      <Panel header="Info">
         <p>このログイン画面はテスト用のダミーです。以下のユーザー情報でログインできます。<br>
         ユーザーID : testID<br>
         パスワード : testPASS</p>
@@ -64,14 +64,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { ComponentPublicInstance, defineComponent } from 'vue'
 import { useHead } from '@vueuse/head'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
 import Panel from 'primevue/panel'
 
-export default {
+export default defineComponent({
   components: {
     InputText,
     Password,
@@ -82,7 +83,7 @@ export default {
     return {
       userId: '',
       password: '',
-      isLoading: null
+      isLoading: false
     }
   },
   setup () {
@@ -91,36 +92,45 @@ export default {
     })
   },
   methods: {
-    async login () {
-      this.$refs.loginSubmit.$el.focus()
+    async login (userId: string, password: string) {
+      ((this.$refs.loginSubmit as ComponentPublicInstance).$el as HTMLButtonElement).focus()
       this.isLoading = true
       const res = await this.$store.dispatch('auth/LOGIN', {
-        userId: this.userId,
-        password: this.password
+        userId,
+        password
       })
       if (res) {
         const path = this.$route.query.redirect || '/todo'
-        this.$router.push(path)
+        this.$router.push(String(path))
       }
-      this.isLoading = null
-      this.$refs.loginSubmit.$el.blur()
+      this.isLoading = false;
+      ((this.$refs.loginSubmit as ComponentPublicInstance).$el as HTMLButtonElement).blur()
     }
   },
   computed: {
-    loginUserError () {
+    isLoginRequired (): boolean {
+      return this.$route.query.message === 'true'
+    },
+    isLoginButtonDisabled (): boolean {
+      return !this.userId || !this.password
+    },
+    isLoginUserError (): boolean {
       return this.$store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']
     },
-    isLoginButtonDisabled () {
-      return this.userId && this.password ? null : true
+    requireLoginMessage (): string {
+      return this.$store.state.message.requireLogin
+    },
+    loginErrorMessage (): string {
+      return this.$store.state.message.loginError
     }
   },
   mounted () {
     this.$nextTick(function () {
       // focus control
-      this.$refs.userIdInput.$el.focus()
+      ((this.$refs.userIdInput as ComponentPublicInstance).$el as HTMLInputElement).focus()
     })
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

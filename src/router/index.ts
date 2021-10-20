@@ -1,33 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from './store'
-
-export const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('./views/Home.vue')
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('./views/About.vue')
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('./views/Login.vue')
-  },
-  {
-    path: '/todo',
-    name: 'todo',
-    component: () => import('./views/TodoList.vue'),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/'
-  }
-]
+import routes from './routes'
+import store from '../store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,10 +19,10 @@ router.beforeEach((to, from, next) => {
     if (!store.getters['auth/GET_LOGIN_STATUS']) {
       next({
         path: '/login',
-        query: {
+        query: Object({
           redirect: to.fullPath,
-          message: true
-        }
+          message: 'true'
+        })
       })
     } else {
       next()

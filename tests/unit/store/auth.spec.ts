@@ -1,4 +1,5 @@
-import { createStore } from 'vuex'
+import { createStore, Store } from 'vuex'
+import { State } from '@vue/runtime-core'
 import { cloneDeep } from 'lodash'
 import auth from '@/store/modules/auth'
 
@@ -7,7 +8,7 @@ const initStore = () => ({
 })
 
 describe('auth', () => {
-  let store
+  let store: Store<State>
 
   beforeEach(() => {
     store = createStore(initStore())

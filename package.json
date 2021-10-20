@@ -1,14 +1,14 @@
 {
   "name": "test-automation-exercise-site",
-  "version": "3.0.0-alpha5",
+  "version": "3.0.0-alpha6",
   "private": true,
   "scripts": {
     "dev": "BROWSER=none vite --port 8080",
-    "build": "vite build",
+    "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview --port 8081",
     "test:unit": "jest",
     "test:e2e": "vite preview --port 8081 & cypress open --port 8089",
-    "lint": "eslint '{src,tests}/**/*.{js,vue}'; eslint '*.js'"
+    "lint": "eslint '{src,tests}/**/*.{ts,vue}'; eslint 'tests/**/*.js'; eslint '*.js'"
   },
   "dependencies": {
     "@vueuse/head": "^0.6.0",
@@ -26,16 +26,20 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.15.8",
     "@cypress/vue": "^3.0.3",
+    "@types/jest": "^27.0.2",
+    "@types/js-cookie": "^3.0.0",
+    "@types/lodash": "^4.14.175",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
     "@vitejs/plugin-legacy": "^1.6.2",
     "@vitejs/plugin-vue": "^1.9.3",
     "@vue/compiler-sfc": "^3.1.0",
     "@vue/eslint-config-standard": "^6.1.0",
+    "@vue/eslint-config-typescript": "^8.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "@vue/vue3-jest": "^27.0.0-alpha.1",
     "autoprefixer": "^10.3.7",
-    "babel-plugin-transform-vite-meta-env": "^1.0.3",
     "cypress": "^8.6.0",
     "eslint": "^8.0.1",
     "eslint-plugin-cypress": "^2.12.1",
@@ -50,8 +54,10 @@
     "jest-watch-typeahead": "^1.0.0",
     "rollup-plugin-prerender-spa-plugin": "^0.0.7-beta.1",
     "sass": "^1.43.2",
+    "ts-jest": "^27.0.7",
     "typescript": "~4.4.4",
-    "vite": "^2.6.7"
+    "vite": "^2.6.7",
+    "vue-tsc": "^0.28.7"
   },
   "engines": {
     "node": ">=12 <15"

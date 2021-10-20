@@ -7,10 +7,8 @@
       </h1>
 
       <template v-if="todoItems.length == 0">
-        <p class="info-message"
-          id="empty-message"
-        >
-          {{ this.$store.state.message.emptyItem }}
+        <p class="info-message" id="empty-message">
+          {{ emptyItemMessage }}
         </p>
       </template>
 
@@ -31,7 +29,7 @@
       <form
         class="add-todo"
         v-show="todoItems.length < 5"
-        @submit.prevent="addTodoItem"
+        @submit.prevent="addTodoItem(subject)"
       >
         <button
           id="subject-submit"
@@ -49,7 +47,7 @@
           aria-label="new todo item subject"
           maxlength="15"
           autocomplete="off"
-          :placeholder="this.$store.state.message.requireImputTodo"
+          :placeholder="requireInputTodoMessage"
           v-model="subject"
         />
       </form>
@@ -59,13 +57,14 @@
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
+import { TodoItem } from '@/types/store'
 
-export default {
+export default defineComponent({
   name: 'TodoList',
   components: {
     TodoListItems,
@@ -82,30 +81,34 @@ export default {
     })
   },
   methods: {
-    ...mapActions({
-      addTodoItem (dispatch) {
-        if (this.subject.length > 0) {
-          dispatch('todo/ADD_TODO_ITEM', this.subject)
-          this.subject = ''
-          this.$refs.subjectInput.focus()
-        }
+    addTodoItem (subject: string) {
+      if (subject.length > 0) {
+        this.$store.dispatch('todo/ADD_TODO_ITEM', subject)
+        this.subject = '';
+        (this.$refs.subjectInput as HTMLInputElement).focus()
       }
-    })
+    }
   },
   computed: {
     todoItems: {
-      get () {
+      get (): TodoItem[] {
         return this.$store.getters['todo/GET_TODO_ITEMS']
       },
-      set (todoItems) {
+      set (todoItems: TodoItem[]) {
         this.$store.dispatch('todo/SET_TODO_ITEMS', todoItems)
       }
     },
-    isSubmitButtonDisabled () {
-      return this.subject.length === 0 ? true : null
+    isSubmitButtonDisabled (): boolean {
+      return this.subject.length === 0
+    },
+    emptyItemMessage (): string {
+      return this.$store.state.message.emptyItem
+    },
+    requireInputTodoMessage (): string {
+      return this.$store.state.message.requireInputTodo
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

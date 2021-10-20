@@ -1,5 +1,5 @@
 <template>
-  <li :class="{ is_done: item.isDone }" :id="item.id">
+  <li :class="{ is_done: item.isDone }" :id="String(item.id)">
     <button
       class="todo-drag"
       :id="'dg-' + item.id"
@@ -14,7 +14,7 @@
       :id="'cb-' + item.id"
       type="checkbox"
       :checked="item.isDone"
-      @click="DONE_TODO_ITEM(item)"
+      @click="doneTodoItem(item)"
     />
     <label :for="'cb-' + item.id" :aria-label="item.subject"></label>
 
@@ -23,7 +23,7 @@
       :id="'sj-' + item.id"
       type="text"
       maxlength="15"
-      :placeholder="this.$store.state.message.requireImputTodo"
+      :placeholder="requireInputTodoMessage"
       :value="item.subject"
       @change="updateTodoItem(item, $event)"
     />
@@ -35,7 +35,7 @@
         class="todo-remove"
         :id="'rm-' + item.id"
         aria-label="delete the todo item"
-        @click="REMOVE_TODO_ITEM(item)"
+        @click="removeTodoItem(item)"
       >
         <span class="icon pi pi-trash remove-icon"></span>
       </button>
@@ -44,39 +44,44 @@
   </li>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
-import { DONE_TODO_ITEM, REMOVE_TODO_ITEM } from '@/store/mutation-types'
+<script lang="ts">
+import { defineComponent, PropType } from 'vue'
+import { TodoItem } from '@/types/store'
 
-export default {
+export default defineComponent({
   name: 'TodoListItems',
   props: {
     item: {
-      id: Number,
-      isDone: Boolean,
-      timestamp: String,
-      subject: String
+      type: Object as PropType<TodoItem>,
+      required: true
     }
   },
   methods: {
-    ...mapActions('todo', {
-      DONE_TODO_ITEM,
-      REMOVE_TODO_ITEM,
-      updateTodoItem (dispatch, item, e) {
-        const newSubject = e.target.value
-        if (newSubject.length > 0) {
-          dispatch('UPDATE_TODO_ITEM', {
-            item,
-            newSubject
-          })
-        } else {
-          // Restore the original string if input value is empty
-          e.target.value = item.subject
-        }
+    doneTodoItem (item: TodoItem) {
+      this.$store.dispatch('todo/DONE_TODO_ITEM', item)
+    },
+    removeTodoItem (item: TodoItem) {
+      this.$store.dispatch('todo/REMOVE_TODO_ITEM', item)
+    },
+    updateTodoItem (item: TodoItem, e: Event) {
+      const newSubject = (e.target as HTMLInputElement).value
+      if (newSubject.length > 0) {
+        this.$store.dispatch('todo/UPDATE_TODO_ITEM', {
+          item,
+          newSubject
+        })
+      } else {
+        // Restore the original string if input value is empty
+        (e.target as HTMLInputElement).value = item.subject
       }
-    })
+    }
+  },
+  computed: {
+    requireInputTodoMessage (): string {
+      return this.$store.state.message.requireInputTodo
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

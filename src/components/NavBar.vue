@@ -41,8 +41,8 @@
         <router-link class="navbar-item" id="nav-home-link" to="/">Home</router-link>
         <router-link class="navbar-item" id="nav-about-link" to="/about">About</router-link>
         <router-link class="navbar-item" id="nav-todo-link" to="/todo">TodoList</router-link>
-        <router-link class="navbar-item" id="nav-login-link" v-if="!GET_LOGIN_STATUS" to="/login">Login</router-link>
-        <a class="navbar-item" id="nav-logout-link" v-if="GET_LOGIN_STATUS" tabindex="0" @click="logout" @keydown.enter="logout">Logout</a>
+        <router-link class="navbar-item" id="nav-login-link" v-if="!isLoggedIn" to="/login">Login</router-link>
+        <a class="navbar-item" id="nav-logout-link" v-if="isLoggedIn" tabindex="0" @click="logout" @keydown.enter="logout">Logout</a>
       </div>
     </div>
 
@@ -69,10 +69,11 @@
   <Toast position="top-center" />
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import Toast from 'primevue/toast'
 
-export default {
+export default defineComponent({
   name: 'NavBar',
   components: {
     Toast
@@ -91,7 +92,7 @@ export default {
         this.isNavMenuOpen = false
       }
     },
-    async logout (dispatch) {
+    async logout () {
       this.$store.dispatch('auth/LOGOUT')
       this.$router.push('/')
       this.$toast.add({
@@ -106,11 +107,11 @@ export default {
     }
   },
   computed: {
-    GET_LOGIN_STATUS () {
+    isLoggedIn (): boolean {
       return this.$store.getters['auth/GET_LOGIN_STATUS']
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

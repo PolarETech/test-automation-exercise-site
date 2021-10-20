@@ -2,13 +2,14 @@ module.exports = {
   moduleFileExtensions: [
     'js',
     'json',
+    'ts',
     'vue'
   ],
   transform: {
     '^.+\\.vue$': '@vue/vue3-jest',
     '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$':
     'jest-transform-stub',
-    '^.+\\.jsx?$': 'babel-jest'
+    '^.+\\.tsx?$': 'ts-jest'
   },
   transformIgnorePatterns: [
     '/node_modules/'
@@ -33,6 +34,6 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/views/**/*.vue',
     '<rootDir>/src/components/**/*.vue',
-    '<rootDir>/src/store/modules/*.js'
+    '<rootDir>/src/store/modules/*.ts'
   ]
 }

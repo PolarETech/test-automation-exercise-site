@@ -12,10 +12,11 @@
   </footer>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import NavBar from '@/components/NavBar.vue'
 
-export default {
+export default defineComponent({
   components: {
     navbar: NavBar
   },
@@ -24,7 +25,7 @@ export default {
       isNavMenuOpen: false
     }
   }
-}
+})
 </script>
 
 <style lang="scss">

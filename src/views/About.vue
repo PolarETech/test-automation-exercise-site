@@ -107,6 +107,7 @@
               <li>HTML5</li>
               <li>CSS3/SCSS</li>
               <li>SVG</li>
+              <li>TypeScript</li>
               <li>JavaScript</li>
               <li>Node.js</li>
               <li>npm</li>
@@ -124,12 +125,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import { useHead } from '@vueuse/head'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 
-export default {
+export default defineComponent({
   components: {
     TabView,
     TabPanel
@@ -141,10 +143,10 @@ export default {
   },
   methods: {
     unfocus () {
-      document.activeElement.blur()
+      (document.activeElement as HTMLAnchorElement).blur()
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,7 +1,7 @@
-import { mount } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router.js'
-import { createStore } from 'vuex'
+import routes from '@/router/routes'
+import { createStore, Store, StoreOptions } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
@@ -42,8 +42,8 @@ const getMocks = () => ({
 })
 
 describe('NavBar.vue', () => {
-  let store
-  let wrapper
+  let store: Store<StoreOptions<unknown>>
+  let wrapper: VueWrapper<InstanceType<typeof NavBar>>
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -80,6 +80,7 @@ describe('NavBar.vue', () => {
       test('show "NavBar" vue', () => {
         expect(wrapper.findComponent(NavBar).exists()).toBeTruthy()
         expect(wrapper.vm.toggleMenuExpand).toBeTruthy()
+        expect(wrapper.vm.closeMenu).toBeTruthy()
         expect(wrapper.vm.logout).toBeTruthy()
       })
 
