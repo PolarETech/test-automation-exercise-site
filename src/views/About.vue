@@ -85,13 +85,17 @@
             </p>
             <p>
               サイトソース：<br>
-              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/src">https://github.com/PolarETech/test-automation-exercise-site/tree/master/src</a>
+              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/main/src">https://github.com/PolarETech/test-automation-exercise-site/tree/main/src</a>
             </p>
             <p>
               テストコード：<br>
-              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests">https://github.com/PolarETech/test-automation-exercise-site/tree/master/tests</a><br>
-              <a href="https://github.com/PolarETech/test-automation-exercise-site/tree/master/test-code-examples">https://github.com/PolarETech/test-automation-exercise-site/tree/master/test-code-examples</a>
             </p>
+            <ul>
+              <li><a href="https://github.com/PolarETech/test-automation-exercise-site/tree/main/tests/unit">Jest</a></li>
+              <li><a href="https://github.com/PolarETech/test-automation-exercise-site/tree/main/tests/e2e">Cypress</a></li>
+              <li><a href="https://github.com/PolarETech/test-automation-exercise-site/tree/main/test-code-examples/codeceptjs-puppeteer-example">CodeceptJS and Puppeteer</a></li>
+              <li><a href="https://github.com/PolarETech/test-automation-exercise-site/tree/main/test-code-examples/cucumberjs-selenium-example">Cucumber.js and Selenium</a></li>
+            </ul>
 
             <h2 class="subtitle is-5">本サイトの作成で使用している主な技術要素</h2>
             <ul>
