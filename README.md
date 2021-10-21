@@ -5,14 +5,19 @@
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Start dev server
 ```
-yarn serve
+yarn dev
 ```
 
-### Compiles and minifies for production
+### Build for production
 ```
 yarn build
+```
+
+### Locally preview production build
+```
+yarn serve
 ```
 
 ### Run your unit tests
@@ -25,10 +30,19 @@ yarn test:unit
 yarn test:e2e
 ```
 
-### Lints and fixes files
+### Lints files
 ```
 yarn lint
 ```
 
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See [Configuration Reference](https://vitejs.dev/config/).
+
+***
+
+## Test site
+[TEST AUTOMATION EXERCISE SITE](https://polaretech.github.io/test-automation-exercise-site/)
+
+### Sample test code
+- [CodeceptJS and Puppeteer](https://github.com/PolarETech/test-automation-exercise-site/tree/main/test-code-examples/codeceptjs-puppeteer-example)
+- [Cucumber.js and Selenium](https://github.com/PolarETech/test-automation-exercise-site/tree/main/test-code-examples/cucumberjs-selenium-example)
