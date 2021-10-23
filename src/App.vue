@@ -19,11 +19,6 @@ import NavBar from '@/components/NavBar.vue'
 export default defineComponent({
   components: {
     navbar: NavBar
-  },
-  data () {
-    return {
-      isNavMenuOpen: false
-    }
   }
 })
 </script>

@@ -43,8 +43,8 @@ describe('About.vue', () => {
 
   describe('focus control', () => {
     test('unfocus tabview nav link', async () => {
-      const el = wrapper.find('.p-tabview-nav-link');
-      (el.element as HTMLAnchorElement).focus()
+      const el = wrapper.find('.p-tabview-nav-link')
+      ;(el.element as HTMLAnchorElement).focus()
       expect((document.activeElement as HTMLElement).className).toEqual('p-tabview-nav-link')
 
       await el.trigger('click')

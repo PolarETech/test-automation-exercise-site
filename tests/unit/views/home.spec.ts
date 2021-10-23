@@ -53,12 +53,12 @@ describe('Home.vue', () => {
     describe('router control', () => {
       test('"#about-button" links to "/about" path', async () => {
         await wrapper.find('#about-button').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/about')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/about')
       })
 
       test('"#todo-button" links to "/todo" path', async () => {
         await wrapper.find('#todo-button').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/todo')
       })
     })
   })

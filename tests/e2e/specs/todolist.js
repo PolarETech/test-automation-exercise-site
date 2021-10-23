@@ -36,6 +36,7 @@ describe('TodoList view test', () => {
     cy.get('.todo-timestamp').should('contain', date)
     cy.get('.todo-remove').should('be.visible')
     cy.get('.todo-subject').should('have.value', 'テストアイテム１')
+    cy.get('#subject-input').should('be.focused')
     cy.get('#item-count').should('contain', '登録件数：1 / 5 件')
       .then(() => {
         const storageData = JSON.parse(localStorage.getItem('PtExampleTodos'))

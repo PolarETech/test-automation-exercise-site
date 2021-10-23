@@ -1,10 +1,14 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { createStore, Store, StoreOptions } from 'vuex'
+import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import TodoListItems from '@/components/TodoListItems.vue'
 
 const head = createHead()
+
+/**
+ * Store Mock Configuration
+ */
 
 const dummyItem = {
   id: 0,
@@ -20,24 +24,36 @@ const actions = {
   REMOVE_TODO_ITEM: jest.fn()
 }
 
-const getModules = {
-  todo: {
-    namespaced: true,
-    state: {
-      items: [dummyItem]
+const getStoreModule = {
+  modules: {
+    todo: {
+      namespaced: true,
+      state: {
+        items: [dummyItem]
+      },
+      actions
     },
-    actions
-  },
-  message: {
-    namespaced: true,
-    state: {
-      requireInputTodo: dummyRequireMessage
+    message: {
+      namespaced: true,
+      state: {
+        requireInputTodo: dummyRequireMessage
+      }
     }
   }
 }
 
+jest.mock('@/store', () => ({
+  store: null,
+  useStore: jest.fn()
+}))
+
+require('@/store').useStore.mockReturnValue(
+  createStore({
+    ...getStoreModule
+  })
+)
+
 describe('TodoListItems.vue', () => {
-  let store: Store<StoreOptions<unknown>>
   let wrapper: VueWrapper<InstanceType<typeof TodoListItems>>
 
   afterEach(() => {
@@ -47,19 +63,12 @@ describe('TodoListItems.vue', () => {
 
   describe('a todo item is registered', () => {
     beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules
-        }
-      })
-
       wrapper = mount(TodoListItems, {
         props: {
           item: dummyItem
         },
         global: {
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -96,16 +105,9 @@ describe('TodoListItems.vue', () => {
       test('update subject with new string', async () => {
         const newSubject = 'UpdateToDoItem'
         const el = wrapper.find('.todo-subject')
-        expect((el.element as HTMLInputElement).value).toBe(dummyItem.subject);
+        expect((el.element as HTMLInputElement).value).toBe(dummyItem.subject)
 
-        // NOTE:
-        //   onChange event is triggered by textInput.setValue() method at @vue/test-utils v2.0.0-rc.15.
-        //   In previous version, onChange event was not triggered in the same situation.
-        //   So I rewrote the method to directly assign value,
-        //   since I cannot confirm that the action is not called during text input.
-
-        // await el.setValue(newSubject)
-        (el.element as HTMLInputElement).value = newSubject
+        ;(el.element as HTMLInputElement).value = newSubject
         expect((el.element as HTMLInputElement).value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 
@@ -123,17 +125,9 @@ describe('TodoListItems.vue', () => {
       test('update subject with empty string', async () => {
         const newSubject = ''
         const el = wrapper.find('.todo-subject')
-        expect((el.element as HTMLInputElement).value).toBe(dummyItem.subject);
+        expect((el.element as HTMLInputElement).value).toBe(dummyItem.subject)
 
-        // NOTE:
-        //   onChange event is triggered by textInput.setValue() method at @vue/test-utils v2.0.0-rc.15.
-        //   In previous version, onChange event was not triggered in the same situation.
-        //   Due to this behavior change, the set empty string is immediately restored to the original strings.
-        //   So I rewrote the method to assign value directly,
-        //   since I cannot confirm that the empty string was entered correctly once.
-
-        // await el.setValue(newSubject)
-        (el.element as HTMLInputElement).value = newSubject
+        ;(el.element as HTMLInputElement).value = newSubject
         expect((el.element as HTMLInputElement).value).toBe(newSubject)
         expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
 

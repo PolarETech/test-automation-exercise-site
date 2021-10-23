@@ -3,7 +3,7 @@
     <section role="main">
       <h1 class="title is-4">このサイトについて</h1>
 
-      <TabView scrollable @tab-change="unfocus" @tab-click="unfocus">
+      <TabView scrollable @tab-change="unfocus()" @tab-click="unfocus()">
         <TabPanel header="テストコンテンツ">
           <div class="content">
             <h2 class="subtitle is-5">テストコンテンツの利用について</h2>

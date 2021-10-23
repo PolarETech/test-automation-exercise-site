@@ -1,8 +1,7 @@
 import { createStore, Store } from 'vuex'
-import { State } from '@vue/runtime-core'
+import { State, TodoItem } from '@/types/store'
 import { cloneDeep } from 'lodash'
 import todo from '@/store/modules/todo'
-import { TodoItem } from '@/types/store'
 
 const testItem = {
   id: 88888888,

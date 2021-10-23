@@ -1,10 +1,47 @@
-import { mount, VueWrapper } from '@vue/test-utils'
-import { createStore, Store, StoreOptions } from 'vuex'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import Login from '@/views/Login.vue'
 
 const head = createHead()
+
+/**
+ * Router Mock Configuration
+ */
+
+jest.mock('vue-router')
+
+const mockRouter = { push: jest.fn() }
+
+require('vue-router').useRouter.mockReturnValue(
+  mockRouter
+)
+
+const getRouteMockDirectAccess = {
+  path: '/login',
+  query: {
+    redirect: undefined,
+    message: undefined
+  }
+}
+
+const getRouteMockRedirectAccess = {
+  path: '/login',
+  query: {
+    redirect: '/todo',
+    message: 'true'
+  }
+}
+
+/**
+ * Store Mock Configuration
+ */
+
+jest.mock('@/store', () => ({
+  store: null,
+  useStore: jest.fn()
+}))
 
 const correctID = 'testID'
 const correctPass = 'testPASS'
@@ -13,48 +50,57 @@ const wrongPass = 'boo'
 const dummyRequireMessage = 'dummy-require'
 const dummyUserErrorMessage = 'dummy-user-error'
 
+const getLoginUserSuccessStatus = {
+  GET_LOGIN_USER_ERROR_STATUS: jest.fn(() => false)
+}
+
+const getLoginUserErrorStatus = {
+  GET_LOGIN_USER_ERROR_STATUS: jest.fn(() => true)
+}
+
 const actions = {
   LOGIN: jest.fn((commit, data) => {
     return !!(data.userId === correctID && data.password === correctPass)
   })
 }
 
-const getters = {
-  GET_LOGIN_USER_ERROR_STATUS: jest.fn(() => false)
-}
-
-const getModules = {
-  auth: {
-    namespaced: true,
-    state: {},
-    actions,
-    getters
-  },
-  message: {
-    namespaced: true,
-    state: {
-      requireLogin: dummyRequireMessage,
-      loginError: dummyUserErrorMessage
+const getStoreModuleLoginSuccess = {
+  modules: {
+    auth: {
+      namespaced: true,
+      state: {},
+      getters: getLoginUserSuccessStatus,
+      actions
+    },
+    message: {
+      namespaced: true,
+      state: {
+        requireLogin: dummyRequireMessage,
+        loginError: dummyUserErrorMessage
+      }
     }
   }
 }
 
-const getMocks = () => ({
-  $route: {
-    path: '/login',
-    name: 'login',
-    query: {
-      redirect: undefined,
-      message: undefined
+const getStoreModuleLoginError = {
+  modules: {
+    auth: {
+      namespaced: true,
+      state: {},
+      getters: getLoginUserErrorStatus,
+      actions
+    },
+    message: {
+      namespaced: true,
+      state: {
+        requireLogin: dummyRequireMessage,
+        loginError: dummyUserErrorMessage
+      }
     }
-  },
-  $router: {
-    push: jest.fn()
   }
-})
+}
 
 describe('Login.vue', () => {
-  let store: Store<StoreOptions<unknown>>
   let wrapper: VueWrapper<InstanceType<typeof Login>>
 
   afterEach(() => {
@@ -64,20 +110,20 @@ describe('Login.vue', () => {
 
   describe('directly access login page', () => {
     beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules
-        }
+      require('vue-router').useRoute.mockReturnValue({
+        ...getRouteMockDirectAccess
       })
+
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreModuleLoginSuccess
+        })
+      )
 
       wrapper = mount(Login, {
         shallow: true,
         global: {
-          mocks: {
-            ...getMocks()
-          },
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -103,7 +149,7 @@ describe('Login.vue', () => {
       })
 
       test('hide "log-in user error" message', () => {
-        expect(getters.GET_LOGIN_USER_ERROR_STATUS).toBeCalled()
+        expect(getLoginUserSuccessStatus.GET_LOGIN_USER_ERROR_STATUS).toBeCalled()
         const el = wrapper.find('.error-message')
         expect(el.exists()).toBeFalsy()
       })
@@ -115,41 +161,53 @@ describe('Login.vue', () => {
 
       test('disable "login" button when input only ID', async () => {
         const submit = wrapper.find('#login-submit')
-        await wrapper.setData({ userId: wrongID })
+        wrapper.vm.userId = wrongID
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('true')
       })
 
       test('disable "login" button when input only Password', async () => {
         const submit = wrapper.find('#login-submit')
-        await wrapper.setData({ password: wrongPass })
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('true')
       })
 
       test('enable "login" button when input ID and Password', async () => {
         const submit = wrapper.find('#login-submit')
-        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        wrapper.vm.userId = wrongID
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input ID', async () => {
         const submit = wrapper.find('#login-submit')
-        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        wrapper.vm.userId = wrongID
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('false')
 
-        await wrapper.setData({ userId: '' })
+        wrapper.vm.userId = ''
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('true')
-        await wrapper.setData({ userId: wrongID })
+        wrapper.vm.userId = wrongID
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('false')
       })
 
       test('disable/enable "login" button when clear/input Password', async () => {
         const submit = wrapper.find('#login-submit')
-        await wrapper.setData({ userId: wrongID, password: wrongPass })
+        wrapper.vm.userId = wrongID
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('false')
 
-        await wrapper.setData({ password: '' })
+        wrapper.vm.password = ''
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('true')
-        await wrapper.setData({ password: wrongPass })
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(submit.attributes().disabled).toBe('false')
       })
     })
@@ -157,20 +215,23 @@ describe('Login.vue', () => {
     describe('binding control', () => {
       test('text input bind "userId" props', async () => {
         const id = wrapper.find('#user-id-input')
-        await wrapper.setData({ userId: wrongID })
+        wrapper.vm.userId = wrongID
+        await flushPromises()
         expect(id.attributes('modelvalue')).toBe(wrongID)
       })
 
       test('password input bind "password" props', async () => {
         const pass = wrapper.find('#password-input')
-        await wrapper.setData({ password: wrongPass })
+        wrapper.vm.password = wrongPass
+        await flushPromises()
         expect(pass.attributes('modelvalue')).toBe(wrongPass)
       })
     })
 
     describe('login control', () => {
       test('call store action "auth/LOGIN" with correct args when submit', async () => {
-        await wrapper.setData({ userId: correctID, password: correctPass })
+        wrapper.vm.userId = correctID
+        wrapper.vm.password = correctPass
         await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toBeCalledWith(
           expect.anything(),
@@ -181,45 +242,40 @@ describe('Login.vue', () => {
         )
       })
 
-      test('call "$router.push" with "/todo" path when login succeeded', async () => {
-        await wrapper.setData({ userId: correctID, password: correctPass })
+      test('call "router.push" with "/todo" path when login succeeded', async () => {
+        wrapper.vm.userId = correctID
+        wrapper.vm.password = correctPass
         await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toReturnWith(true)
-        expect(wrapper.vm.$route.path).toBe('/login')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
+        expect(mockRouter.push).toBeCalledWith('/todo')
       })
 
-      test('should not call "$router.push" when login with wrong ID and Password', async () => {
-        await wrapper.setData({ userId: wrongID, password: wrongPass })
+      test('should not call "router.push" when login with wrong ID and Password', async () => {
+        wrapper.vm.userId = wrongID
+        wrapper.vm.password = wrongPass
         await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toReturnWith(false)
-        expect(wrapper.vm.$router.push).not.toBeCalled()
+        expect(mockRouter.push).not.toBeCalled()
       })
     })
   })
 
   describe('login with wrong ID/Password', () => {
     beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules,
-          auth: {
-            namespaced: true,
-            state: {},
-            getters: {
-              GET_LOGIN_USER_ERROR_STATUS: () => true
-            }
-          }
-        }
+      require('vue-router').useRoute.mockReturnValue({
+        ...getRouteMockDirectAccess
       })
+
+
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreModuleLoginError
+        })
+      )
 
       wrapper = mount(Login, {
         global: {
-          mocks: {
-            ...getMocks()
-          },
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -235,28 +291,20 @@ describe('Login.vue', () => {
   })
 
   describe('redirect to login page when access todo page without login', () => {
-    beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules
-        }
+    beforeEach(async () => {
+      require('vue-router').useRoute.mockReturnValue({
+        ...getRouteMockRedirectAccess
       })
+
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreModuleLoginSuccess
+        })
+      )
 
       wrapper = mount(Login, {
         global: {
-          mocks: {
-            ...getMocks(),
-            $route: {
-              path: '/login',
-              name: 'login',
-              query: {
-                redirect: '/todo',
-                message: 'true'
-              }
-            }
-          },
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -270,13 +318,12 @@ describe('Login.vue', () => {
       expect(el.text()).toBe(dummyRequireMessage)
     })
 
-    test('call "$router.push" with "/todo" path when login succeeded', async () => {
-      await wrapper.setData({ userId: correctID, password: correctPass })
+    test('call "router.push" with "/todo" path when login succeeded', async () => {
+      wrapper.vm.userId = correctID
+      wrapper.vm.password = correctPass
       await wrapper.find('form').trigger('submit.prevent')
       expect(actions.LOGIN).toReturnWith(true)
-      expect(wrapper.vm.$route.path).toBe('/login')
-      expect(wrapper.vm.$route.query.redirect).toBe('/todo')
-      expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
+      expect(mockRouter.push).toBeCalledWith('/todo')
     })
   })
 })

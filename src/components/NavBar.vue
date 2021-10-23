@@ -70,7 +70,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
+import { useToast } from "primevue/usetoast"
 import Toast from 'primevue/toast'
 
 export default defineComponent({
@@ -78,37 +81,45 @@ export default defineComponent({
   components: {
     Toast
   },
-  data () {
-    return {
-      isNavMenuOpen: false
+  setup () {
+    const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
+    const toast = useToast()
+
+    const isNavMenuOpen = ref(false)
+
+    const isLoggedIn = computed(() => store.getters['auth/GET_LOGIN_STATUS'])
+
+    const toggleMenuExpand = () => {
+      isNavMenuOpen.value = !isNavMenuOpen.value
     }
-  },
-  methods: {
-    toggleMenuExpand () {
-      this.isNavMenuOpen = !this.isNavMenuOpen
-    },
-    closeMenu () {
-      if (this.isNavMenuOpen) {
-        this.isNavMenuOpen = false
-      }
-    },
-    async logout () {
-      this.$store.dispatch('auth/LOGOUT')
-      this.$router.push('/')
-      this.$toast.add({
+
+    const closeMenu = () => {
+      if (isNavMenuOpen.value) isNavMenuOpen.value = false
+    }
+
+    const logout = async () => {
+      store.dispatch('auth/LOGOUT')
+      router.push('/')
+      showLogoutToast()
+    }
+
+    const showLogoutToast = () => {
+      toast.add({
         detail: 'ログアウトしました',
         life: 2000
       })
     }
-  },
-  watch: {
-    $route () {
-      this.closeMenu()
-    }
-  },
-  computed: {
-    isLoggedIn (): boolean {
-      return this.$store.getters['auth/GET_LOGIN_STATUS']
+
+    watch(route, () => closeMenu())
+
+    return {
+      isNavMenuOpen,
+      isLoggedIn,
+      toggleMenuExpand,
+      closeMenu,
+      logout
     }
   }
 })

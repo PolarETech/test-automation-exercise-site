@@ -1,5 +1,5 @@
 import { createStore, Store } from 'vuex'
-import { State } from '@vue/runtime-core'
+import { State } from '@/types/store'
 import { cloneDeep } from 'lodash'
 import auth from '@/store/modules/auth'
 

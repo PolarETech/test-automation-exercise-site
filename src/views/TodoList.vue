@@ -6,7 +6,7 @@
         <span class="icon pi pi-check-circle"></span>ToDoリスト
       </h1>
 
-      <template v-if="todoItems.length == 0">
+      <template v-if="isTodoItemEmpty">
         <p class="info-message" id="empty-message">
           {{ emptyItemMessage }}
         </p>
@@ -28,8 +28,8 @@
 
       <form
         class="add-todo"
-        v-show="todoItems.length < 5"
-        @submit.prevent="addTodoItem(subject)"
+        v-show="!isTodoItemMaximum"
+        @submit.prevent="addTodoItem()"
       >
         <button
           id="subject-submit"
@@ -42,7 +42,7 @@
 
         <input
           id="subject-input"
-          ref="subjectInput"
+          ref="subjectInputElement"
           type="text"
           aria-label="new todo item subject"
           maxlength="15"
@@ -58,7 +58,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useStore } from '@/store'
 import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
@@ -70,42 +71,53 @@ export default defineComponent({
     TodoListItems,
     draggable
   },
-  data () {
-    return {
-      subject: ''
-    }
-  },
   setup () {
+    const store = useStore()
+
+    const subject = ref('')
+    const subjectInputElement = ref<HTMLInputElement>()
+
+    const todoItems = computed({
+      get: () => store.getters['todo/GET_TODO_ITEMS'],
+      set: (value: TodoItem[]) => store.dispatch('todo/SET_TODO_ITEMS', value)
+    })
+
+    const countTodoItems = computed(() => todoItems.value.length)
+    const isTodoItemEmpty = computed(() => todoItems.value.length === 0)
+    const isTodoItemMaximum = computed(() => todoItems.value.length >= 5)
+
+    const isSubmitButtonDisabled = computed(() => subject.value.length === 0)
+
+    const emptyItemMessage = computed(() => store.state.message.emptyItem)
+    const requireInputTodoMessage = computed(() => store.state.message.requireInputTodo)
+
+    const addTodoItem = () => {
+      if (!isTodoItemMaximum.value && subject.value.length > 0) {
+        store.dispatch('todo/ADD_TODO_ITEM', subject.value)
+        subject.value = '';
+        focusSubjectInputElement()
+      }
+    }
+
+    const focusSubjectInputElement = () => {
+      subjectInputElement?.value?.focus()
+    }
+
     useHead({
       title: 'TodoList | test automation exercise site'
     })
-  },
-  methods: {
-    addTodoItem (subject: string) {
-      if (subject.length > 0) {
-        this.$store.dispatch('todo/ADD_TODO_ITEM', subject)
-        this.subject = '';
-        (this.$refs.subjectInput as HTMLInputElement).focus()
-      }
-    }
-  },
-  computed: {
-    todoItems: {
-      get (): TodoItem[] {
-        return this.$store.getters['todo/GET_TODO_ITEMS']
-      },
-      set (todoItems: TodoItem[]) {
-        this.$store.dispatch('todo/SET_TODO_ITEMS', todoItems)
-      }
-    },
-    isSubmitButtonDisabled (): boolean {
-      return this.subject.length === 0
-    },
-    emptyItemMessage (): string {
-      return this.$store.state.message.emptyItem
-    },
-    requireInputTodoMessage (): string {
-      return this.$store.state.message.requireInputTodo
+
+    return {
+      subject,
+      todoItems,
+      countTodoItems,
+      isTodoItemEmpty,
+      isTodoItemMaximum,
+      isSubmitButtonDisabled,
+      emptyItemMessage,
+      requireInputTodoMessage,
+      addTodoItem,
+      subjectInputElement
     }
   }
 })

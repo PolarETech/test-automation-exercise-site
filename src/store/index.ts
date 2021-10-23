@@ -1,4 +1,6 @@
-import { createStore } from 'vuex'
+import { InjectionKey } from 'vue'
+import { createStore, useStore as baseUseStore, Store } from 'vuex'
+import { State } from '@/types/store'
 
 import auth from './modules/auth'
 import todo from './modules/todo'
@@ -7,7 +9,9 @@ import message from './modules/message'
 import createPersistedState from 'vuex-persistedstate'
 import Cookies from 'js-cookie'
 
-const store = createStore({
+export const key: InjectionKey<Store<State>> = Symbol()
+
+export const store = createStore<State>({
   modules: {
     auth,
     todo,
@@ -33,5 +37,9 @@ const store = createStore({
     })
   ]
 })
+
+export function useStore () {
+  return baseUseStore(key)
+}
 
 export default store

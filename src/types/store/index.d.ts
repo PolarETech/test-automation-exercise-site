@@ -22,6 +22,11 @@ export type MessageState = {
   emptyItem: string,
   requireInputTodo: string
 }
+export interface State {
+  auth: AuthState
+  todo: TodoItems
+  message: MessageState
+}
 
 export type Context = {
   commit: Commit

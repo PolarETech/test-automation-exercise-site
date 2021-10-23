@@ -10,12 +10,12 @@
         {{ requireLoginMessage }}
       </p>
 
-      <form class="login-form" @submit.prevent="login(userId, password)">
+      <form class="login-form" @submit.prevent="login()">
         <div class="p-field">
           <label for="user-id-input">ユーザーID</label>
           <InputText
             id="user-id-input"
-            ref="userIdInput"
+            ref="userIdInputElement"
             name="id-field"
             type="text"
             required
@@ -41,7 +41,7 @@
         <Button
           class="p-button-outlined"
           id="login-submit"
-          ref="loginSubmit"
+          ref="loginSubmitElement"
           name="login-btn"
           type="submit"
           :disabled="isLoginButtonDisabled"
@@ -65,7 +65,9 @@
 </template>
 
 <script lang="ts">
-import { ComponentPublicInstance, defineComponent } from 'vue'
+import { defineComponent, ComponentPublicInstance, ref, computed, onMounted, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from '@/store'
 import { useHead } from '@vueuse/head'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -79,56 +81,70 @@ export default defineComponent({
     Button,
     Panel
   },
-  data () {
-    return {
-      userId: '',
-      password: '',
-      isLoading: false
-    }
-  },
   setup () {
+    const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
+
+    const userId = ref('')
+    const password = ref('')
+    const isLoading = ref(false)
+
+    const userIdInputElement = ref<ComponentPublicInstance>()
+    const loginSubmitElement = ref<ComponentPublicInstance>()
+
+    const isLoginRequired = computed(() => route.query.message === 'true')
+    const isLoginButtonDisabled = computed(() => !userId.value || !password.value)
+    const isLoginUserError = computed(() => store.getters['auth/GET_LOGIN_USER_ERROR_STATUS'])
+
+    const requireLoginMessage = computed(() => store.state.message.requireLogin)
+    const loginErrorMessage = computed(() => store.state.message.loginError)
+
+    const login = async () => {
+      startLoadingDisplay()
+      const user = { userId: userId.value, password: password.value }
+      const res = await store.dispatch('auth/LOGIN', user)
+      if (res) {
+        const path = route.query.redirect || '/todo'
+        router.push(String(path))
+      }
+      stopLoadingDisplay()
+    }
+
+    const startLoadingDisplay = () => {
+      ;(loginSubmitElement?.value?.$el as HTMLButtonElement)?.focus()
+      isLoading.value = true
+    }
+
+    const stopLoadingDisplay = () => {
+      isLoading.value = false
+      ;(loginSubmitElement?.value?.$el as HTMLButtonElement)?.blur()
+    }
+
     useHead({
       title: 'Login | test automation exercise site'
     })
-  },
-  methods: {
-    async login (userId: string, password: string) {
-      ((this.$refs.loginSubmit as ComponentPublicInstance).$el as HTMLButtonElement).focus()
-      this.isLoading = true
-      const res = await this.$store.dispatch('auth/LOGIN', {
-        userId,
-        password
+
+    onMounted(() => {
+      nextTick(() => {
+        // focus control
+        ;(userIdInputElement?.value?.$el as HTMLInputElement)?.focus()
       })
-      if (res) {
-        const path = this.$route.query.redirect || '/todo'
-        this.$router.push(String(path))
-      }
-      this.isLoading = false;
-      ((this.$refs.loginSubmit as ComponentPublicInstance).$el as HTMLButtonElement).blur()
-    }
-  },
-  computed: {
-    isLoginRequired (): boolean {
-      return this.$route.query.message === 'true'
-    },
-    isLoginButtonDisabled (): boolean {
-      return !this.userId || !this.password
-    },
-    isLoginUserError (): boolean {
-      return this.$store.getters['auth/GET_LOGIN_USER_ERROR_STATUS']
-    },
-    requireLoginMessage (): string {
-      return this.$store.state.message.requireLogin
-    },
-    loginErrorMessage (): string {
-      return this.$store.state.message.loginError
-    }
-  },
-  mounted () {
-    this.$nextTick(function () {
-      // focus control
-      ((this.$refs.userIdInput as ComponentPublicInstance).$el as HTMLInputElement).focus()
     })
+
+    return {
+      userId,
+      password,
+      isLoading,
+      isLoginRequired,
+      isLoginButtonDisabled,
+      isLoginUserError,
+      requireLoginMessage,
+      loginErrorMessage,
+      login,
+      userIdInputElement,
+      loginSubmitElement
+    }
   }
 })
 </script>

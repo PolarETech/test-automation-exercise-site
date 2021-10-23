@@ -1,10 +1,14 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { createStore, Store, StoreOptions } from 'vuex'
+import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import TodoList from '@/views/TodoList.vue'
 
 const head = createHead()
+
+/**
+ * Store Mock Configuration
+ */
 
 const dummyItem = {
   id: 0,
@@ -31,37 +35,75 @@ const dummyItems = [
 const dummyEmptyMessage = 'dummy-empty'
 const dummyRequireMessage = 'dummy-require'
 
-const todoActions = {
-  ADD_TODO_ITEM: jest.fn(),
-  SET_TODO_ITEMS: jest.fn()
-}
-
-const todoGetters = {
+const gettersItemRegistered = {
   GET_TODO_ITEMS: jest.fn(() => {
     return [dummyItem]
   })
 }
 
-const getModules = {
-  todo: {
-    namespaced: true,
-    state: {
-      items: [dummyItem]
+const gettersItemEmpty = {
+  GET_TODO_ITEMS: jest.fn(() => {
+    return []
+  })
+}
+
+const actions = {
+  ADD_TODO_ITEM: jest.fn(),
+  SET_TODO_ITEMS: jest.fn()
+}
+
+const getStoreModuleItemRegistered = {
+  modules: {
+    todo: {
+      namespaced: true,
+      state: {
+        items: [dummyItem]
+      },
+      getters: gettersItemRegistered,
+      actions
     },
-    actions: todoActions,
-    getters: todoGetters
-  },
-  message: {
-    namespaced: true,
-    state: {
-      emptyItem: dummyEmptyMessage,
-      requireInputTodo: dummyRequireMessage
+    message: {
+      namespaced: true,
+      state: {
+        emptyItem: dummyEmptyMessage,
+        requireInputTodo: dummyRequireMessage
+      }
     }
   }
 }
 
+const getStoreModuleItemEmpty = {
+  modules: {
+    todo: {
+      namespaced: true,
+      state: {
+        items: []
+      },
+      getters: gettersItemEmpty,
+      actions
+    },
+    message: {
+      namespaced: true,
+      state: {
+        emptyItem: dummyEmptyMessage,
+        requireInputTodo: dummyRequireMessage
+      }
+    }
+  }
+}
+
+jest.mock('@/store', () => ({
+  store: null,
+  useStore: jest.fn()
+}))
+
+require('@/store').useStore.mockReturnValue(
+  createStore({
+    ...getStoreModuleItemRegistered
+  })
+)
+
 describe('TodoList.vue', () => {
-  let store: Store<StoreOptions<unknown>>
   let wrapper: VueWrapper<InstanceType<typeof TodoList>>
 
   afterEach(() => {
@@ -71,16 +113,16 @@ describe('TodoList.vue', () => {
 
   describe('a todo item is registered', () => {
     beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules
-        }
-      })
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreModuleItemRegistered
+        })
+      )
 
       wrapper = mount(TodoList, {
+        attachTo: document.body,
         global: {
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -95,13 +137,13 @@ describe('TodoList.vue', () => {
       })
 
       test('hide "empty item" message', () => {
-        expect(todoGetters.GET_TODO_ITEMS).toBeCalled()
+        expect(gettersItemRegistered.GET_TODO_ITEMS).toBeCalled()
         const el = wrapper.find('#empty-message')
         expect(el.exists()).toBeFalsy()
       })
 
       test('show "todo-list"', () => {
-        expect(todoGetters.GET_TODO_ITEMS).toBeCalled()
+        expect(gettersItemRegistered.GET_TODO_ITEMS).toBeCalled()
         const el = wrapper.find('.todo-list')
         expect(el.exists()).toBeTruthy()
       })
@@ -149,7 +191,7 @@ describe('TodoList.vue', () => {
         const newSubject = ''
         await el.setValue(newSubject)
         await wrapper.find('.add-todo').trigger('submit.prevent')
-        expect(todoActions.ADD_TODO_ITEM).not.toBeCalled()
+        expect(actions.ADD_TODO_ITEM).not.toBeCalled()
       })
 
       test('call store action "todo/ADD_TODO_ITEM" with correct args when submit', async () => {
@@ -157,7 +199,7 @@ describe('TodoList.vue', () => {
         const newSubject = 'test'
         await el.setValue(newSubject)
         await wrapper.find('.add-todo').trigger('submit.prevent')
-        expect(todoActions.ADD_TODO_ITEM).toBeCalledWith(
+        expect(actions.ADD_TODO_ITEM).toBeCalledWith(
           expect.anything(),
           expect.stringMatching(newSubject)
         )
@@ -167,9 +209,8 @@ describe('TodoList.vue', () => {
 
     describe('set todo control', () => {
       test('call store action "todo/SET_TODO_ITEMS" with correct args when change todoItems', async () => {
-        // await wrapper.vm.setData({ todoItems: dummyItems })
         wrapper.vm.todoItems = dummyItems
-        expect(todoActions.SET_TODO_ITEMS).toBeCalledWith(
+        expect(actions.SET_TODO_ITEMS).toBeCalledWith(
           expect.anything(),
           expect.objectContaining(dummyItems)
         )
@@ -178,31 +219,16 @@ describe('TodoList.vue', () => {
   })
 
   describe('todo item is empty', () => {
-    const localTodoGetters = {
-      GET_TODO_ITEMS: jest.fn(() => {
-        return []
-      })
-    }
-
     beforeEach(() => {
-      store = createStore({
-        modules: {
-          ...getModules,
-          todo: {
-            namespaced: true,
-            state: {
-              items: []
-            },
-            actions: todoActions,
-            getters: localTodoGetters
-          }
-        }
-      })
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreModuleItemEmpty
+        })
+      )
 
       wrapper = mount(TodoList, {
         global: {
           plugins: [
-            store,
             head,
             PrimeVue
           ]
@@ -211,13 +237,13 @@ describe('TodoList.vue', () => {
     })
 
     test('show "empty item" message', () => {
-      expect(localTodoGetters.GET_TODO_ITEMS).toBeCalled()
+      expect(gettersItemEmpty.GET_TODO_ITEMS).toBeCalled()
       const el = wrapper.find('#empty-message')
       expect(el.exists()).toBeTruthy()
     })
 
     test('hide "todo-list"', () => {
-      expect(localTodoGetters.GET_TODO_ITEMS).toBeCalled()
+      expect(gettersItemEmpty.GET_TODO_ITEMS).toBeCalled()
       const el = wrapper.find('.todo-list')
       expect(el.exists()).toBeFalsy()
     })

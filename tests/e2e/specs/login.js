@@ -28,6 +28,7 @@ describe('Login view test', () => {
       .and((cookieData) => {
         const cookieValue = JSON.parse(decodeURI(cookieData.value))
         expect(cookieValue.auth.token).to.eq('dummy-token')
+        expect(cookieData).to.have.property('secure')
       })
   })
 

@@ -1,11 +1,17 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from '@/router/routes'
-import { createStore, Store, StoreOptions } from 'vuex'
+import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
 import NavBar from '@/components/NavBar.vue'
+
+const head = createHead()
+
+/**
+ * Router Spy Configuration
+ */
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,35 +20,60 @@ const router = createRouter({
 
 jest.spyOn(router, 'push')
 
-const head = createHead()
+/**
+ * Store Mock Configuration
+ */
 
-const getLoginStatus = {
-  GET_LOGIN_STATUS: jest.fn(() => true)
-}
+jest.mock('@/store', () => ({
+  store: null,
+  useStore: jest.fn()
+}))
 
 const getLogoutStatus = {
   GET_LOGIN_STATUS: jest.fn(() => false)
+}
+
+const getLoginStatus = {
+  GET_LOGIN_STATUS: jest.fn(() => true)
 }
 
 const actions = {
   LOGOUT: jest.fn()
 }
 
-const getAuthModules = {
-  namespaced: true,
-  state: {},
-  actions: actions,
-  getters: getLogoutStatus
+const getStoreMockLogoutStatus = {
+  modules: {
+    auth: {
+      namespaced: true,
+      state: {},
+      getters: getLogoutStatus,
+      actions
+    }
+  }
 }
 
-const getMocks = () => ({
-  $toast: {
-    add: jest.fn()
+const getStoreMockLoginStatus = {
+  modules: {
+    auth: {
+      namespaced: true,
+      state: {},
+      getters: getLoginStatus,
+      actions
+    }
   }
-})
+}
+
+/**
+ * Toast Mock Configuration
+ */
+
+const mockToast = { add: jest.fn() }
+
+jest.mock('primevue/usetoast', () => ({
+  useToast: () => mockToast
+}))
 
 describe('NavBar.vue', () => {
-  let store: Store<StoreOptions<unknown>>
   let wrapper: VueWrapper<InstanceType<typeof NavBar>>
 
   afterEach(() => {
@@ -55,19 +86,16 @@ describe('NavBar.vue', () => {
       router.push('/')
       await router.isReady()
 
-      store = createStore({
-        modules: {
-          auth: {
-            ...getAuthModules
-          }
-        }
-      })
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreMockLogoutStatus
+        })
+      )
 
       wrapper = mount(NavBar, {
         global: {
           plugins: [
             router,
-            store,
             head,
             PrimeVue,
             ToastService
@@ -137,27 +165,27 @@ describe('NavBar.vue', () => {
     describe('router control', () => {
       test('Top Logo links to "/" path', async () => {
         await wrapper.find('#top-logo-link').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/')
       })
 
       test('Home menu links to "/" path', async () => {
         await wrapper.find('#nav-home-link').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/')
       })
 
       test('About menu links to "/about" path', async () => {
         await wrapper.find('#nav-about-link').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/about')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/about')
       })
 
       test('TodoList menu links to "/todo" path', async () => {
         await wrapper.find('#nav-todo-link').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/todo')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/todo')
       })
 
       test('Login menu links to "/login" path', async () => {
         await wrapper.find('#nav-login-link').trigger('click')
-        expect(wrapper.vm.$router.push).toBeCalledWith('/login')
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/login')
       })
     })
   })
@@ -167,23 +195,16 @@ describe('NavBar.vue', () => {
       router.push('/')
       await router.isReady()
 
-      store = createStore({
-        modules: {
-          auth: {
-            ...getAuthModules,
-            getters: getLoginStatus
-          }
-        }
-      })
+      require('@/store').useStore.mockReturnValue(
+        createStore({
+          ...getStoreMockLoginStatus
+        })
+      )
 
       wrapper = mount(NavBar, {
         global: {
-          mocks: {
-            ...getMocks()
-          },
           plugins: [
             router,
-            store,
             head,
             PrimeVue,
             ToastService
@@ -216,8 +237,8 @@ describe('NavBar.vue', () => {
       test('call "$router.push" with "/" path and call "$toast.add" when click "logout" menu', async () => {
         await wrapper.find('#nav-logout-link').trigger('click')
         expect(actions.LOGOUT).toBeCalled()
-        expect(wrapper.vm.$router.push).toBeCalledWith('/')
-        expect(wrapper.vm.$toast.add).toBeCalled()
+        expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/')
+        expect(mockToast.add).toBeCalled()
       })
     })
   })

@@ -45,7 +45,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
+import { useStore } from '@/store'
 import { TodoItem } from '@/types/store'
 
 export default defineComponent({
@@ -56,17 +57,23 @@ export default defineComponent({
       required: true
     }
   },
-  methods: {
-    doneTodoItem (item: TodoItem) {
-      this.$store.dispatch('todo/DONE_TODO_ITEM', item)
-    },
-    removeTodoItem (item: TodoItem) {
-      this.$store.dispatch('todo/REMOVE_TODO_ITEM', item)
-    },
-    updateTodoItem (item: TodoItem, e: Event) {
+  setup () {
+    const store = useStore()
+
+    const requireInputTodoMessage = computed(() => store.state.message.requireInputTodo)
+
+    const doneTodoItem = (item: TodoItem) => {
+      store.dispatch('todo/DONE_TODO_ITEM', item)
+    }
+
+    const removeTodoItem = (item: TodoItem) => {
+      store.dispatch('todo/REMOVE_TODO_ITEM', item)
+    }
+
+    const updateTodoItem = (item: TodoItem, e: Event) => {
       const newSubject = (e.target as HTMLInputElement).value
       if (newSubject.length > 0) {
-        this.$store.dispatch('todo/UPDATE_TODO_ITEM', {
+        store.dispatch('todo/UPDATE_TODO_ITEM', {
           item,
           newSubject
         })
@@ -75,10 +82,12 @@ export default defineComponent({
         (e.target as HTMLInputElement).value = item.subject
       }
     }
-  },
-  computed: {
-    requireInputTodoMessage (): string {
-      return this.$store.state.message.requireInputTodo
+
+    return {
+      requireInputTodoMessage,
+      doneTodoItem,
+      removeTodoItem,
+      updateTodoItem
     }
   }
 })
