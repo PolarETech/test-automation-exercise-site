@@ -36,6 +36,14 @@ describe('auth', () => {
     expect(store.state.auth.userError).toBeFalsy()
   })
 
+  test('commit RESET_LOGIN_USER_ERROR', () => {
+    expect(store.state.auth.userError).toBeFalsy()
+    store.commit('auth/LOGIN_USER_ERROR', true)
+    expect(store.state.auth.userError).toBeTruthy()
+    store.commit('auth/RESET_LOGIN_USER_ERROR_STATUS')
+    expect(store.state.auth.userError).toBeFalsy()
+  })
+
   test('getter GET_LOGIN_STATUS before login', () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.getters['auth/GET_LOGIN_STATUS']).toBeFalsy()
@@ -123,5 +131,12 @@ describe('auth', () => {
     expect(store.state.auth.token).toBeTruthy()
     await store.dispatch('auth/LOGOUT')
     expect(store.state.auth.token).toBeFalsy()
+  })
+
+  test('dispatch RESET_LOGIN_USER_ERROR_STATUS', async () => {
+    store.commit('auth/LOGIN_USER_ERROR', true)
+    expect(store.state.auth.userError).toBeTruthy()
+    await store.dispatch('auth/RESET_LOGIN_USER_ERROR_STATUS')
+    expect(store.state.auth.userError).toBeFalsy()
   })
 })

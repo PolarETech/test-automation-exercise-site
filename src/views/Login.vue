@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ComponentPublicInstance, ref, computed, onMounted, nextTick } from 'vue'
+import { defineComponent, ComponentPublicInstance, ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from '@/store'
 import { useHead } from '@vueuse/head'
@@ -130,6 +130,10 @@ export default defineComponent({
         // focus control
         ;(userIdInputElement?.value?.$el as HTMLInputElement)?.focus()
       })
+    })
+
+    onUnmounted(() => {
+      store.dispatch('auth/RESET_LOGIN_USER_ERROR_STATUS')
     })
 
     return {

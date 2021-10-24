@@ -46,6 +46,16 @@ describe('Login view test', () => {
       .and('contain', 'ログインエラーユーザーIDまたはパスワードが違います')
   })
 
+  it('hides error message after moving different view', () => {
+    cy.visit('/login')
+    cy.get('input[type=text]').type('foo')
+    cy.get('input[type=password]').type('boo{enter}')
+    cy.get('.error-message').should('be.visible')
+    cy.visit('/home')
+    cy.visit('/login')
+    cy.get('.error-message').should('not.exist')
+  })
+
   it('shows require log-in message if user accessed Login view by redirect', () => {
     cy.visit('/todo')
     cy.title().should('eq', 'Login | test automation exercise site')

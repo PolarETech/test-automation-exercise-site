@@ -61,7 +61,8 @@ const getLoginUserErrorStatus = {
 const actions = {
   LOGIN: jest.fn((commit, data) => {
     return !!(data.userId === correctID && data.password === correctPass)
-  })
+  }),
+  RESET_LOGIN_USER_ERROR_STATUS: jest.fn()
 }
 
 const getStoreModuleLoginSuccess = {
@@ -248,6 +249,7 @@ describe('Login.vue', () => {
         await wrapper.find('form').trigger('submit.prevent')
         expect(actions.LOGIN).toReturnWith(true)
         expect(mockRouter.push).toBeCalledWith('/todo')
+        expect(actions.RESET_LOGIN_USER_ERROR_STATUS).toBeCalled()
       })
 
       test('should not call "router.push" when login with wrong ID and Password', async () => {

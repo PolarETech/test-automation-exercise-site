@@ -2,6 +2,7 @@ import {
   LOGIN,
   LOGOUT,
   LOGIN_USER_ERROR,
+  RESET_LOGIN_USER_ERROR_STATUS,
   GET_LOGIN_STATUS,
   GET_LOGIN_USER_ERROR_STATUS
 } from '@/store/mutation-types'
@@ -23,6 +24,9 @@ export default {
     },
     [LOGIN_USER_ERROR]: (state: AuthState, payload: boolean): void => {
       state.userError = payload
+    },
+    [RESET_LOGIN_USER_ERROR_STATUS]: (state: AuthState): void => {
+      state.userError = false
     }
   },
   getters: {
@@ -49,6 +53,9 @@ export default {
     },
     [LOGOUT]: ({ commit }: Context): void => {
       commit(LOGOUT)
+    },
+    [RESET_LOGIN_USER_ERROR_STATUS]: ({ commit }: Context): void => {
+      commit(RESET_LOGIN_USER_ERROR_STATUS)
     }
   }
 }
