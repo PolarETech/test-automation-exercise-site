@@ -28,6 +28,7 @@ Scenario('moves to TodoList view and sets auth token cookie after selecting "Log
   const cookie = await I.grabCookie('PtExampleToken')
   const cookieValue = JSON.parse(decodeURI(cookie.value))
   assert.equal(cookieValue.auth.token, 'dummy-token')
+  assert.equal(cookie.secure, true)
 }).tag('@smoke')
 
 Scenario('shows error message after selecting "Login" button with wrong ID and Password', ({ I }) => {
@@ -39,6 +40,17 @@ Scenario('shows error message after selecting "Login" button with wrong ID and P
   I.waitForInvisible({ css: '#login-submit .p-button-loading-icon' }, 5)
   I.seeTitleEquals('Login | test automation exercise site')
   I.see('ログインエラー\nユーザーIDまたはパスワードが違います', { css: '.error-message' })
+})
+
+Scenario('hides error message after moving different view', ({ I }) => {
+  I.amOnPage('/login')
+  I.fillField('ユーザーIDを入力してください', 'foo')
+  I.fillField('パスワードを入力してください', 'boo')
+  I.pressKey('Enter')
+  I.seeElement({ css: '.error-message' })
+  I.amOnPage('/home')
+  I.amOnPage('/login')
+  I.dontSeeElement({ css: '.error-message' })
 })
 
 Scenario('shows require log-in message if user accessed Login view by redirect', ({ I }) => {

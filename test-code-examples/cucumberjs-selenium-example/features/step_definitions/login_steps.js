@@ -39,14 +39,17 @@ When('I input the {word} user {word} in the Login view', async function (userSta
 
 Then('the login token cookie should be stored correctly', async function () {
   const page = createPageObject('Login')
-  const actual = await page.getLoginTokenCookie(this)
-  const expected = page.tokenCookie.value
-  assert.strictEqual(actual, expected)
+  const cookie = await page.getLoginTokenCookie(this)
+  const actualValue = cookie.value
+  const expectedValue = page.tokenCookie.value
+  assert.strictEqual(actualValue, expectedValue)
+  const actualSecure = cookie.secure
+  assert.strictEqual(actualSecure, true)
 })
 
 Then('the login token cookie should be empty', async function () {
   const page = createPageObject('Login')
-  const rowTokenCookieValue = await page.getLoginTokenCookie(this)
-  const tokenCookieValue = JSON.parse(decodeURI(rowTokenCookieValue))
-  assert.strictEqual(tokenCookieValue.auth.token, '')
+  const cookie = await page.getLoginTokenCookie(this)
+  const decodedTokenCookieValue = JSON.parse(decodeURI(cookie.value))
+  assert.strictEqual(decodedTokenCookieValue.auth.token, '')
 })

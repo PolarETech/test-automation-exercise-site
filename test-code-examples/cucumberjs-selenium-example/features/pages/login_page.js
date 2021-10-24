@@ -42,12 +42,11 @@ module.exports = class LoginPage extends BasePage {
   }
 
   async getLoginTokenCookie (world) {
-    const cookieValue = await world.driver
+    const cookieData = await world.driver
       .manage().getCookie(this.tokenCookie.key)
-      .then(cookieData => cookieData.value)
       .catch(error => { throw error })
 
-    return cookieValue
+    return cookieData
   }
 
   async setLoginTokenCookie (world) {

@@ -36,6 +36,16 @@ Feature: Login view test
     And the Login-Error-Message should be displayed in the Login view
     And the Login-Error-Message should have the correct text errorMessage in the Login view
 
+  Scenario: hides error message after moving different view
+    Given I am on the Login view
+    When I input the invalid user id in the Login view
+    And I input the invalid user password in the Login view
+    And I click the Login-Button in the Login view
+    And the Login-Error-Message should be displayed in the Login view
+    When I am on the Home view
+    And I am on the Login view
+    Then the Login-Error-Message should NOT be displayed in the Login view
+
   Scenario: shows require log-in message if user accessed Login view by redirect
     Given I am on the TodoList view
     Then the page title should be correct as the Login view
