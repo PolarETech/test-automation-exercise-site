@@ -1,5 +1,3 @@
-const assert = require('assert')
-
 module.exports = function() {
   return actor({
 
@@ -15,10 +13,6 @@ module.exports = function() {
 
     seeElementIsDisabled (locator) {
       this.seeAttributesOnElements(locator, { disabled: true })
-    },
-
-    seeEqual (actual, expected) {
-      assert.strictEqual(actual, expected)
     },
 
     registerNewSubject (text) {

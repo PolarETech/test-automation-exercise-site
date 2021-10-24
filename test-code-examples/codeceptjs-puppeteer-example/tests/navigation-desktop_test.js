@@ -1,3 +1,5 @@
+const assert = require('assert')
+
 Feature('Navigation menu with desktop screen test.js @navigation @desktop')
 
 Before(({ I }) => {
@@ -39,7 +41,7 @@ Scenario('moves to Home view and unsets auth token cookie after selecting "Logou
   I.seeCookie('PtExampleToken')
   const cookie = await I.grabCookie('PtExampleToken')
   const cookieValue = JSON.parse(decodeURI(cookie.value))
-  I.seeEqual(cookieValue.auth.token, '')
+  assert.equal(cookieValue.auth.token, '')
 }).tag('@smoke').tag('@login')
 
 Scenario('moves to Login view after selecting "TodoList" in navigation menu without logged in', ({ I }) => {

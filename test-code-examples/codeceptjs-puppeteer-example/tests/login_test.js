@@ -1,3 +1,5 @@
+const assert = require('assert')
+
 Feature('Login view test.js @login @desktop')
 
 Scenario('displays "Login" page', ({ I }) => {
@@ -25,7 +27,7 @@ Scenario('moves to TodoList view and sets auth token cookie after selecting "Log
   I.seeCookie('PtExampleToken')
   const cookie = await I.grabCookie('PtExampleToken')
   const cookieValue = JSON.parse(decodeURI(cookie.value))
-  I.seeEqual(cookieValue.auth.token, 'dummy-token')
+  assert.equal(cookieValue.auth.token, 'dummy-token')
 }).tag('@smoke')
 
 Scenario('shows error message after selecting "Login" button with wrong ID and Password', ({ I }) => {

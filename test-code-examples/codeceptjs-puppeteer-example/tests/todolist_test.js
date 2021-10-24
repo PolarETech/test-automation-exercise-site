@@ -1,3 +1,4 @@
+const assert = require('assert')
 const dayjs = require('dayjs')
 // WARNING:
 // In rare cases, the test about timestamp may fail due to a second difference
@@ -42,9 +43,9 @@ Scenario('adds a ToDo item', async ({ I }) => {
   I.see('登録件数：1 / 5 件', { css: '#item-count' })
 
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
-  I.seeEqual(storageData.todo.items[0].isDone, false)
-  I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].isDone, false)
+  assert.equal(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
 Scenario('changes ToDo item checkbox to ON', async ({ I }) => {
@@ -66,8 +67,8 @@ Scenario('changes ToDo item checkbox to ON', async ({ I }) => {
   I.see(`確認日時：${timestamp}`, { css: '.todo-timestamp' })
   // local storage should be updated
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].isDone, true)
-  I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
+  assert.equal(storageData.todo.items[0].isDone, true)
+  assert.equal(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
 Scenario('changes ToDo item checkbox to OFF', async ({ I }) => {
@@ -90,8 +91,8 @@ Scenario('changes ToDo item checkbox to OFF', async ({ I }) => {
   I.see(`確認日時：${timestamp}`, { css: '.todo-timestamp' })
   // local storage should be updated
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].isDone, false)
-  I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
+  assert.equal(storageData.todo.items[0].isDone, false)
+  assert.equal(storageData.todo.items[0].timestamp, timestamp)
 }).tag('@smoke')
 
 Scenario('changes a ToDo item subject', async ({ I }) => {
@@ -99,7 +100,7 @@ Scenario('changes a ToDo item subject', async ({ I }) => {
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
 
   // change subject
   I.click({ css: '.todo-subject' })
@@ -110,7 +111,7 @@ Scenario('changes a ToDo item subject', async ({ I }) => {
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム２')
   // local storage should be updated
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム２')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム２')
 }).tag('@smoke')
 
 Scenario('re-order ToDo items', async ({ I }) => {
@@ -121,8 +122,8 @@ Scenario('re-order ToDo items', async ({ I }) => {
   I.seeInField(locate({ css: '.todo-subject' }).at(1), 'テストアイテム１')
   I.seeInField(locate({ css: '.todo-subject' }).at(2), 'テストアイテム２')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
-  I.seeEqual(storageData.todo.items[1].subject, 'テストアイテム２')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[1].subject, 'テストアイテム２')
 
   // Drag and Drop
   await I.simulateDragAndDrop(
@@ -135,8 +136,8 @@ Scenario('re-order ToDo items', async ({ I }) => {
   I.seeInField(locate({ css: '.todo-subject' }).at(2), 'テストアイテム１')
   // local storage should be updated
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム２')
-  I.seeEqual(storageData.todo.items[1].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム２')
+  assert.equal(storageData.todo.items[1].subject, 'テストアイテム１')
 }).tag('@smoke')
 
 Scenario('removes a ToDo item and the list is empty', async ({ I }) => {
@@ -144,13 +145,13 @@ Scenario('removes a ToDo item and the list is empty', async ({ I }) => {
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
 
   I.click({ css: '.todo-remove' })
   I.seeNumberOfElements({ css: '.todo-subject' }, 0)
   // local storage should be empty
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items.length, 0)
+  assert.equal(storageData.todo.items.length, 0)
   I.see('ToDoは登録されていません', { css: '#empty-message' })
 }).tag('@smoke')
 
@@ -162,14 +163,14 @@ Scenario('removes a ToDo item and another ToDo item remains in the list', async 
   I.seeInField(locate({ css: '.todo-subject' }).at(1), 'テストアイテム１')
   I.seeInField(locate({ css: '.todo-subject' }).at(2), 'テストアイテム２')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
-  I.seeEqual(storageData.todo.items[1].subject, 'テストアイテム２')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[1].subject, 'テストアイテム２')
 
   I.click({ css: '.todo-remove' })
   I.seeNumberOfElements({ css: '.todo-subject' }, 1)
   I.seeInField(locate({ css: '.todo-subject' }).at(1), 'テストアイテム２')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム２')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム２')
   I.dontSee('ToDoは登録されていません')
 })
 
@@ -188,9 +189,9 @@ Scenario('stores a ToDo item after logging out/in', async ({ I }) => {
   I.seeCheckboxIsChecked({ css: '.todo-check' })
   I.see(`確認日時：${timestamp}`, { css: '.todo-timestamp' })
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
-  I.seeEqual(storageData.todo.items[0].isDone, true)
-  I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].isDone, true)
+  assert.equal(storageData.todo.items[0].timestamp, timestamp)
 
   I.click('Logout', { css: '.navbar-menu' })
   I.click('TodoList', { css: '.navbar-menu' })
@@ -205,23 +206,23 @@ Scenario('stores a ToDo item after logging out/in', async ({ I }) => {
   I.seeCheckboxIsChecked({ css: '.todo-check' })
   I.see(`確認日時：${timestamp}`, { css: '.todo-timestamp' })
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
-  I.seeEqual(storageData.todo.items[0].isDone, true)
-  I.seeEqual(storageData.todo.items[0].timestamp, timestamp)
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].isDone, true)
+  assert.equal(storageData.todo.items[0].timestamp, timestamp)
 })
 
 Scenario('adds the ToDo item which has maximum number of characters', async ({ I }) => {
   I.registerNewSubject('1234567890ABCDE')
   I.seeInField({ css: '.todo-subject' }, '1234567890ABCDE')
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, '1234567890ABCDE')
+  assert.equal(storageData.todo.items[0].subject, '1234567890ABCDE')
 })
 
 Scenario('tries to add the ToDo item which has exceeded the number of characters', async ({ I }) => {
   I.registerNewSubject('1234567890ABCDEF')
   I.seeInField({ css: '.todo-subject' }, '1234567890ABCDE')
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, '1234567890ABCDE')
+  assert.equal(storageData.todo.items[0].subject, '1234567890ABCDE')
 })
 
 const subjects = new DataTable(['subject'])
@@ -236,7 +237,7 @@ Data(subjects).Scenario('adds the ToDo item which has each character type', asyn
   I.registerNewSubject(current.subject)
   I.seeInField({ css: '.todo-subject' }, current.subject)
   const storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, current.subject)
+  assert.equal(storageData.todo.items[0].subject, current.subject)
 })
 
 Scenario('adds maximum number of Todo items', async ({ I }) => {
@@ -247,7 +248,7 @@ Scenario('adds maximum number of Todo items', async ({ I }) => {
     I.seeInField(locate({ css: '.todo-subject' }).at(i), `テストアイテム${i}`)
     I.see(`登録件数：${i} / 5 件`, { css: '#item-count' })
     storageData = await I.grabTodoLocalStorage()
-    I.seeEqual(storageData.todo.items[i - 1].subject, `テストアイテム${i}`)
+    assert.equal(storageData.todo.items[i - 1].subject, `テストアイテム${i}`)
   }
 
   I.seeNumberOfElements({ css: '.todo-subject' }, 5)
@@ -260,7 +261,7 @@ Scenario('tries to change a ToDo item subject to empty', async ({ I }) => {
   I.registerNewSubject('テストアイテム１')
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
 
   // clear subject
   I.click({ css: '.todo-subject' })
@@ -272,5 +273,5 @@ Scenario('tries to change a ToDo item subject to empty', async ({ I }) => {
   // should be restored the original subject
   I.seeInField({ css: '.todo-subject' }, 'テストアイテム１')
   storageData = await I.grabTodoLocalStorage()
-  I.seeEqual(storageData.todo.items[0].subject, 'テストアイテム１')
+  assert.equal(storageData.todo.items[0].subject, 'テストアイテム１')
 })
