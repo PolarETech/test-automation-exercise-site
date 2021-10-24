@@ -47,6 +47,7 @@ jest.mock('@/store', () => ({
   useStore: jest.fn()
 }))
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('@/store').useStore.mockReturnValue(
   createStore({
     ...getStoreModule
@@ -81,7 +82,7 @@ describe('TodoListItems.vue', () => {
         expect(wrapper.findComponent(TodoListItems).exists()).toBeTruthy()
         expect(wrapper.vm.doneTodoItem).toBeTruthy()
         expect(wrapper.vm.removeTodoItem).toBeTruthy()
-        expect(wrapper.vm.updateTodoItem).toBeTruthy()
+        expect(wrapper.vm.updateTodoItemSubject).toBeTruthy()
       })
 
       test('show elements', () => {

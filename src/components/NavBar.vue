@@ -42,7 +42,7 @@
         <router-link class="navbar-item" id="nav-about-link" to="/about">About</router-link>
         <router-link class="navbar-item" id="nav-todo-link" to="/todo">TodoList</router-link>
         <router-link class="navbar-item" id="nav-login-link" v-if="!isLoggedIn" to="/login">Login</router-link>
-        <a class="navbar-item" id="nav-logout-link" v-if="isLoggedIn" tabindex="0" @click="logout" @keydown.enter="logout">Logout</a>
+        <a class="navbar-item" id="nav-logout-link" v-if="isLoggedIn" tabindex="0" @click="doLogout()" @keydown.enter="doLogout()">Logout</a>
       </div>
     </div>
 
@@ -70,10 +70,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from '@/store'
-import { useToast } from "primevue/usetoast"
+import { useAuthStore } from '@/compositions/useAuthStore'
+import { useToast } from 'primevue/usetoast'
 import Toast from 'primevue/toast'
 
 export default defineComponent({
@@ -84,12 +84,11 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const store = useStore()
     const toast = useToast()
 
     const isNavMenuOpen = ref(false)
 
-    const isLoggedIn = computed(() => store.getters['auth/GET_LOGIN_STATUS'])
+    const { isLoggedIn, logout } = useAuthStore()
 
     const toggleMenuExpand = () => {
       isNavMenuOpen.value = !isNavMenuOpen.value
@@ -99,8 +98,8 @@ export default defineComponent({
       if (isNavMenuOpen.value) isNavMenuOpen.value = false
     }
 
-    const logout = async () => {
-      store.dispatch('auth/LOGOUT')
+    const doLogout = () => {
+      logout()
       router.push('/')
       showLogoutToast()
     }
@@ -119,7 +118,7 @@ export default defineComponent({
       isLoggedIn,
       toggleMenuExpand,
       closeMenu,
-      logout
+      doLogout
     }
   }
 })

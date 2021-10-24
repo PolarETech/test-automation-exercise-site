@@ -86,6 +86,7 @@ describe('NavBar.vue', () => {
       router.push('/')
       await router.isReady()
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreMockLogoutStatus
@@ -109,7 +110,7 @@ describe('NavBar.vue', () => {
         expect(wrapper.findComponent(NavBar).exists()).toBeTruthy()
         expect(wrapper.vm.toggleMenuExpand).toBeTruthy()
         expect(wrapper.vm.closeMenu).toBeTruthy()
-        expect(wrapper.vm.logout).toBeTruthy()
+        expect(wrapper.vm.doLogout).toBeTruthy()
       })
 
       test('show elements', () => {
@@ -195,6 +196,7 @@ describe('NavBar.vue', () => {
       router.push('/')
       await router.isReady()
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreMockLoginStatus
@@ -217,7 +219,8 @@ describe('NavBar.vue', () => {
       test('show "NavBar" vue', () => {
         expect(wrapper.findComponent(NavBar).exists()).toBeTruthy()
         expect(wrapper.vm.toggleMenuExpand).toBeTruthy()
-        expect(wrapper.vm.logout).toBeTruthy()
+        expect(wrapper.vm.closeMenu).toBeTruthy()
+        expect(wrapper.vm.doLogout).toBeTruthy()
       })
 
       test('hide "Login" menu', () => {

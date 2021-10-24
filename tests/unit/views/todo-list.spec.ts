@@ -97,6 +97,7 @@ jest.mock('@/store', () => ({
   useStore: jest.fn()
 }))
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('@/store').useStore.mockReturnValue(
   createStore({
     ...getStoreModuleItemRegistered
@@ -113,6 +114,7 @@ describe('TodoList.vue', () => {
 
   describe('a todo item is registered', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreModuleItemRegistered
@@ -133,7 +135,7 @@ describe('TodoList.vue', () => {
     describe('display control', () => {
       test('show "TodoList" vue', () => {
         expect(wrapper.findComponent(TodoList).exists()).toBeTruthy()
-        expect(wrapper.vm.addTodoItem).toBeTruthy()
+        expect(wrapper.vm.subjectSubmit).toBeTruthy()
       })
 
       test('hide "empty item" message', () => {
@@ -220,6 +222,7 @@ describe('TodoList.vue', () => {
 
   describe('todo item is empty', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreModuleItemEmpty

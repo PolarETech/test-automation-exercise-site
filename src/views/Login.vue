@@ -10,7 +10,7 @@
         {{ requireLoginMessage }}
       </p>
 
-      <form class="login-form" @submit.prevent="login()">
+      <form class="login-form" @submit.prevent="doLogin()">
         <div class="p-field">
           <label for="user-id-input">ユーザーID</label>
           <InputText
@@ -41,11 +41,11 @@
         <Button
           class="p-button-outlined"
           id="login-submit"
-          ref="loginSubmitElement"
+          ref="loginButtonElement"
           name="login-btn"
           type="submit"
           :disabled="isLoginButtonDisabled"
-          :loading="isLoading"
+          :loading="isLoginProcessing"
           label="ログイン"
         />
       </form>
@@ -67,7 +67,8 @@
 <script lang="ts">
 import { defineComponent, ComponentPublicInstance, ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from '@/store'
+import { useAuthStore } from '@/compositions/useAuthStore'
+import { useMessageStore } from '@/compositions/useMessageStore'
 import { useHead } from '@vueuse/head'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
@@ -84,41 +85,48 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
-    const store = useStore()
 
-    const userId = ref('')
-    const password = ref('')
-    const isLoading = ref(false)
+    const {
+      userId,
+      password,
+      isLoginProcessing,
+      isLoginUserError,
+      login,
+      resetLoginUserErrorStatus
+    } = useAuthStore()
+
+    const { requireLoginMessage, loginErrorMessage } = useMessageStore()
 
     const userIdInputElement = ref<ComponentPublicInstance>()
-    const loginSubmitElement = ref<ComponentPublicInstance>()
+    const loginButtonElement = ref<ComponentPublicInstance>()
 
     const isLoginRequired = computed(() => route.query.message === 'true')
     const isLoginButtonDisabled = computed(() => !userId.value || !password.value)
-    const isLoginUserError = computed(() => store.getters['auth/GET_LOGIN_USER_ERROR_STATUS'])
 
-    const requireLoginMessage = computed(() => store.state.message.requireLogin)
-    const loginErrorMessage = computed(() => store.state.message.loginError)
+    const doLogin = async () => {
+      focusSubmitButton()
 
-    const login = async () => {
-      startLoadingDisplay()
-      const user = { userId: userId.value, password: password.value }
-      const res = await store.dispatch('auth/LOGIN', user)
-      if (res) {
+      if (await login()) {
         const path = route.query.redirect || '/todo'
         router.push(String(path))
       }
-      stopLoadingDisplay()
+
+      unfocusSubmitButton()
     }
 
-    const startLoadingDisplay = () => {
-      ;(loginSubmitElement?.value?.$el as HTMLButtonElement)?.focus()
-      isLoading.value = true
+    /* istanbul ignore next */
+    const focusSubmitButton = () => {
+      (loginButtonElement?.value?.$el as HTMLButtonElement)?.focus()
     }
 
-    const stopLoadingDisplay = () => {
-      isLoading.value = false
-      ;(loginSubmitElement?.value?.$el as HTMLButtonElement)?.blur()
+    /* istanbul ignore next */
+    const unfocusSubmitButton = () => {
+      (loginButtonElement?.value?.$el as HTMLButtonElement)?.blur()
+    }
+
+    /* istanbul ignore next */
+    const focusUserIdImput = () => {
+      (userIdInputElement?.value?.$el as HTMLInputElement)?.focus()
     }
 
     useHead({
@@ -128,26 +136,26 @@ export default defineComponent({
     onMounted(() => {
       nextTick(() => {
         // focus control
-        ;(userIdInputElement?.value?.$el as HTMLInputElement)?.focus()
+        focusUserIdImput()
       })
     })
 
     onUnmounted(() => {
-      store.dispatch('auth/RESET_LOGIN_USER_ERROR_STATUS')
+      resetLoginUserErrorStatus()
     })
 
     return {
       userId,
       password,
-      isLoading,
+      isLoginProcessing,
       isLoginRequired,
       isLoginButtonDisabled,
       isLoginUserError,
       requireLoginMessage,
       loginErrorMessage,
-      login,
+      doLogin,
       userIdInputElement,
-      loginSubmitElement
+      loginButtonElement
     }
   }
 })

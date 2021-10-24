@@ -25,7 +25,7 @@
       maxlength="15"
       :placeholder="requireInputTodoMessage"
       :value="item.subject"
-      @change="updateTodoItem(item, $event)"
+      @change="updateTodoItemSubject(item, $event)"
     />
 
     <div class="todo-sub-info">
@@ -45,8 +45,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, PropType } from 'vue'
+import { useTodoStore } from '@/compositions/useTodoStore'
+import { useMessageStore } from '@/compositions/useMessageStore'
 import { TodoItem } from '@/types/store'
 
 export default defineComponent({
@@ -58,25 +59,13 @@ export default defineComponent({
     }
   },
   setup () {
-    const store = useStore()
+    const { updateTodoItem, doneTodoItem, removeTodoItem } = useTodoStore()
+    const { requireInputTodoMessage } = useMessageStore()
 
-    const requireInputTodoMessage = computed(() => store.state.message.requireInputTodo)
-
-    const doneTodoItem = (item: TodoItem) => {
-      store.dispatch('todo/DONE_TODO_ITEM', item)
-    }
-
-    const removeTodoItem = (item: TodoItem) => {
-      store.dispatch('todo/REMOVE_TODO_ITEM', item)
-    }
-
-    const updateTodoItem = (item: TodoItem, e: Event) => {
+    const updateTodoItemSubject = (item: TodoItem, e: Event) => {
       const newSubject = (e.target as HTMLInputElement).value
       if (newSubject.length > 0) {
-        store.dispatch('todo/UPDATE_TODO_ITEM', {
-          item,
-          newSubject
-        })
+        updateTodoItem(item, newSubject)
       } else {
         // Restore the original string if input value is empty
         (e.target as HTMLInputElement).value = item.subject
@@ -85,9 +74,9 @@ export default defineComponent({
 
     return {
       requireInputTodoMessage,
+      updateTodoItemSubject,
       doneTodoItem,
-      removeTodoItem,
-      updateTodoItem
+      removeTodoItem
     }
   }
 })

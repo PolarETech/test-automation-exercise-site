@@ -36,14 +36,6 @@ describe('auth', () => {
     expect(store.state.auth.userError).toBeFalsy()
   })
 
-  test('commit RESET_LOGIN_USER_ERROR', () => {
-    expect(store.state.auth.userError).toBeFalsy()
-    store.commit('auth/LOGIN_USER_ERROR', true)
-    expect(store.state.auth.userError).toBeTruthy()
-    store.commit('auth/RESET_LOGIN_USER_ERROR_STATUS')
-    expect(store.state.auth.userError).toBeFalsy()
-  })
-
   test('getter GET_LOGIN_STATUS before login', () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.getters['auth/GET_LOGIN_STATUS']).toBeFalsy()
@@ -91,7 +83,10 @@ describe('auth', () => {
   test('dispatch LOGIN with wrong ID and correct Pass', async () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeFalsy()
-    await store.dispatch('auth/LOGIN', { userId: 'foo', password: 'testPASS' })
+    await store.dispatch('auth/LOGIN', {
+      userId: 'foo',
+      password: 'testPASS'
+    })
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeTruthy()
   })
@@ -99,7 +94,10 @@ describe('auth', () => {
   test('dispatch LOGIN with correct ID and wrong Pass', async () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeFalsy()
-    await store.dispatch('auth/LOGIN', { userId: 'testID', password: 'boo' })
+    await store.dispatch('auth/LOGIN', {
+      userId: 'testID',
+      password: 'boo'
+    })
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeTruthy()
   })
@@ -107,7 +105,10 @@ describe('auth', () => {
   test('dispatch LOGIN with wrong ID/Pass', async () => {
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeFalsy()
-    await store.dispatch('auth/LOGIN', { userId: 'foo', password: 'boo' })
+    await store.dispatch('auth/LOGIN', {
+      userId: 'foo',
+      password: 'boo'
+    })
     expect(store.state.auth.token).toBeFalsy()
     expect(store.state.auth.userError).toBeTruthy()
   })

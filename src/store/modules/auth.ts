@@ -24,9 +24,6 @@ export default {
     },
     [LOGIN_USER_ERROR]: (state: AuthState, payload: boolean): void => {
       state.userError = payload
-    },
-    [RESET_LOGIN_USER_ERROR_STATUS]: (state: AuthState): void => {
-      state.userError = false
     }
   },
   getters: {
@@ -38,7 +35,7 @@ export default {
       commit(LOGIN_USER_ERROR, false)
 
       // dummy authentication and random waiting time
-      // istanbul ignore next
+      /* istanbul ignore next */
       await new Promise(resolve => {
         setTimeout(() => {
           resolve(() => true)
@@ -55,7 +52,7 @@ export default {
       commit(LOGOUT)
     },
     [RESET_LOGIN_USER_ERROR_STATUS]: ({ commit }: Context): void => {
-      commit(RESET_LOGIN_USER_ERROR_STATUS)
+      commit(LOGIN_USER_ERROR, false)
     }
   }
 }

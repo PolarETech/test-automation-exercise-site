@@ -9,6 +9,7 @@ import message from './modules/message'
 import createPersistedState from 'vuex-persistedstate'
 import Cookies from 'js-cookie'
 
+// eslint-disable-next-line symbol-description
 export const key: InjectionKey<Store<State>> = Symbol()
 
 export const store = createStore<State>({

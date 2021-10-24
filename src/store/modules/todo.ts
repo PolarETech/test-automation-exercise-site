@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import {
   ADD_TODO_ITEM,
-  DONE_TODO_ITEM,
   UPDATE_TODO_ITEM,
+  DONE_TODO_ITEM,
   REMOVE_TODO_ITEM,
   SET_TODO_ITEMS,
   GET_TODO_ITEMS
@@ -22,12 +22,12 @@ export default {
     [ADD_TODO_ITEM]: (state: TodoItems, payload: { item: TodoItem }): void => {
       state.items.push(payload.item)
     },
+    [UPDATE_TODO_ITEM]: (state: TodoItems, payload: { item: TodoItem, newSubject: string }): void => {
+      payload.item.subject = payload.newSubject
+    },
     [DONE_TODO_ITEM]: (state: TodoItems, payload: { item: TodoItem }): void => {
       payload.item.isDone = !payload.item.isDone
       payload.item.timestamp = dayjs(new Date()).format('YYYY/MM/DD HH:mm:ss')
-    },
-    [UPDATE_TODO_ITEM]: (state: TodoItems, payload: { item: TodoItem, newSubject: string }): void => {
-      payload.item.subject = payload.newSubject
     },
     [REMOVE_TODO_ITEM]: (state: TodoItems, payload: { item: TodoItem }): void => {
       state.items = state.items.filter((item: TodoItem) =>
@@ -56,15 +56,15 @@ export default {
         item
       })
     },
-    [DONE_TODO_ITEM]: ({ commit }: Context, item: TodoItem): void => {
-      commit(DONE_TODO_ITEM, {
-        item
-      })
-    },
     [UPDATE_TODO_ITEM]: ({ commit }: Context, data: { item: TodoItem, newSubject: string }): void => {
       commit(UPDATE_TODO_ITEM, {
         item: data.item,
         newSubject: data.newSubject
+      })
+    },
+    [DONE_TODO_ITEM]: ({ commit }: Context, item: TodoItem): void => {
+      commit(DONE_TODO_ITEM, {
+        item
       })
     },
     [REMOVE_TODO_ITEM]: ({ commit }: Context, item: TodoItem): void => {

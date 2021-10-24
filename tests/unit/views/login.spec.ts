@@ -14,6 +14,7 @@ jest.mock('vue-router')
 
 const mockRouter = { push: jest.fn() }
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('vue-router').useRouter.mockReturnValue(
   mockRouter
 )
@@ -111,10 +112,12 @@ describe('Login.vue', () => {
 
   describe('directly access login page', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('vue-router').useRoute.mockReturnValue({
         ...getRouteMockDirectAccess
       })
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreModuleLoginSuccess
@@ -135,7 +138,7 @@ describe('Login.vue', () => {
     describe('display control', () => {
       test('show "Login" vue', () => {
         expect(wrapper.findComponent(Login).exists()).toBeTruthy()
-        expect(wrapper.vm.login).toBeTruthy()
+        expect(wrapper.vm.doLogin).toBeTruthy()
       })
 
       test('show elements', () => {
@@ -214,7 +217,7 @@ describe('Login.vue', () => {
     })
 
     describe('binding control', () => {
-      test('text input bind "userId" props', async () => {
+      test('user id input bind "userId" props', async () => {
         const id = wrapper.find('#user-id-input')
         wrapper.vm.userId = wrongID
         await flushPromises()
@@ -264,11 +267,12 @@ describe('Login.vue', () => {
 
   describe('login with wrong ID/Password', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('vue-router').useRoute.mockReturnValue({
         ...getRouteMockDirectAccess
       })
 
-
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreModuleLoginError
@@ -294,10 +298,12 @@ describe('Login.vue', () => {
 
   describe('redirect to login page when access todo page without login', () => {
     beforeEach(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('vue-router').useRoute.mockReturnValue({
         ...getRouteMockRedirectAccess
       })
 
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@/store').useStore.mockReturnValue(
         createStore({
           ...getStoreModuleLoginSuccess

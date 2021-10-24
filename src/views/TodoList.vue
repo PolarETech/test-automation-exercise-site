@@ -29,7 +29,7 @@
       <form
         class="add-todo"
         v-show="!isTodoItemMaximum"
-        @submit.prevent="addTodoItem()"
+        @submit.prevent="subjectSubmit()"
       >
         <button
           id="subject-submit"
@@ -52,18 +52,18 @@
         />
       </form>
 
-      <p id="item-count">登録件数：{{ todoItems.length }} / 5 件</p>
+      <p id="item-count">登録件数：{{ countTodoItems }} / 5 件</p>
     </section>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
-import { useStore } from '@/store'
+import { useTodoStore } from '@/compositions/useTodoStore'
+import { useMessageStore } from '@/compositions/useMessageStore'
 import { useHead } from '@vueuse/head'
 import draggable from 'vuedraggable'
 import TodoListItems from '@/components/TodoListItems.vue'
-import { TodoItem } from '@/types/store'
 
 export default defineComponent({
   name: 'TodoList',
@@ -72,34 +72,28 @@ export default defineComponent({
     draggable
   },
   setup () {
-    const store = useStore()
+    const {
+      subject,
+      todoItems,
+      countTodoItems,
+      isTodoItemEmpty,
+      isTodoItemMaximum,
+      addTodoItem
+    } = useTodoStore()
 
-    const subject = ref('')
+    const { emptyItemMessage, requireInputTodoMessage } = useMessageStore()
+
     const subjectInputElement = ref<HTMLInputElement>()
-
-    const todoItems = computed({
-      get: () => store.getters['todo/GET_TODO_ITEMS'],
-      set: (value: TodoItem[]) => store.dispatch('todo/SET_TODO_ITEMS', value)
-    })
-
-    const countTodoItems = computed(() => todoItems.value.length)
-    const isTodoItemEmpty = computed(() => todoItems.value.length === 0)
-    const isTodoItemMaximum = computed(() => todoItems.value.length >= 5)
 
     const isSubmitButtonDisabled = computed(() => subject.value.length === 0)
 
-    const emptyItemMessage = computed(() => store.state.message.emptyItem)
-    const requireInputTodoMessage = computed(() => store.state.message.requireInputTodo)
-
-    const addTodoItem = () => {
-      if (!isTodoItemMaximum.value && subject.value.length > 0) {
-        store.dispatch('todo/ADD_TODO_ITEM', subject.value)
-        subject.value = '';
-        focusSubjectInputElement()
-      }
+    const subjectSubmit = () => {
+      addTodoItem()
+      focusSubjectInputElement()
     }
 
     const focusSubjectInputElement = () => {
+      /* istanbul ignore next */
       subjectInputElement?.value?.focus()
     }
 
@@ -116,7 +110,7 @@ export default defineComponent({
       isSubmitButtonDisabled,
       emptyItemMessage,
       requireInputTodoMessage,
-      addTodoItem,
+      subjectSubmit,
       subjectInputElement
     }
   }
