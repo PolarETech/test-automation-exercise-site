@@ -1,0 +1,1 @@
+import{a as e}from"./index.098ebdb6.js";import{e as s}from"./vendor.a6a68fde.js";const r=()=>{const r=e();return{requireLoginMessage:s((()=>r.state.message.requireLogin)),loginErrorMessage:s((()=>r.state.message.loginError)),emptyItemMessage:s((()=>r.state.message.emptyItem)),requireInputTodoMessage:s((()=>r.state.message.requireInputTodo))}};export{r as u};
