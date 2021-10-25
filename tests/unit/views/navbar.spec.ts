@@ -1,7 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from '@/router/routes'
-import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
@@ -15,53 +13,25 @@ const head = createHead()
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes: [
+    { path: '/', component: { template: 'home page' } },
+    { path: '/about', component: { template: 'about page' } },
+    { path: '/login', component: { template: 'login page' } },
+    { path: '/todo', component: { template: 'todo page' } }
+  ]
 })
 
 jest.spyOn(router, 'push')
 
 /**
- * Store Mock Configuration
+ * useAuthStore Mock Configuration
  */
 
-jest.mock('@/store', () => ({
-  store: null,
-  useStore: jest.fn()
+const mockLogout = jest.fn()
+
+jest.mock('@/compositions/useAuthStore', () => ({
+  useAuthStore: jest.fn()
 }))
-
-const getLogoutStatus = {
-  GET_LOGIN_STATUS: jest.fn(() => false)
-}
-
-const getLoginStatus = {
-  GET_LOGIN_STATUS: jest.fn(() => true)
-}
-
-const actions = {
-  LOGOUT: jest.fn()
-}
-
-const getStoreMockLogoutStatus = {
-  modules: {
-    auth: {
-      namespaced: true,
-      state: {},
-      getters: getLogoutStatus,
-      actions
-    }
-  }
-}
-
-const getStoreMockLoginStatus = {
-  modules: {
-    auth: {
-      namespaced: true,
-      state: {},
-      getters: getLoginStatus,
-      actions
-    }
-  }
-}
 
 /**
  * Toast Mock Configuration
@@ -87,11 +57,9 @@ describe('NavBar.vue', () => {
       await router.isReady()
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@/store').useStore.mockReturnValue(
-        createStore({
-          ...getStoreMockLogoutStatus
-        })
-      )
+      require('@/compositions/useAuthStore').useAuthStore.mockReturnValue({
+        isLoggedIn: false
+      })
 
       wrapper = mount(NavBar, {
         global: {
@@ -121,13 +89,11 @@ describe('NavBar.vue', () => {
       })
 
       test('show "Login" menu', () => {
-        expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#nav-login-link')
         expect(el.exists()).toBeTruthy()
       })
 
       test('hide "Logout" menu', () => {
-        expect(getLogoutStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#nav-logout-link')
         expect(el.exists()).toBeFalsy()
       })
@@ -197,11 +163,10 @@ describe('NavBar.vue', () => {
       await router.isReady()
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@/store').useStore.mockReturnValue(
-        createStore({
-          ...getStoreMockLoginStatus
-        })
-      )
+      require('@/compositions/useAuthStore').useAuthStore.mockReturnValue({
+        isLoggedIn: true,
+        logout: mockLogout
+      })
 
       wrapper = mount(NavBar, {
         global: {
@@ -224,13 +189,11 @@ describe('NavBar.vue', () => {
       })
 
       test('hide "Login" menu', () => {
-        expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#nav-login-link')
         expect(el.exists()).toBeFalsy()
       })
 
       test('show "Logout" menu', () => {
-        expect(getLoginStatus.GET_LOGIN_STATUS).toBeCalled()
         const el = wrapper.find('#nav-logout-link')
         expect(el.exists()).toBeTruthy()
       })
@@ -239,7 +202,7 @@ describe('NavBar.vue', () => {
     describe('logout control', () => {
       test('call "$router.push" with "/" path and call "$toast.add" when click "logout" menu', async () => {
         await wrapper.find('#nav-logout-link').trigger('click')
-        expect(actions.LOGOUT).toBeCalled()
+        expect(mockLogout).toBeCalled()
         expect(wrapper.vm.$router.push).toHaveBeenLastCalledWith('/')
         expect(mockToast.add).toBeCalled()
       })

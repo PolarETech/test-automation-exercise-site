@@ -1,5 +1,5 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { createStore } from 'vuex'
+import { ref } from '@vue/runtime-core'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import TodoList from '@/views/TodoList.vue'
@@ -7,7 +7,7 @@ import TodoList from '@/views/TodoList.vue'
 const head = createHead()
 
 /**
- * Store Mock Configuration
+ * useTodoStore Mock Configuration
  */
 
 const dummyItem = {
@@ -17,7 +17,7 @@ const dummyItem = {
   subject: 'dummyItem'
 }
 
-const dummyItems = [
+const dummyItemsMaximum = [
   {
     id: 0,
     isDone: false,
@@ -29,80 +29,77 @@ const dummyItems = [
     isDone: true,
     timestamp: '2013/04/05 06:07:08',
     subject: 'dummyItem2'
+  },
+  {
+    id: 2,
+    isDone: false,
+    timestamp: '2014/05/06 07:08:09',
+    subject: 'dummyItem3'
+  },
+  {
+    id: 3,
+    isDone: true,
+    timestamp: '2015/06/07 08:09:10',
+    subject: 'dummyItem4'
+  },
+  {
+    id: 4,
+    isDone: true,
+    timestamp: '2016/07/08 09:10:11',
+    subject: 'dummyItem5'
   }
 ]
 
-const dummyEmptyMessage = 'dummy-empty'
-const dummyRequireMessage = 'dummy-require'
+const mockAddTodoItem = jest.fn(() => false)
 
-const gettersItemRegistered = {
-  GET_TODO_ITEMS: jest.fn(() => {
-    return [dummyItem]
-  })
-}
+// NOTE:
+// Rewriting of values may occur during test execution.
+// For initialization before each test,
+// define the mock data as a function that returns the data.
+const getUseTodoStoreMockItemRegistered = () => ({
+  subject: ref(''),
+  todoItems: ref([dummyItem]),
+  countTodoItems: 1,
+  isTodoItemEmpty: false,
+  isTodoItemMaximum: false,
+  addTodoItem: mockAddTodoItem
+})
 
-const gettersItemEmpty = {
-  GET_TODO_ITEMS: jest.fn(() => {
-    return []
-  })
-}
+const getUseTodoStoreMockItemEmpty = () => ({
+  subject: ref(''),
+  todoItems: ref([]),
+  countTodoItems: 0,
+  isTodoItemEmpty: true,
+  isTodoItemMaximum: false,
+  addTodoItem: mockAddTodoItem
+})
 
-const actions = {
-  ADD_TODO_ITEM: jest.fn(),
-  SET_TODO_ITEMS: jest.fn()
-}
+const getUseTodoStoreMockItemMaximum = () => ({
+  subject: ref(''),
+  todoItems: ref(dummyItemsMaximum),
+  countTodoItems: 5,
+  isTodoItemEmpty: false,
+  isTodoItemMaximum: true,
+  addTodoItem: mockAddTodoItem
+})
 
-const getStoreModuleItemRegistered = {
-  modules: {
-    todo: {
-      namespaced: true,
-      state: {
-        items: [dummyItem]
-      },
-      getters: gettersItemRegistered,
-      actions
-    },
-    message: {
-      namespaced: true,
-      state: {
-        emptyItem: dummyEmptyMessage,
-        requireInputTodo: dummyRequireMessage
-      }
-    }
-  }
-}
-
-const getStoreModuleItemEmpty = {
-  modules: {
-    todo: {
-      namespaced: true,
-      state: {
-        items: []
-      },
-      getters: gettersItemEmpty,
-      actions
-    },
-    message: {
-      namespaced: true,
-      state: {
-        emptyItem: dummyEmptyMessage,
-        requireInputTodo: dummyRequireMessage
-      }
-    }
-  }
-}
-
-jest.mock('@/store', () => ({
-  store: null,
-  useStore: jest.fn()
+jest.mock('@/compositions/useTodoStore', () => ({
+  useTodoStore: jest.fn()
 }))
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('@/store').useStore.mockReturnValue(
-  createStore({
-    ...getStoreModuleItemRegistered
-  })
-)
+/**
+ * useMessageStore Mock Configuration
+ */
+
+const dummyEmptyMessage = 'dummy-empty'
+const dummyRequireInputMessage = 'dummy-require-input'
+
+jest.mock('@/compositions/useMessageStore', () => ({
+  useMessageStore: jest.fn(() => ({
+    emptyItemMessage: dummyEmptyMessage,
+    requireInputTodoMessage: dummyRequireInputMessage
+  }))
+}))
 
 describe('TodoList.vue', () => {
   let wrapper: VueWrapper<InstanceType<typeof TodoList>>
@@ -115,11 +112,9 @@ describe('TodoList.vue', () => {
   describe('a todo item is registered', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@/store').useStore.mockReturnValue(
-        createStore({
-          ...getStoreModuleItemRegistered
-        })
-      )
+      require('@/compositions/useTodoStore').useTodoStore.mockReturnValue({
+        ...getUseTodoStoreMockItemRegistered()
+      })
 
       wrapper = mount(TodoList, {
         attachTo: document.body,
@@ -139,13 +134,11 @@ describe('TodoList.vue', () => {
       })
 
       test('hide "empty item" message', () => {
-        expect(gettersItemRegistered.GET_TODO_ITEMS).toBeCalled()
         const el = wrapper.find('#empty-message')
         expect(el.exists()).toBeFalsy()
       })
 
       test('show "todo-list"', () => {
-        expect(gettersItemRegistered.GET_TODO_ITEMS).toBeCalled()
         const el = wrapper.find('.todo-list')
         expect(el.exists()).toBeTruthy()
       })
@@ -153,6 +146,7 @@ describe('TodoList.vue', () => {
       test('show "add-todo" elements', () => {
         expect(wrapper.find('.add-todo').exists()).toBeTruthy()
         expect(wrapper.find('#subject-input').exists()).toBeTruthy()
+        expect(wrapper.find('#subject-input').attributes().placeholder).toBe(dummyRequireInputMessage)
         expect(wrapper.find('#subject-submit').exists()).toBeTruthy()
       })
 
@@ -187,35 +181,22 @@ describe('TodoList.vue', () => {
       })
     })
 
-    describe('add todo control', () => {
-      test('should not call "todo/ADD_TODO_ITEM" when submit with empty subject', async () => {
+    describe('binding control', () => {
+      test('subject input bind "subject" property', async () => {
         const el = wrapper.find('#subject-input')
-        const newSubject = ''
+        const newSubject = 'test'
         await el.setValue(newSubject)
-        await wrapper.find('.add-todo').trigger('submit.prevent')
-        expect(actions.ADD_TODO_ITEM).not.toBeCalled()
+        expect(wrapper.vm.subject).toBe(newSubject)
       })
+    })
 
-      test('call store action "todo/ADD_TODO_ITEM" with correct args when submit', async () => {
+    describe('add todo control', () => {
+      test('call "addTodoItem" when click register button', async () => {
         const el = wrapper.find('#subject-input')
         const newSubject = 'test'
         await el.setValue(newSubject)
         await wrapper.find('.add-todo').trigger('submit.prevent')
-        expect(actions.ADD_TODO_ITEM).toBeCalledWith(
-          expect.anything(),
-          expect.stringMatching(newSubject)
-        )
-        expect((el.element as HTMLInputElement).value).toBe('')
-      })
-    })
-
-    describe('set todo control', () => {
-      test('call store action "todo/SET_TODO_ITEMS" with correct args when change todoItems', async () => {
-        wrapper.vm.todoItems = dummyItems
-        expect(actions.SET_TODO_ITEMS).toBeCalledWith(
-          expect.anything(),
-          expect.objectContaining(dummyItems)
-        )
+        expect(mockAddTodoItem).toBeCalled()
       })
     })
   })
@@ -223,11 +204,9 @@ describe('TodoList.vue', () => {
   describe('todo item is empty', () => {
     beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('@/store').useStore.mockReturnValue(
-        createStore({
-          ...getStoreModuleItemEmpty
-        })
-      )
+      require('@/compositions/useTodoStore').useTodoStore.mockReturnValue({
+        ...getUseTodoStoreMockItemEmpty()
+      })
 
       wrapper = mount(TodoList, {
         global: {
@@ -240,15 +219,50 @@ describe('TodoList.vue', () => {
     })
 
     test('show "empty item" message', () => {
-      expect(gettersItemEmpty.GET_TODO_ITEMS).toBeCalled()
       const el = wrapper.find('#empty-message')
       expect(el.exists()).toBeTruthy()
     })
 
     test('hide "todo-list"', () => {
-      expect(gettersItemEmpty.GET_TODO_ITEMS).toBeCalled()
       const el = wrapper.find('.todo-list')
       expect(el.exists()).toBeFalsy()
+    })
+
+    test('show "item-count" message with correct number', () => {
+      const el = wrapper.find('#item-count')
+      expect(el.exists()).toBeTruthy()
+      expect(el.text()).toBe('登録件数：0 / 5 件')
+    })
+  })
+
+  describe('maximum number of items registered', () => {
+    beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('@/compositions/useTodoStore').useTodoStore.mockReturnValue({
+        ...getUseTodoStoreMockItemMaximum()
+      })
+
+      wrapper = mount(TodoList, {
+        attachTo: document.body,
+        global: {
+          plugins: [
+            head,
+            PrimeVue
+          ]
+        }
+      })
+    })
+
+    test('hide "add-todo" elements', () => {
+      expect(wrapper.find('.add-todo').isVisible()).toBeFalsy()
+      expect(wrapper.find('#subject-input').isVisible()).toBeFalsy()
+      expect(wrapper.find('#subject-submit').isVisible()).toBeFalsy()
+    })
+
+    test('show "item-count" message with correct number', () => {
+      const el = wrapper.find('#item-count')
+      expect(el.exists()).toBeTruthy()
+      expect(el.text()).toBe('登録件数：5 / 5 件')
     })
   })
 })

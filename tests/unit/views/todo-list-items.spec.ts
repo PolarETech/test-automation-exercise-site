@@ -1,5 +1,4 @@
 import { mount, VueWrapper } from '@vue/test-utils'
-import { createStore } from 'vuex'
 import { createHead } from '@vueuse/head'
 import PrimeVue from 'primevue/config'
 import TodoListItems from '@/components/TodoListItems.vue'
@@ -7,7 +6,7 @@ import TodoListItems from '@/components/TodoListItems.vue'
 const head = createHead()
 
 /**
- * Store Mock Configuration
+ * useTodoStore Mock Configuration
  */
 
 const dummyItem = {
@@ -16,43 +15,34 @@ const dummyItem = {
   timestamp: '2012/03/04 05:06:07',
   subject: 'dummyItem'
 }
-const dummyRequireMessage = 'dummy-require'
 
-const actions = {
-  DONE_TODO_ITEM: jest.fn(),
-  UPDATE_TODO_ITEM: jest.fn(),
-  REMOVE_TODO_ITEM: jest.fn()
-}
+const mockUpdateTodoItem = jest.fn()
+const mockDoneTodoItem = jest.fn()
+const mockRemoveTodoItem = jest.fn()
 
-const getStoreModule = {
-  modules: {
-    todo: {
-      namespaced: true,
-      state: {
-        items: [dummyItem]
-      },
-      actions
-    },
-    message: {
-      namespaced: true,
-      state: {
-        requireInputTodo: dummyRequireMessage
-      }
-    }
-  }
-}
+const getUseTodoStoreMock = () => ({
+  updateTodoItem: mockUpdateTodoItem,
+  doneTodoItem: mockDoneTodoItem,
+  removeTodoItem: mockRemoveTodoItem
+})
 
-jest.mock('@/store', () => ({
-  store: null,
-  useStore: jest.fn()
+jest.mock('@/compositions/useTodoStore', () => ({
+  useTodoStore: jest.fn(() => ({
+    ...getUseTodoStoreMock()
+  }))
 }))
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('@/store').useStore.mockReturnValue(
-  createStore({
-    ...getStoreModule
-  })
-)
+/**
+ * useMessageStore Mock Configuration
+ */
+
+const dummyRequireInputMessage = 'dummy-require-input'
+
+jest.mock('@/compositions/useMessageStore', () => ({
+  useMessageStore: jest.fn(() => ({
+    requireInputTodoMessage: dummyRequireInputMessage
+  }))
+}))
 
 describe('TodoListItems.vue', () => {
   let wrapper: VueWrapper<InstanceType<typeof TodoListItems>>
@@ -86,21 +76,36 @@ describe('TodoListItems.vue', () => {
       })
 
       test('show elements', () => {
+        expect(wrapper.find('.todo-drag').exists()).toBeTruthy()
         expect(wrapper.find('.todo-check').exists()).toBeTruthy()
         expect(wrapper.find('.todo-subject').exists()).toBeTruthy()
+        expect(wrapper.find('.todo-subject').attributes().placeholder).toBe(dummyRequireInputMessage)
         expect(wrapper.find('.todo-sub-info').exists()).toBeTruthy()
         expect(wrapper.find('.todo-timestamp').exists()).toBeTruthy()
         expect(wrapper.find('.todo-remove').exists()).toBeTruthy()
       })
     })
 
+    describe('binding control', () => {
+      test('todo check bind "item.isDone" property', () => {
+        const check = wrapper.find('.todo-check')
+        expect((check.element as HTMLInputElement).checked).toBe(dummyItem.isDone)
+      })
+
+      test('todo subject bind "item.subject" property', () => {
+        const subject = wrapper.find('.todo-subject')
+        expect((subject.element as HTMLInputElement).value).toBe(dummyItem.subject)
+      })
+
+      test('todo timestamp bind "item.timestamp" property', () => {
+        expect(wrapper.find('.todo-timestamp').text()).toBe('確認日時：' + dummyItem.timestamp)
+      })
+    })
+
     describe('item control', () => {
       test('click checkbox', async () => {
         await wrapper.find('.todo-check').trigger('click')
-        expect(actions.DONE_TODO_ITEM).toBeCalledWith(
-          expect.anything(),
-          expect.objectContaining(dummyItem)
-        )
+        expect(mockDoneTodoItem).toBeCalledWith(dummyItem)
       })
 
       test('update subject with new string', async () => {
@@ -110,16 +115,10 @@ describe('TodoListItems.vue', () => {
 
         ;(el.element as HTMLInputElement).value = newSubject
         expect((el.element as HTMLInputElement).value).toBe(newSubject)
-        expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
+        expect(mockUpdateTodoItem).not.toBeCalled()
 
         await el.trigger('change')
-        expect(actions.UPDATE_TODO_ITEM).toBeCalledWith(
-          expect.anything(),
-          expect.objectContaining({
-            item: dummyItem,
-            newSubject
-          })
-        )
+        expect(mockUpdateTodoItem).toBeCalledWith(dummyItem, newSubject)
         expect((el.element as HTMLInputElement).value).toBe(newSubject)
       })
 
@@ -130,19 +129,16 @@ describe('TodoListItems.vue', () => {
 
         ;(el.element as HTMLInputElement).value = newSubject
         expect((el.element as HTMLInputElement).value).toBe(newSubject)
-        expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
+        expect(mockUpdateTodoItem).not.toBeCalled()
 
         await el.trigger('change')
-        expect(actions.UPDATE_TODO_ITEM).not.toBeCalled()
+        expect(mockUpdateTodoItem).not.toBeCalled()
         expect((el.element as HTMLInputElement).value).toBe(dummyItem.subject)
       })
 
       test('remove item', async () => {
         await wrapper.find('.todo-remove').trigger('click')
-        expect(actions.REMOVE_TODO_ITEM).toBeCalledWith(
-          expect.anything(),
-          expect.objectContaining(dummyItem)
-        )
+        expect(mockRemoveTodoItem).toBeCalledWith(dummyItem)
       })
     })
   })

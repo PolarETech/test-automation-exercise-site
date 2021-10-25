@@ -1,6 +1,6 @@
 {
   "name": "cucumberjs-selenium-example",
-  "version": "3.0.0-alpha7",
+  "version": "3.0.0-beta1",
   "private": true,
   "scripts": {
     "test": "mkdirp ./output/ && cucumber-js --format rerun:./output/@rerun.txt",
