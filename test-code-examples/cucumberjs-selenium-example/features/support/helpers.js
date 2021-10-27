@@ -74,9 +74,11 @@ module.exports = {
 
     await writeFile(
       `${path}${filename}.png`,
-      image.replace(/^data:image\/png;base64,/,''),
+      image.replace(/^data:image\/png;base64,/, ''),
       'base64'
-    ).catch(error => { throw error })
+    )
+      .then(console.log(`\n[FAILED] Save screenshot: ${filename}`))
+      .catch(error => { throw error })
   },
 }
 

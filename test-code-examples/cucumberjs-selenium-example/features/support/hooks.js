@@ -16,10 +16,29 @@ Before({ tags: '@mobile' }, async function () {
 After(async function (scenario) {
   // save screenshot if scenario failed
   if (scenario.result.status === Status.FAILED) {
-    const featureName = scenario.sourceLocation.uri.split(/[/.]/)[1]
-    const featureLine = scenario.sourceLocation.line
-    const filename = `${featureName}_line${featureLine}`
-    await saveScreenshot(this.driver, filename)
+    const featureName = scenario.pickle.uri.split(/[/.]/)[1]
+
+    const scenarioName = () => {
+      let name = scenario.pickle.name
+      name = name.replace(/[\s".:*?<>|\\/]/g, '_')
+      return name.replace(/__/g, '_')
+    }
+
+    const time = () => {
+      const t = new Date()
+      return t.toString().split(/[ :]/).slice(4, 7).join('')
+    }
+
+    const filename = () => {
+      let name = `${featureName}__${scenarioName()}`
+      const maxlength = 80
+      if (name.length > maxlength) {
+        name = name.substr(0, maxlength)
+      }
+      return `${name}__${time()}`
+    }
+
+    await saveScreenshot(this.driver, filename())
   }
 
   await this.driver.quit().catch(error => { throw error })
