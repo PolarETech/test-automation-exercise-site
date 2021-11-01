@@ -3,13 +3,15 @@
 Website URL:  
 https://polaretech.github.io/test-automation-exercise-site/
 
-__New Version Release Planned__
+__Announcement of New Version Release__
 
-The new version (v3.0.0) is planned to be released on 31 October 2021.  
-It will contain updates that will require changes to the test code.
+The new version (v3.0.0) was released on October 31, 2021.  
+It contains updates that require changes to the test code.
 
 You can check the code differences from here.  
 https://github.com/PolarETech/test-automation-exercise-site/compare/master...main
+
+Also, the working branch has changed from [master](https://github.com/PolarETech/test-automation-exercise-site/tree/master) to [main](https://github.com/PolarETech/test-automation-exercise-site/tree/main).
 
 ## Project setup
 ```
